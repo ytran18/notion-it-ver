@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import { ReactComponent as IconCloseSmallSolid } from 'assets/icons/iconCloseSmallSolid.svg';
 
@@ -9,8 +9,21 @@ const Link = () => {
         isVisibleCloseIcon: false,
     });
 
+    const inputRef = useRef(null);
+
+    useEffect(() => {
+        if (inputRef.current) {
+            inputRef.current.focus();
+        };
+    },[])
+
     const handleChange = (e) => {
         setState(prev => ({...prev, value: e?.target?.value}));
+    };
+    
+    const handleRemoveInput = () => {
+        setState(prev => ({...prev, value: ''}));
+        inputRef.current.focus();
     };
 
     useEffect(() => {
@@ -25,6 +38,7 @@ const Link = () => {
         <div className="w-full py-3 flex flex-col items-center">
             <div className="h-8 w-full relative mb-3">
                 <input 
+                    ref={inputRef}
                     type="text"
                     value={state.value}
                     onChange={handleChange}
@@ -33,7 +47,10 @@ const Link = () => {
                 />
                 {
                     state.isVisibleCloseIcon && (
-                        <IconCloseSmallSolid className="absolute right-2 opacity-80 cursor-pointer hover:opacity-100 text-[rgb(179,179,176)] top-1/2 -translate-y-1/2" />
+                        <IconCloseSmallSolid 
+                            className="absolute right-2 opacity-80 cursor-pointer hover:opacity-100 text-[rgb(179,179,176)] top-1/2 -translate-y-1/2" 
+                            onClick={handleRemoveInput}
+                        />
                     )
                 }
             </div>
