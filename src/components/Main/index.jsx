@@ -90,17 +90,26 @@ const Main = () => {
     };
     
     const handleModalEmoji = (type) => {
+        console.log(type);
         if (type === 'remove') {
             setState(prev => ({...prev, isVisibleIconHeader: false}));
         };
-        console.log(state.isVisibleModalEmoji);
         setState(prev => ({...prev, isVisibleModalEmoji: !prev.isVisibleModalEmoji}));
+    };
+
+    const onEmojiSelect = (e) => {
+        const emojiSelect = e.unified;
+
+        const emojiCodePoint = parseInt(emojiSelect, 16);
+        const emoji = String.fromCodePoint(emojiCodePoint);
+
+        setState(prev => ({...prev, randomEmoji: emoji, isVisibleModalEmoji: false}));
     };
 
     const classNameCoverOption = 'text-xs cursor-pointer font-medium p-2 hover:bg-[rgb(239,239,238)]';
 
     return (
-        <div className="cursor-text h-full w-full flex flex-col justify-center items-center">
+        <div className="cursor-text h-full w-full flex flex-col justify-center items-center overflow-y-auto">
             <div 
                 onMouseEnter={handleMouseEnterCoverOption} 
                 onMouseLeave={handleMouseLeaveCoverOption}
@@ -109,7 +118,7 @@ const Main = () => {
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                 }}
-                className={`${state.hasCoverBackground ? 'block opacity-100' : 'hidden opacity-0'} h-96 w-full relative cursor-default transition-opacity duration-300`}
+                className={`${state.hasCoverBackground ? 'block opacity-100' : 'hidden opacity-0'} h-[30vh] min-h-[30vh] w-full relative cursor-default transition-opacity duration-300`}
             >
                 <div className={`absolute flex bg-white items-center bottom-2 rounded-md right-1/4 transition-opacity duration-300 ${state.isDisplayCoverOption ? 'opacity-100 flex' : 'opacity-0 hidden'}`}>
                     <div 
@@ -128,12 +137,11 @@ const Main = () => {
                 {state.isVisibleIconHeader && (
                     <div 
                         className={`w-[78px] mb-2 h-[78px] flex items-center justify-center hover:bg-[rgb(239,239,239)] z-10 relative text-7xl cursor-pointer`}
-                        onClick={handleModalEmoji}
                     >
-                        {state.randomEmoji}
+                        <div onClick={handleModalEmoji}>{state.randomEmoji}</div>
                         {state.isVisibleModalEmoji && (
-                            <div className="absolute -bottom-[440px]">
-                                <ModalEmoji handleModalEmoji={handleModalEmoji}/>
+                            <div className="absolute -bottom-[400px]">
+                                <ModalEmoji handleModalEmoji={handleModalEmoji} onEmojiSelect={onEmojiSelect}/>
                             </div>
                         )}
                     </div>
@@ -154,7 +162,7 @@ const Main = () => {
                                 {optionHeader.map((item, index) => {
                                     return (
                                         <div 
-                                            className={`${state.hasCoverBackground && item.label === 'Add cover' ? 'hidden' : 'flex'} text-[rgb(175,174,172)] cursor-pointer items-center hover:bg-[rgb(239,239,239)] p-[5px]`}
+                                            className={`${state.hasCoverBackground && item.label === 'Add cover' ? 'hidden' : 'flex'} ${state.isVisibleIconHeader && item.label === 'Add icon' ? 'hidden' : 'flex'} text-[rgb(175,174,172)] cursor-pointer items-center hover:bg-[rgb(239,239,239)] p-[5px]`}
                                             key={`option-header-${index}`}
                                             onClick={() => handleOptionHeader(item.type)}
                                         >
