@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
 
+import data from '@emoji-mart/data';
+
 import ModalBackgroundCover from "core/components/ModalBackgroundCover";
+import ModalEmoji from "core/components/ModalEmoji";
 
 import { ReactComponent as IconSmile } from 'assets/icons/iconSmile.svg';
 import { ReactComponent as IconChatSolid } from 'assets/icons/iconChatSolid.svg';
 import { ReactComponent as IconPhoto } from 'assets/icons/iconPhoto.svg';
+
 
 import allImages from "assets/img";
 
@@ -16,6 +20,9 @@ const Main = () => {
         isDisplayCoverOption: false,
         isVisibleModalCoverBackground: false,
         randomImg: ``,
+        isVisibleIconHeader: false,
+        randomEmoji: ``,
+        isVisibleModalEmoji: false,
     });
 
     const optionHeader = [
@@ -31,9 +38,30 @@ const Main = () => {
         setState(prev => ({...prev, randomImg: randomImage}));
     },[state.hasCoverBackground]);
 
+    useEffect(() => {
+        if (!state.isVisibleIconHeader) return;
+
+        const emojis = data.emojis;
+
+        const keys = Object.keys(emojis);
+        const randomKey = keys[Math.floor(Math.random() * keys.length)];
+        const randomEmoji = emojis[randomKey].skins?.[0]?.unified;
+        
+        const emojiCodePoint = parseInt(randomEmoji, 16);
+        const emoji = String.fromCodePoint(emojiCodePoint);
+    
+        setState(prev => ({
+            ...prev,
+            randomEmoji: emoji
+        }));
+    },[state.isVisibleIconHeader]);
+
     const handleOptionHeader = (type) => {
         if (type === 'cover') {
             setState(prev => ({...prev, hasCoverBackground: true}));
+        };
+        if (type === 'icon') {
+            setState(prev => ({...prev, isVisibleIconHeader: true}));
         };
     };
 
@@ -57,8 +85,16 @@ const Main = () => {
     const handleModalCover = (type) => {
         if (type === 'remove') {
             setState(prev => ({...prev, hasCoverBackground: false}));
-        }
+        };
         setState(prev => ({...prev, isVisibleModalCoverBackground: !prev.isVisibleModalCoverBackground, isDisplayCoverOption: false}));
+    };
+    
+    const handleModalEmoji = (type) => {
+        if (type === 'remove') {
+            setState(prev => ({...prev, isVisibleIconHeader: false}));
+        };
+        console.log(state.isVisibleModalEmoji);
+        setState(prev => ({...prev, isVisibleModalEmoji: !prev.isVisibleModalEmoji}));
     };
 
     const classNameCoverOption = 'text-xs cursor-pointer font-medium p-2 hover:bg-[rgb(239,239,238)]';
@@ -89,6 +125,19 @@ const Main = () => {
                 )}
             </div>
             <div className={`w-[60%] ${state.hasCoverBackground ? 'pb-14 pt-4' : 'py-14'} h-full`}>
+                {state.isVisibleIconHeader && (
+                    <div 
+                        className={`w-[78px] mb-2 h-[78px] flex items-center justify-center hover:bg-[rgb(239,239,239)] z-10 relative text-7xl cursor-pointer`}
+                        onClick={handleModalEmoji}
+                    >
+                        {state.randomEmoji}
+                        {state.isVisibleModalEmoji && (
+                            <div className="absolute -bottom-[440px]">
+                                <ModalEmoji handleModalEmoji={handleModalEmoji}/>
+                            </div>
+                        )}
+                    </div>
+                )}
                 <div 
                     className="w-full relative" 
                     onMouseEnter={handleMouseEnterTitle} 
