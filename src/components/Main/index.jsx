@@ -56,6 +56,10 @@ const Main = () => {
         }));
     },[state.isVisibleIconHeader]);
 
+    const handleChangeBg = (img) => {
+        setState(prev => ({...prev, randomImg: img}));
+    };
+
     const handleOptionHeader = (type) => {
         if (type === 'cover') {
             setState(prev => ({...prev, hasCoverBackground: true}));
@@ -129,7 +133,7 @@ const Main = () => {
                     <div className={`${classNameCoverOption} rounded-tr-md rounded-br-md`}>Reposition</div>
                 </div>
                 {state.isVisibleModalCoverBackground && (
-                    <ModalBackgroundCover handleModalCover={handleModalCover}/>
+                    <ModalBackgroundCover handleModalCover={handleModalCover} handleChangeBg={handleChangeBg}/>
                 )}
             </div>
             <div className={`w-[60%] ${state.hasCoverBackground ? 'pb-14 pt-4' : 'py-14'} h-full`}>

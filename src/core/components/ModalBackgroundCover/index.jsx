@@ -8,7 +8,7 @@ import './modalCoverBg.css';
 
 const ModalBackgroundCover = (props) => {
 
-    const { handleModalCover } = props;
+    const { handleModalCover, handleChangeBg } = props;
 
     const modalRef = useRef(null);
 
@@ -47,7 +47,7 @@ const ModalBackgroundCover = (props) => {
     }[state.tab] || 0;
 
     const renderTab = {
-        0: <Gallery />,
+        0: <Gallery handleChangeBg={handleChangeBg}/>,
         1: <Upload />,
         2: <Link />,
     }[state.tab] || 0;

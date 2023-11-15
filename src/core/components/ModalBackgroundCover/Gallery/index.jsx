@@ -8,7 +8,9 @@ import Rijksmuseum from "assets/img/rijksmuseum";
 import Japanese from "assets/img/japanese-print";
 import Musium from "assets/img/the-met-musium";
 
-const Gallery = () => {
+const Gallery = (props) => {
+
+    const { handleChangeBg } = props;
 
     const BgGallery = [
         { label: 'Color & Gradient', img: ColorGradient },
@@ -35,6 +37,7 @@ const Gallery = () => {
                                             backgroundSize: 'cover',
                                             backgroundPosition: 'center',
                                         }}
+                                        onClick={() => handleChangeBg(img)}
                                         className="w-[123px] h-[64px] m-1 rounded cursor-pointer hover:opacity-75 transition-all duration-200" key={`modal-background-cover-img-${idx}`}
                                     ></div>
                                 )
