@@ -3,6 +3,10 @@ import React from "react";
 import ColorGradient from "assets/img/color-gradient";
 import Telescope from "assets/img/james-webb-telescope";
 import Nasa from "assets/img/nasa-archive";
+import Patern from "assets/img/patern";
+import Rijksmuseum from "assets/img/rijksmuseum";
+import Japanese from "assets/img/japanese-print";
+import Musium from "assets/img/the-met-musium";
 
 const Gallery = () => {
 
@@ -10,6 +14,10 @@ const Gallery = () => {
         { label: 'Color & Gradient', img: ColorGradient },
         { label: 'James Webb Telescope', img: Telescope },
         { label: 'NASA Archive', img: Nasa },
+        { label: 'The MET Musium - Patterns', img: Patern },
+        { label: 'Rijksmuseum', img: Rijksmuseum },
+        { label: 'The MET Musium - Japanese Prints', img: Japanese },
+        { label: 'The MET Musium', img: Musium },
     ];
 
     return (
