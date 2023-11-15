@@ -4,6 +4,8 @@ import Header from "components/Header";
 import Sidebar from "components/Sidebar";
 import Main from "components/Main";
 
+import './App.css';
+
 const App = () => {
     return (
         <div className="w-screen h-screen flex">
@@ -14,7 +16,7 @@ const App = () => {
                 <div className="">
                     <Header />
                 </div>
-                <div className="">
+                <div className="main">
                     <Main />
                 </div>
             </div>
