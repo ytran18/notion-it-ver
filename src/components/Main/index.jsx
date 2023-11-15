@@ -90,7 +90,6 @@ const Main = () => {
     };
     
     const handleModalEmoji = (type) => {
-        console.log(type);
         if (type === 'remove') {
             setState(prev => ({...prev, isVisibleIconHeader: false}));
         };
