@@ -1,0 +1,1 @@
+export const PAGE_SELECT = "PAGE_SELECT"

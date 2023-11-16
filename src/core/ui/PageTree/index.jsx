@@ -1,5 +1,9 @@
 import React, { useState } from "react";
 
+import { useDispatch } from 'react-redux';
+import { pagePackage } from "core/redux/actions";
+import { usePagePackageHook } from "core/redux/hooks";
+
 import { ReactComponent as IconRight } from 'assets/icons/iconRight.svg';
 import { ReactComponent as IconDown } from 'assets/icons/iconArrowDown.svg';
 import { ReactComponent as IconDocument } from 'assets/icons/iconDocument.svg';
@@ -7,10 +11,13 @@ import { ReactComponent as IconDocument } from 'assets/icons/iconDocument.svg';
 const PageTree = (props) => {
 
     const { entry, depth } = props;
+    const dispatch = useDispatch();
 
     const [state, setState] = useState({
         isExpanded: false,
     });
+
+    const pageSelect = usePagePackageHook();
 
     const renderIcon = (icon) => {
         if (icon === '') return <IconDocument />
@@ -23,9 +30,13 @@ const PageTree = (props) => {
         setState(prev => ({...prev, isExpanded: !prev.isExpanded}));
     };
 
+    const handleSelect = (name) => {
+        dispatch(pagePackage(name));
+    };
+
     return (
         <div className="w-full h-full">
-            <div className="w-full flex items-center hover:bg-[rgb(232,232,230)] rounded-md p-1 cursor-pointer">
+            <div onClick={() => handleSelect(entry.name)} className={`w-full ${pageSelect === entry.name ? 'bg-[rgb(232,232,230)]' : ''} flex items-center hover:bg-[rgb(232,232,230)] rounded-md p-1 cursor-pointer`}>
                 <div onClick={handleExpandItem} className="mr-2">
                     {state.isExpanded ? (
                         <IconDown className="hover:bg-[rgb(209,209,208)] transition-all duration-200"/>
