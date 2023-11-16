@@ -12,25 +12,25 @@ const Header = () => {
     return (
         <div className="w-full h-full flex justify-between py-2">
             <div className="flex items-center">
-                <div className="mx-4 hover:bg-[rgb(239,239,239)]">
+                <div title="Go back" className="mx-2 hover:bg-[rgb(239,239,239)]">
                     <IconLeft className="cursor-pointer "/>
                 </div>
-                <div className="mr-4 hover:bg-[rgb(239,239,239)]">
+                <div title="Go forward" className="mr-2 hover:bg-[rgb(239,239,239)]">
                     <IconRightBig className="cursor-pointer"/>
                 </div>
-                <div className="mr-4 hover:bg-[rgb(239,239,239)]">
+                <div title="New tab" className="mr-2 hover:bg-[rgb(239,239,239)]">
                     <IconPlus className="cursor-pointer"/>
                 </div>
-                <div className="px-2 hover:bg-[rgb(239,239,239)] cursor-pointer select-none">Quy do</div>
+                <div className="px-2 hover:bg-[rgb(239,239,239)] text-sm font-medium cursor-pointer select-none">Quy do</div>
             </div>
             <div className="flex items-center">
                 <div className=""></div>
                 <div className=""></div>
-                <div className="ml-3 p-[3px] hover:bg-[rgb(239,239,239)] cursor-pointer text-sm">Share</div>
-                <div className="ml-3 p-[3px] hover:bg-[rgb(239,239,239)]"> <IconComment className="cursor-pointer"/> </div>
-                <div className="ml-3 p-[3px] hover:bg-[rgb(239,239,239)]"> <IconClock className="cursor-pointer"/> </div>
-                <div className="ml-3 p-[3px] hover:bg-[rgb(239,239,239)]"> <IconStar className="cursor-pointer"/> </div>
-                <div className="mx-3 p-[3px] hover:bg-[rgb(239,239,239)]"> <IconMore className="cursor-pointer "/> </div>
+                <div className="ml-2 p-[3px] hover:bg-[rgb(239,239,239)] font-medium cursor-pointer text-sm">Share</div>
+                <div className="ml-2 p-[3px] hover:bg-[rgb(239,239,239)]"> <IconComment className="cursor-pointer"/> </div>
+                <div className="ml-2 p-[3px] hover:bg-[rgb(239,239,239)]"> <IconClock className="cursor-pointer"/> </div>
+                <div className="ml-2 p-[3px] hover:bg-[rgb(239,239,239)]"> <IconStar className="cursor-pointer"/> </div>
+                <div className="mx-2 p-[3px] hover:bg-[rgb(239,239,239)]"> <IconMore className="cursor-pointer "/> </div>
             </div>
         </div>
     );
