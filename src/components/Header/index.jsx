@@ -26,7 +26,7 @@ const Header = () => {
             <div className="flex items-center">
                 <div className=""></div>
                 <div className=""></div>
-                <div className="ml-2 p-[3px] hover:bg-[rgb(239,239,239)] font-medium cursor-pointer text-sm">Share</div>
+                <div className="ml-2 p-[3px] hover:bg-[rgb(239,239,239)] select-none font-medium cursor-pointer text-sm">Share</div>
                 <div className="ml-2 p-[3px] hover:bg-[rgb(239,239,239)]"> <IconComment className="cursor-pointer"/> </div>
                 <div className="ml-2 p-[3px] hover:bg-[rgb(239,239,239)]"> <IconClock className="cursor-pointer"/> </div>
                 <div className="ml-2 p-[3px] hover:bg-[rgb(239,239,239)]"> <IconStar className="cursor-pointer"/> </div>

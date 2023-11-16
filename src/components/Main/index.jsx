@@ -102,7 +102,7 @@ const Main = () => {
 
     const onEmojiSelect = (e) => {
         const emojiSelect = e.unified;
-
+        
         const emojiCodePoint = parseInt(emojiSelect, 16);
         const emoji = String.fromCodePoint(emojiCodePoint);
 
