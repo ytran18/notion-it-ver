@@ -7,7 +7,7 @@ let win;
 
 function createWindow() {
     let { width, height } = screen.getPrimaryDisplay().workAreaSize;
-    win = new BrowserWindow({width: width, height: height});
+    win = new BrowserWindow({width: width, height: height, minWidth: 640, minHeight:475});
 
     win.loadURL('http://localhost:3000');
 
