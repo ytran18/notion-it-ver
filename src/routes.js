@@ -3,7 +3,7 @@ import * as Page from './pages';
 const AppRoutes = [
     {
         path: '/',
-        Component: Page?.LoginPage,
+        Component: Page?.MainPage,
         header: true,
     },
     {
