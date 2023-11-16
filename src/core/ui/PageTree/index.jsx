@@ -42,14 +42,14 @@ const PageTree = (props) => {
                     </div>
                 </div>
             </div>
-            {state.isExpanded && entry?.children.length > 0 && (
+            {state.isExpanded && entry?.children?.length > 0 && (
                 <div className="pl-5 w-full flex flex-col">
                     {entry.children.map((childEntry, index) => (
                         <PageTree key={index} entry={childEntry} depth={depth + 1} />
                     ))}
                 </div>
             )}
-            {state.isExpanded && entry?.children.length === 0 && (
+            {state.isExpanded && entry?.children?.length === 0 && (
                 <div className="w-full text-[13px] font-medium opacity-60 select-none cursor-default">No pages inside</div>
             )}
         </div>
