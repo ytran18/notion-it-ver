@@ -9,7 +9,7 @@ import './App.css';
 const App = () => {
     return (
         <div className="w-screen h-screen flex">
-            <div className="h-full min-w-[17%] w-[17%]">
+            <div className="h-full w-[220px] min-w-[220px] max-w-[220px]">
                 <Sidebar />
             </div>
             <div className="flex flex-col h-full w-[83%]">
