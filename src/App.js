@@ -12,7 +12,7 @@ const App = () => {
             <div className="h-full w-[220px] min-w-[220px] max-w-[220px]">
                 <Sidebar />
             </div>
-            <div className="flex flex-col h-full w-[83%]">
+            <div className="flex flex-col h-full header">
                 <div className="">
                     <Header />
                 </div>

@@ -1,3 +1,7 @@
 .main {
   height: calc(100% - 46px);
 }
+
+.header {
+  width: calc(100% - 220px);
+}
