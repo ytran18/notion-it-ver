@@ -1,12 +1,28 @@
 import React, { useEffect } from "react";
 
+import { useNavigate } from 'react-router-dom';
+
 import Header from "components/Header";
 import Sidebar from "components/Sidebar";
 import Main from "components/Main";
 
+// redux
+import { useUserPackageHook } from "core/redux/hooks";
+
 import './main-page.css';
 
 const MainPage = () => {
+
+    const user = useUserPackageHook();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (Object.keys(user).length === 0) {
+            navigate({
+                pathname: '/login',
+            });
+        };
+    },[]);
 
     useEffect(() => {
         const resizer = document.getElementById('resizeHandler');
