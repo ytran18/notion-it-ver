@@ -10,7 +10,7 @@ function createWindow() {
     win = new BrowserWindow({
         width: width, 
         height: height, 
-        minWidth: 640, minHeight:475,
+        minWidth: 742, minHeight:475,
         titleBarStyle: 'hidden',
     });
 

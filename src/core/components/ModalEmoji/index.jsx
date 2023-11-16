@@ -44,7 +44,7 @@ const ModalEmoji = (props) => {
     const classNameTab = 'text-sm cursor-pointer flex flex-col items-center hover:bg-[rgb(239,239,239)] py-1 px-2 rounded-md';
 
     return (
-        <div ref={modalRef} className="w-full h-full flex flex-col">
+        <div ref={modalRef} className="w-full h-full flex flex-col z-30">
             <div className="w-full bg-white p-2 border-b relative flex justify-between items-center">
                 <div className="flex items-center">
                     {

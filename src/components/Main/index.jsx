@@ -4,6 +4,7 @@ import data from '@emoji-mart/data';
 
 import ModalBackgroundCover from "core/components/ModalBackgroundCover";
 import ModalEmoji from "core/components/ModalEmoji";
+import Comment from "core/components/Comment";
 
 import { ReactComponent as IconSmile } from 'assets/icons/iconSmile.svg';
 import { ReactComponent as IconChatSolid } from 'assets/icons/iconChatSolid.svg';
@@ -23,6 +24,7 @@ const Main = () => {
         isVisibleIconHeader: false,
         randomEmoji: ``,
         isVisibleModalEmoji: false,
+        isVisibleComment: false,
     });
 
     const optionHeader = [
@@ -66,6 +68,9 @@ const Main = () => {
         };
         if (type === 'icon') {
             setState(prev => ({...prev, isVisibleIconHeader: true}));
+        };
+        if (type === 'comment') {
+            setState(prev => ({...prev, isVisibleComment: true}));
         };
     };
 
@@ -136,7 +141,7 @@ const Main = () => {
                     <ModalBackgroundCover handleModalCover={handleModalCover} handleChangeBg={handleChangeBg}/>
                 )}
             </div>
-            <div className={`w-[60%] ${state.hasCoverBackground ? 'pb-14 pt-4' : 'py-14'} h-full`}>
+            <div className={`w-[65%] ${state.hasCoverBackground ? 'pb-14 pt-4' : 'py-14'} h-full`}>
                 {state.isVisibleIconHeader && (
                     <div 
                         className={`w-[78px] mb-2 h-[78px] flex items-center justify-center hover:bg-[rgb(239,239,239)] z-10 relative text-7xl cursor-pointer`}
@@ -161,11 +166,11 @@ const Main = () => {
                     />
                     {
                         state.isDisplayOption && (
-                            <div className="absolute -top-0 w-full flex">
+                            <div className="absolute -top-0 w-full flex flex-wrap">
                                 {optionHeader.map((item, index) => {
                                     return (
                                         <div 
-                                            className={`${state.hasCoverBackground && item.label === 'Add cover' ? 'hidden' : 'flex'} ${state.isVisibleIconHeader && item.label === 'Add icon' ? 'hidden' : 'flex'} text-[rgb(175,174,172)] cursor-pointer items-center hover:bg-[rgb(239,239,239)] p-[5px]`}
+                                            className={`${state.hasCoverBackground && item.label === 'Add cover' ? 'hidden' : 'flex'} ${state.isVisibleIconHeader && item.label === 'Add icon' ? 'hidden' : 'flex'} ${state.isVisibleComment && item.label === 'Add comment' ? 'hidden' : 'flex'}  text-[rgb(175,174,172)] cursor-pointer items-center hover:bg-[rgb(239,239,239)] p-[5px]`}
                                             key={`option-header-${index}`}
                                             onClick={() => handleOptionHeader(item.type)}
                                         >
@@ -177,6 +182,11 @@ const Main = () => {
                             </div>
                         )
                     }
+                    {state.isVisibleComment && (
+                        <div className="">
+                            <Comment />
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
