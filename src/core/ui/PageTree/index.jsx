@@ -26,18 +26,18 @@ const PageTree = (props) => {
     return (
         <div className="w-full h-full">
             <div className="w-full flex items-center hover:bg-[rgb(232,232,230)] rounded-md p-1 cursor-pointer">
-                <div onClick={handleExpandItem} className="w-[10%]">
+                <div onClick={handleExpandItem} className="mr-2">
                     {state.isExpanded ? (
                         <IconDown className="hover:bg-[rgb(209,209,208)] transition-all duration-200"/>
                     ) : (
                         <IconRight className="hover:bg-[rgb(209,209,208)] transition-all duration-200"/>
                     )}
                 </div>
-                <div className="w-[90%] text-[13px] font-medium flex items-center">
-                    <div className="w-[15%] flex justify-center items-center select-none">
+                <div className="text-[13px] font-medium flex items-center">
+                    <div className="mr-2 flex justify-center items-center text-[13px] select-none">
                         {renderIcon(entry?.icon)}
                     </div>
-                    <div className="w-[85%] truncate select-none">
+                    <div className="truncate select-none">
                         {entry?.name}
                     </div>
                 </div>

@@ -86,10 +86,10 @@ const Sidebar = () => {
                     {HeaderTopItem.map((item, index) => {
                         return (
                             <div className={classNameTopSidebarItem} key={`sidebar-top-item-${index}`}>
-                                <div className="w-[15%]">
+                                <div className="mr-2">
                                     <item.icon /> 
                                 </div>
-                                <div className={`w-[85%] text-[13px] ${item.type === 0 ? 'font-medium' : 'font-normal'}`}>{item.label}</div>
+                                <div className={`text-[13px] font-medium`}>{item.label}</div>
                             </div>
                         )
                     })}
@@ -150,10 +150,10 @@ const Sidebar = () => {
                     {ItemFooterSidebar.map((item, index) => {
                         return (
                             <div className={classNameTopSidebarItem} key={`sidebar-footer-item-${index}`}>
-                                <div className="w-[15%] flex justify-center">
+                                <div className="mr-2 flex justify-center">
                                     <item.icon /> 
                                 </div>
-                                <div className={`w-[85%] select-none text-[13px] ${item.type === 0 ? 'font-medium' : 'font-normal'}`}>{item.label}</div>
+                                <div className={`select-none text-[13px] font-medium`}>{item.label}</div>
                             </div>
                         )
                     })}
