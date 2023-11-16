@@ -1,0 +1,25 @@
+.main {
+    height: calc(100% - 46px);
+  }
+  
+  /* resize */
+  
+  .resize-handler {
+    display: block;
+    cursor: col-resize;
+  }
+  
+  .resize-handler::after {
+    width: 2px;
+    height: 100%;
+    top: 0;
+    content: '';
+    position: absolute;
+    background-color: rgb(229,230,230);
+    transition-duration: 0.2s;
+  }
+  
+  .resize-handler:hover::after {
+    background-color: rgb(87,13,248);
+    width: 3px;
+  }
