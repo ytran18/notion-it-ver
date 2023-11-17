@@ -1,13 +1,20 @@
 import React, { useState, useRef, useEffect } from "react";
 
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from "react-redux";
+import { userPackage } from "core/redux/actions";
+
 import { ReactComponent as IconNotion } from 'assets/icons/iconNotion.svg';
 import { ReactComponent as IconGoogle } from 'assets/icons/iconGoogle.svg';
 import { ReactComponent as IconApple } from 'assets/icons/iconApple.svg';
 import { ReactComponent as IconClose } from 'assets/icons/iconCloseSmallSolid.svg';
 
-import { signupWithEmail } from './function';
+import { signupWithEmail, verifyLoginCode } from './function';
 
 const Login = () => {
+
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const [state, setState] = useState({
         email: '',
@@ -27,20 +34,41 @@ const Login = () => {
     },[]);
 
     const handleEmail = async () => {
-        const { email } = state;
-        
-        if (!email) {
-            console.log("email invalid !");
+        const { email, loginCode } = state;
+
+        let data = {
+            email: email,
         };
+        let isLoginWithCode = 0;
+
+        if (state.isSentEmailSuccess === 2) {
+            isLoginWithCode = 1;
+            data = {
+                ...data,
+                code: loginCode,
+            };
+        };
+
+        if (!email) {
+            console.log("Email invalid !");
+        };
+
         setState(prev => ({...prev, isSentEmailSuccess: 1}));
 
-        const data = {
-            email: email,
+        const res = isLoginWithCode === 1 ? await verifyLoginCode(data) : await signupWithEmail(data);
+        if (res?.success) {
+            setState(prev => ({...prev, isSentEmailSuccess: 2}));
+            if (isLoginWithCode === 0) {
+                setState(prev => ({...prev, btnContent: 'Continue with login code'}));
+            } else {
+                dispatch(userPackage(email))
+                navigate({
+                    pathname: '/',
+                });
+            };
+        } else {
+            setState(prev => ({...prev, isSentEmailSuccess: 2}));
         }
-        const res = await signupWithEmail(data);
-        if (res.ok) {
-            setState(prev => ({...prev, isSentEmailSuccess: 2, btnContent: 'Continue with login code'}));
-        };
     };
     
     useEffect(() => {
