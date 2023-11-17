@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import PageTree from "core/ui/PageTree";
 import ModalUser from "core/components/ModalUser";
 import ModalSearch from "core/components/ModalSearch";
+import ModalSetting from "core/components/ModalSetting";
 
 import { ReactComponent as IconDoubleLeft } from 'assets/icons/iconDoubleLeft.svg';
 import { ReactComponent as IconDefaultAvatar } from 'assets/icons/iconIdentification.svg';
@@ -112,7 +113,7 @@ const Sidebar = () => {
                                     </div>
                                     <div className={`text-[13px] font-medium`}>{item.label}</div>
                                     {state.isVisibleModalUser && item.type === 0 && (
-                                        <div className="absolute z-50 -bottom-[230px]">
+                                        <div className="absolute z-50 -bottom-[215px]">
                                             <ModalUser handleModalUser={handleModalUser}/>
                                         </div>
                                     )}
@@ -186,6 +187,9 @@ const Sidebar = () => {
             </div>
             {state.isVisiableModalSearch && (
                 <ModalSearch handleModalUser={handleModalUser}/>
+            )}
+            {state.isVisiableModalSetting && (
+                <ModalSetting handleModalUser={handleModalUser}/>
             )}
         </>
     );
