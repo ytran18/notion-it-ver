@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import PageTree from "core/ui/PageTree";
+import ModalUser from "core/components/ModalUser";
 
 import { ReactComponent as IconDoubleLeft } from 'assets/icons/iconDoubleLeft.svg';
 import { ReactComponent as IconDefaultAvatar } from 'assets/icons/iconIdentification.svg';
@@ -23,6 +24,7 @@ const Sidebar = () => {
     const [state, setState] = useState({
         isVisibleIcon: false,
         isScroll: false,
+        isVisibleModalUser: false,
     });
 
     const HeaderTopItem = [
@@ -60,6 +62,12 @@ const Sidebar = () => {
         };
     }, []);
 
+    const handleModalUser = (type) => {
+        if (type !== 0) return;
+
+        setState(prev => ({...prev, isVisibleModalUser: !prev.isVisibleModalUser}));
+    };
+
     const handleMouseEnter = () => {
         setState(prev => ({...prev, isVisibleIcon: true}));
     };
@@ -68,7 +76,7 @@ const Sidebar = () => {
         setState(prev => ({...prev, isVisibleIcon: false}));
     };
 
-    const classNameTopSidebarItem = 'w-full flex items-center hover:bg-[rgb(232,232,230)] rounded-md p-1 cursor-pointer';
+    const classNameTopSidebarItem = 'w-full flex select-none relative items-center hover:bg-[rgb(232,232,230)] rounded-md p-1 cursor-pointer';
 
     return (
         <div
@@ -85,11 +93,16 @@ const Sidebar = () => {
                 <div className="w-full flex flex-col mb-4">
                     {HeaderTopItem.map((item, index) => {
                         return (
-                            <div className={classNameTopSidebarItem} key={`sidebar-top-item-${index}`}>
+                            <div onClick={() => handleModalUser(item.type)} className={classNameTopSidebarItem} key={`sidebar-top-item-${index}`}>
                                 <div className="mr-2">
                                     <item.icon /> 
                                 </div>
                                 <div className={`text-[13px] font-medium`}>{item.label}</div>
+                                {state.isVisibleModalUser && item.type === 0 && (
+                                    <div className="absolute z-50 -bottom-[230px]">
+                                        <ModalUser handleModalUser={handleModalUser}/>
+                                    </div>
+                                )}
                             </div>
                         )
                     })}
