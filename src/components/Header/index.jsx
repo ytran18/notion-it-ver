@@ -14,10 +14,15 @@ const Header = () => {
 
     const [state, setState] = useState({
         isVisiblePopupPageSetting: false,
+        isFavorite: false,
     });
 
     const handlePageSettingPopUp = () => {
         setState(prev => ({...prev, isVisiblePopupPageSetting: !prev.isVisiblePopupPageSetting}));
+    };
+
+    const handleAddToFavorite = () => {
+        setState(prev => ({...prev, isFavorite: !prev.isFavorite}));
     };
 
     return (
@@ -40,7 +45,9 @@ const Header = () => {
                 <div className="ml-2 p-[3px] hover:bg-[rgb(239,239,239)] select-none font-medium cursor-pointer text-sm">Share</div>
                 <div className="ml-2 p-[3px] hover:bg-[rgb(239,239,239)]"> <IconComment className="cursor-pointer"/> </div>
                 <div className="ml-2 p-[3px] hover:bg-[rgb(239,239,239)]"> <IconClock className="cursor-pointer"/> </div>
-                <div className="ml-2 p-[3px] hover:bg-[rgb(239,239,239)]"> <IconStar className="cursor-pointer"/> </div>
+                <div className="ml-2 p-[3px] hover:bg-[rgb(239,239,239)]">
+                    <IconStar onClick={handleAddToFavorite} className={`cursor-pointer ${state.isFavorite ? 'text-[rgb(247,192,80)]' : 'fill-white'}`}/>
+                </div>
                 <div className="mx-2 p-[3px] hover:bg-[rgb(239,239,239)] relative"> 
                     <IconMore 
                         className="cursor-pointer "
