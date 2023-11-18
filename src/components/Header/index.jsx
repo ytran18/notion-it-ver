@@ -3,6 +3,7 @@ import React, { useState, useRef } from "react";
 import PopUpPageSetting from "core/components/PopupPageSetting";
 import ModalHistory from "core/components/ModalHistory";
 import ModalComments from "core/components/ModalComments";
+import PopUpShare from "core/components/PopUpShare";
 
 import { ReactComponent as IconLeft } from 'assets/icons/iconLeft.svg';
 import { ReactComponent as IconRightBig } from 'assets/icons/iconRightBig.svg';
@@ -20,9 +21,11 @@ const Header = () => {
         isFavorite: false,
         isVisibleModalHistory: false,
         isVisibleModalComment: false,
+        isVisiblePopUpShare: false,
     });
 
     const modalSettingPopUpRef = useRef(null);
+    const popupShareRef = useRef(null);
 
     const handlePageSettingPopUp = () => {
         setState(prev => ({...prev, isVisiblePopupPageSetting: !prev.isVisiblePopupPageSetting}));
@@ -42,6 +45,15 @@ const Header = () => {
     
     const handleModalComment = () => {
         setState(prev => ({...prev, isVisibleModalComment: true, isVisibleModalHistory: false}));
+    };
+
+    const handlePopUpShare = (type) => {
+        console.log(type);
+        if (type == 1) {
+            return;
+        } else {
+            setState(prev => ({...prev, isVisiblePopUpShare: !prev.isVisiblePopUpShare}));
+        }
     };
 
     return (
@@ -69,7 +81,22 @@ const Header = () => {
                         )}
                     </div>
                     <div className="flex items-center">
-                        <div className="ml-2 p-[3px] hover:bg-[rgb(239,239,239)] select-none font-medium cursor-pointer text-sm">Share</div>
+                        <div
+                            ref={popupShareRef}
+                            className="ml-2 p-[3px] hover:bg-[rgb(239,239,239)] select-none font-medium cursor-pointer text-sm"
+                            >
+                            <div 
+                                onClick={() => handlePopUpShare(0)}
+                                className=""
+                            >
+                                Share
+                            </div>
+                            {state.isVisiblePopUpShare && (
+                                <div className="absolute top-[110%] right-4">
+                                    <PopUpShare handlePopUpShare={handlePopUpShare} ref={popupShareRef}/>
+                                </div>
+                            )}
+                        </div>
                         <div className="ml-2 p-[3px] hover:bg-[rgb(239,239,239)]"> 
                             <IconComment onClick={handleModalComment} className="cursor-pointer"/>
                         </div>
