@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import PageTree from "core/ui/PageTree";
 import ModalUser from "core/components/ModalUser";
@@ -32,6 +32,8 @@ const Sidebar = () => {
         isVisiableModalSetting: false,
         isVisiableModalNewpage: false,
     });
+
+    const popUpUserRef = useRef(null);
 
     const HeaderTopItem = [
         { label: `Roy's Notion`, icon: IconDefaultAvatar, type: 0 },
@@ -104,7 +106,7 @@ const Sidebar = () => {
                             <IconDoubleLeft className={`${state.isVisibleIcon ? 'visible' : 'invisible'}`}/>
                         </div>
                     </div>
-                    <div className="w-full flex flex-col mb-4">
+                    <div ref={popUpUserRef}  className="w-full flex flex-col mb-4">
                         {HeaderTopItem.map((item, index) => {
                             return (
                                 <div onClick={() => handleModalUser(item.type)} className={classNameTopSidebarItem} key={`sidebar-top-item-${index}`}>
@@ -114,7 +116,7 @@ const Sidebar = () => {
                                     <div className={`text-[13px] font-medium`}>{item.label}</div>
                                     {state.isVisibleModalUser && item.type === 0 && (
                                         <div className="absolute z-50 -bottom-[215px]">
-                                            <ModalUser handleModalUser={handleModalUser}/>
+                                            <ModalUser handleModalUser={handleModalUser} ref={popUpUserRef}/>
                                         </div>
                                     )}
                                 </div>

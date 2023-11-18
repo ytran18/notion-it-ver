@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -10,18 +10,16 @@ import { ReactComponent as IconCheck } from 'assets/icons/iconCheck.svg';
 // test
 const imgSrc = 'https://lh3.googleusercontent.com/a/ACg8ocIsYVVjXmItPPEpsy_Td4La9MnmrcOrTO2cfcRJb6l8=s100';
 
-const ModalUser = (props) => {
+const ModalUser = React.forwardRef((props, ref) => {
 
     const { handleModalUser } = props;
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const modalRef = useRef(null);
-
     useEffect(() => {
         const handleClickOutside = (e) => {
-            if (modalRef.current && !modalRef.current.contains(e.target)) {
+            if (ref.current && !ref.current.contains(e.target)) {
                 handleModalUser(0);
             };
         };
@@ -45,7 +43,7 @@ const ModalUser = (props) => {
     const classNameItem = 'w-full p-2 cursor-pointer hover:bg-[rgb(239,239,239)] text-[12px]';
 
     return (
-        <div ref={modalRef} className="w-[320px] cursor-default flex flex-col bg-white border border-[rgb(224,224,223)] rounded-md shadow-md">
+        <div className="w-[320px] cursor-default flex flex-col bg-white border border-[rgb(224,224,223)] rounded-md shadow-md">
             <div className="w-full flex items-center justify-between p-3">
                 <div className="text-[11px] font-medium">ynhutran84@gmail.com</div>
                 <IconMore className="transform scale-75"/> 
@@ -67,6 +65,6 @@ const ModalUser = (props) => {
             </div>
         </div>
     );
-};
+});
 
 export default ModalUser;
