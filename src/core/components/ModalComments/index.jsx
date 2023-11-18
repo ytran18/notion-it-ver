@@ -11,6 +11,8 @@ const ModalComments = () => {
         isVisiblePopUp: false,
     });
 
+    const popupCommentRef = useRef(null);
+
     const handlePopUp = () => {
         setState(prev => ({...prev, isVisiblePopUp: !prev.isVisiblePopUp}));
     };
@@ -19,12 +21,12 @@ const ModalComments = () => {
         <div className="w-[385px] flex pt-10 flex-col h-screen bg-white border-l border-[rgb(219,219,219)]">
             <div className="w-full p-3 flex border-b border-[rgb(219,219,219)] justify-between items-center">
                 <div className="font-medium text-sm">Comments</div>
-                <div onClick={handlePopUp} className="px-2 py-1 relative rounded flex items-center opacity-70 hover:bg-[rgb(237,237,237)]">
-                    <div className="text-sm select-none">Open</div>
+                <div ref={popupCommentRef} className="px-2 py-1 relative rounded flex items-center opacity-70 hover:bg-[rgb(237,237,237)]">
+                    <div onClick={handlePopUp} className="text-sm select-none">Open</div>
                     <IconArrowDown className="transform scale-75"/>
                     {state.isVisiblePopUp && (
-                        <div className="absolute top-full right-0 z-[200]">
-                            <PopUpComment />
+                        <div className={`absolute top-[110%] right-0`}>
+                            <PopUpComment handlePopUp={handlePopUp} ref={popupCommentRef}/>
                         </div>
                     )}
                 </div>

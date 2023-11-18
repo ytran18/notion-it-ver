@@ -46,7 +46,7 @@ const Header = () => {
 
     return (
         <>
-            <div className="w-full h-full z-[100] relative flex justify-between py-2">
+            <div className="w-full h-full z-[101] relative flex justify-between py-2">
                 <div className="flex items-center">
                     <div title="Go back" className="mx-2 hover:bg-[rgb(239,239,239)]">
                         <IconLeft className="cursor-pointer "/>
@@ -94,12 +94,12 @@ const Header = () => {
                 </div>
             </div>
             <div 
-                className={`absolute right-0 cursor-pointer ease-out duration-[270ms] top-0 z-[50] ${state.isVisibleModalHistory ? 'opacity-100 z-[100]' : 'opacity-0 z-0'}`}
+                className={`absolute right-0 cursor-pointer ease-out duration-[270ms] top-0 ${state.isVisibleModalHistory ? 'opacity-100 z-[100]' : 'opacity-0 z-0'}`}
             >
                 <ModalHistory />
             </div>
             <div 
-                className={`absolute right-0 cursor-pointer ease-out duration-[270ms] top-0 z-[50] ${state.isVisibleModalComment ? 'opacity-100 z-[100]' : 'opacity-0 z-0'}`}
+                className={`absolute right-0 cursor-pointer ease-out duration-[270ms] top-0 ${state.isVisibleModalComment ? 'opacity-100 z-[100]' : 'opacity-0 z-0'}`}
             >
                 <ModalComments />
             </div>
