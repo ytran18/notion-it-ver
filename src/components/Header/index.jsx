@@ -85,13 +85,11 @@ const Header = () => {
                     </div>
                 </div>
             </div>
-            {state.isVisibleModalHistory && (
                 <div 
-                    className="absolute right-0 top-0 z-[50]" 
+                    className={`absolute right-0 cursor-pointer ease-out duration-[270ms] top-0 z-[50] ${state.isVisibleModalHistory ? 'opacity-100 z-[100]' : 'opacity-0 z-0'}`}
                 >
                     <ModalHistory />
                 </div>
-            )}
         </>
     );
 };
