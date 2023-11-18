@@ -128,7 +128,7 @@ const Main = () => {
                 }}
                 className={`${state.hasCoverBackground ? 'block opacity-100' : 'hidden opacity-0'} h-[30vh] min-h-[30vh] w-full relative cursor-default transition-opacity duration-300`}
             >
-                <div className={`absolute flex bg-white items-center bottom-2 rounded-md right-1/4 transition-opacity duration-300 ${state.isDisplayCoverOption ? 'opacity-100 flex' : 'opacity-0 hidden'}`}>
+                <div className={`absolute flex bg-white items-center bottom-2 rounded-md right-1/4 transition-all duration-[1200ms] ${state.isDisplayCoverOption ? 'opacity-100 flex' : 'opacity-0 hidden'}`}>
                     <div 
                         className={`${classNameCoverOption} rounded-tl-md rounded-bl-md border-r`}
                         onClick={() => handleModalCover('add')}
@@ -164,10 +164,10 @@ const Main = () => {
                         type="text" 
                         className="w-full mt-8 outline-none truncate text-4xl py-3 h-14 text-[rgb(55,53,47)] font-bold placeholder:opacity-50"
                     />
-                    {
-                        state.isDisplayOption && (
-                            <div className="absolute -top-0 w-full flex flex-wrap">
-                                {optionHeader.map((item, index) => {
+                    <div className="absolute -top-0 transition-all duration-[1200ms] w-full flex flex-wrap">
+                        {
+                            state.isDisplayOption && (
+                                optionHeader.map((item, index) => {
                                     return (
                                         <div 
                                             className={`${state.hasCoverBackground && item.label === 'Add cover' ? 'hidden' : 'flex'} ${state.isVisibleIconHeader && item.label === 'Add icon' ? 'hidden' : 'flex'} ${state.isVisibleComment && item.label === 'Add comment' ? 'hidden' : 'flex'}  text-[rgb(175,174,172)] cursor-pointer items-center hover:bg-[rgb(239,239,239)] p-[5px]`}
@@ -178,10 +178,10 @@ const Main = () => {
                                             <div className="text-sm font-normal">{item.label}</div>
                                         </div>
                                     )
-                                })}
-                            </div>
-                        )
-                    }
+                                })
+                            )
+                        }
+                    </div>
                     {state.isVisibleComment && (
                         <div className="">
                             <Comment />

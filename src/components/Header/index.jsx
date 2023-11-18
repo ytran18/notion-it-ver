@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
+
+import PopUpPageSetting from "core/components/PopupPageSetting";
 
 import { ReactComponent as IconLeft } from 'assets/icons/iconLeft.svg';
 import { ReactComponent as IconRightBig } from 'assets/icons/iconRightBig.svg';
@@ -9,6 +11,15 @@ import { ReactComponent as IconComment } from 'assets/icons/iconComment.svg';
 import { ReactComponent as IconMore } from 'assets/icons/iconMore.svg';
 
 const Header = () => {
+
+    const [state, setState] = useState({
+        isVisiblePopupPageSetting: false,
+    });
+
+    const handlePageSettingPopUp = () => {
+        setState(prev => ({...prev, isVisiblePopupPageSetting: !prev.isVisiblePopupPageSetting}));
+    };
+
     return (
         <div className="w-full h-full flex justify-between py-2">
             <div className="flex items-center">
@@ -30,7 +41,17 @@ const Header = () => {
                 <div className="ml-2 p-[3px] hover:bg-[rgb(239,239,239)]"> <IconComment className="cursor-pointer"/> </div>
                 <div className="ml-2 p-[3px] hover:bg-[rgb(239,239,239)]"> <IconClock className="cursor-pointer"/> </div>
                 <div className="ml-2 p-[3px] hover:bg-[rgb(239,239,239)]"> <IconStar className="cursor-pointer"/> </div>
-                <div className="mx-2 p-[3px] hover:bg-[rgb(239,239,239)]"> <IconMore className="cursor-pointer "/> </div>
+                <div className="mx-2 p-[3px] hover:bg-[rgb(239,239,239)] relative"> 
+                    <IconMore 
+                        className="cursor-pointer "
+                        onClick={handlePageSettingPopUp}
+                    /> 
+                    {state.isVisiblePopupPageSetting && (
+                        <div className="absolute right-2 top-[130%] transition-all duration-1000 z-50">
+                            <PopUpPageSetting handlePageSettingPopUp={handlePageSettingPopUp}/>
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     );
