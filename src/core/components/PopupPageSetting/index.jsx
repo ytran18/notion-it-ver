@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { ReactComponent as IconLock } from 'assets/icons/iconLock.svg';
 import { ReactComponent as IconUnlock } from 'assets/icons/iconUnlock.svg';
@@ -16,15 +16,13 @@ import { ReactComponent as IconDelete } from 'assets/icons/iconDelete.svg';
 import { ReactComponent as IconImport } from 'assets/icons/iconImport.svg';
 import { ReactComponent as IconExport } from 'assets/icons/iconExport.svg';
 
-const PopUpPageSetting = (props) => {
+const PopUpPageSetting = React.forwardRef((props, ref) => {
 
     const { handlePageSettingPopUp } = props;
 
     const [state, setState] = useState({
         isLockedPage: false,
     });
-
-    const popupRef = useRef(null);
 
     const styles = [ 'Default', 'Serif', 'Mono' ];
     const text = ['Small text', 'Full width'];
@@ -52,7 +50,7 @@ const PopUpPageSetting = (props) => {
 
     useEffect(() => {
         const handleClickOutside = (e) => {
-            if (popupRef.current && !popupRef.current.contains(e.target)) {
+            if (ref.current && !ref.current.contains(e.target)) {
                 handlePageSettingPopUp();
             };
         };
@@ -70,7 +68,6 @@ const PopUpPageSetting = (props) => {
 
     const handlePageOption = (type) => {
         if (type === 1) {
-            console.log("run here");
             setState(prev => ({...prev, isLockedPage: !prev.isLockedPage}));
         };
     };
@@ -81,8 +78,14 @@ const PopUpPageSetting = (props) => {
 
     const classNameAction = "flex py-1 px-3 cursor-pointer items-center justify-between my-[2px] hover:bg-[rgb(239,239,239)]";
 
+    // transition-property: opacity, transform;
+    // transition-duration: 270ms;
+    // transition-timing-function: ease;
     return (
-        <div ref={popupRef} className="w-[240px] bg-white rounded-md overflow-y-auto border border-[rgb(213,213,213)] shadow-md" style={{height: 'calc(100vh - 150px)'}}>
+        <div 
+            className="w-[240px] bg-white rounded-md overflow-y-auto border border-[rgb(213,213,213)] shadow-md" 
+            style={{height: 'calc(100vh - 150px)'}}
+        >
             <div className="w-full p-3 flex flex-col border-b border-[rgb(219,219,219)]">
                 <div className="text-xs font-medium opacity-50 mb-3">Style</div>
                 <div className="grid grid-cols-3">
@@ -181,6 +184,6 @@ const PopUpPageSetting = (props) => {
             </div>
         </div>
     );
-};
+});
 
 export default PopUpPageSetting;

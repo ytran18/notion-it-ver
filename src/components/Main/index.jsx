@@ -128,7 +128,7 @@ const Main = () => {
                 }}
                 className={`${state.hasCoverBackground ? 'block opacity-100' : 'hidden opacity-0'} h-[30vh] min-h-[30vh] w-full relative cursor-default transition-opacity duration-300`}
             >
-                <div className={`absolute flex bg-white items-center bottom-2 rounded-md right-1/4 transition-all duration-[1200ms] ${state.isDisplayCoverOption ? 'opacity-100 flex' : 'opacity-0 hidden'}`}>
+                <div className={`absolute flex bg-white items-center bottom-2 rounded-md right-1/4 transition-opacity duration-[270ms] ${state.isDisplayCoverOption ? 'opacity-100' : 'opacity-0'}`}>
                     <div 
                         className={`${classNameCoverOption} rounded-tl-md rounded-bl-md border-r`}
                         onClick={() => handleModalCover('add')}
@@ -164,7 +164,7 @@ const Main = () => {
                         type="text" 
                         className="w-full mt-8 outline-none truncate text-4xl py-3 h-14 text-[rgb(55,53,47)] font-bold placeholder:opacity-50"
                     />
-                    <div className="absolute -top-0 transition-all duration-[1200ms] w-full flex flex-wrap">
+                    <div className={`absolute ${state.isDisplayOption ? 'opacity-100' : 'opacity-0'} -top-0 transition-opacity duration-[270ms] w-full flex flex-wrap`}>
                         {
                             state.isDisplayOption && (
                                 optionHeader.map((item, index) => {
