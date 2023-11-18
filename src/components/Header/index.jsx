@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 
 import PopUpPageSetting from "core/components/PopupPageSetting";
 import ModalHistory from "core/components/ModalHistory";
+import ModalComments from "core/components/ModalComments";
 
 import { ReactComponent as IconLeft } from 'assets/icons/iconLeft.svg';
 import { ReactComponent as IconRightBig } from 'assets/icons/iconRightBig.svg';
@@ -18,6 +19,7 @@ const Header = () => {
         isVisiblePopupPageSetting: false,
         isFavorite: false,
         isVisibleModalHistory: false,
+        isVisibleModalComment: false,
     });
 
     const modalSettingPopUpRef = useRef(null);
@@ -31,11 +33,15 @@ const Header = () => {
     };
 
     const handleModalHistory = () => {
-        setState(prev => ({...prev, isVisibleModalHistory: !prev.isVisibleModalHistory}));
+        setState(prev => ({...prev, isVisibleModalHistory: true, isVisibleModalComment: false}));
     };
     
     const handleHideModal = () => {
-        setState(prev => ({...prev, isVisibleModalHistory: !prev.isVisibleModalHistory}));
+        setState(prev => ({...prev, isVisibleModalHistory: false, isVisibleModalComment: false}));
+    };
+    
+    const handleModalComment = () => {
+        setState(prev => ({...prev, isVisibleModalComment: true, isVisibleModalHistory: false}));
     };
 
     return (
@@ -55,7 +61,7 @@ const Header = () => {
                 </div>
                 <div className="flex items-center justify-between w-[385px]">
                     <div className="fle items-center ml-4">
-                        {state.isVisibleModalHistory && (
+                        {(state.isVisibleModalHistory || state.isVisibleModalComment) && (
                             <IconDoubleLeft
                                 onClick={handleHideModal}
                                 className="transform rotate-180 cursor-pointer hover:bg-[rgb(239,239,239)]"
@@ -64,7 +70,9 @@ const Header = () => {
                     </div>
                     <div className="flex items-center">
                         <div className="ml-2 p-[3px] hover:bg-[rgb(239,239,239)] select-none font-medium cursor-pointer text-sm">Share</div>
-                        <div className="ml-2 p-[3px] hover:bg-[rgb(239,239,239)]"> <IconComment className="cursor-pointer"/> </div>
+                        <div className="ml-2 p-[3px] hover:bg-[rgb(239,239,239)]"> 
+                            <IconComment onClick={handleModalComment} className="cursor-pointer"/>
+                        </div>
                         <div className="ml-2 p-[3px] hover:bg-[rgb(239,239,239)]">
                             <IconClock onClick={handleModalHistory} className="cursor-pointer"/>
                         </div>
@@ -85,11 +93,16 @@ const Header = () => {
                     </div>
                 </div>
             </div>
-                <div 
-                    className={`absolute right-0 cursor-pointer ease-out duration-[270ms] top-0 z-[50] ${state.isVisibleModalHistory ? 'opacity-100 z-[100]' : 'opacity-0 z-0'}`}
-                >
-                    <ModalHistory />
-                </div>
+            <div 
+                className={`absolute right-0 cursor-pointer ease-out duration-[270ms] top-0 z-[50] ${state.isVisibleModalHistory ? 'opacity-100 z-[100]' : 'opacity-0 z-0'}`}
+            >
+                <ModalHistory />
+            </div>
+            <div 
+                className={`absolute right-0 cursor-pointer ease-out duration-[270ms] top-0 z-[50] ${state.isVisibleModalComment ? 'opacity-100 z-[100]' : 'opacity-0 z-0'}`}
+            >
+                <ModalComments />
+            </div>
         </>
     );
 };
