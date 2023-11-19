@@ -4,6 +4,7 @@ import PageTree from "core/ui/PageTree";
 import ModalUser from "core/components/ModalUser";
 import ModalSearch from "core/components/ModalSearch";
 import ModalSetting from "core/components/ModalSetting";
+import PopUpUpdates from "core/components/PopUpUpdates";
 
 import { ReactComponent as IconDoubleLeft } from 'assets/icons/iconDoubleLeft.svg';
 import { ReactComponent as IconDefaultAvatar } from 'assets/icons/iconIdentification.svg';
@@ -34,6 +35,7 @@ const Sidebar = () => {
     });
 
     const popUpUserRef = useRef(null);
+    const popUpUpdatesRef = useRef(null);
 
     const HeaderTopItem = [
         { label: `Roy's Notion`, icon: IconDefaultAvatar, type: 0 },
@@ -79,7 +81,7 @@ const Sidebar = () => {
             4: 'isVisiableModalNewpage',
         }[type];
 
-        if (log === 'outside' && state.isVisibleModalUser || log === 'modal') {
+        if (log === 'outside' && state[modal] || log === 'modal') {
             return;
         };
 
@@ -92,6 +94,14 @@ const Sidebar = () => {
 
     const handleMouseLeave = () => {
         setState(prev => ({...prev, isVisibleIcon: false}));
+    };
+
+    const sidebarHeaderRef = (type) => {
+        const ref = {
+            0: popUpUserRef,
+            2: popUpUpdatesRef,
+        }[type];
+        return ref;
     };
 
     const classNameTopSidebarItem = 'w-full flex select-none relative items-center hover:bg-[rgb(232,232,230)] rounded-md p-1 cursor-pointer';
@@ -112,7 +122,7 @@ const Sidebar = () => {
                     <div className="w-full flex flex-col mb-4">
                         {HeaderTopItem.map((item, index) => {
                             return (
-                                <div ref={item.type === 0 ? popUpUserRef : null} onClick={() => handleModalUser(item.type, 'outside')} className={classNameTopSidebarItem} key={`sidebar-top-item-${index}`}>
+                                <div ref={sidebarHeaderRef(item.type)} onClick={() => handleModalUser(item.type, 'outside')} className={classNameTopSidebarItem} key={`sidebar-top-item-${index}`}>
                                     <div className="mr-2">
                                         <item.icon />
                                     </div>
@@ -120,6 +130,11 @@ const Sidebar = () => {
                                     {state.isVisibleModalUser && item.type === 0 && (
                                         <div className="absolute z-50 top-full">
                                             <ModalUser handleModalUser={handleModalUser} ref={popUpUserRef}/>
+                                        </div>
+                                    )}
+                                    {state.isVisiablePopupUpdate && item.type === 2 && (
+                                        <div className="absolute z-50 top-0 left-full">
+                                            <PopUpUpdates handleModalUser={handleModalUser} ref={popUpUpdatesRef}/>
                                         </div>
                                     )}
                                 </div>

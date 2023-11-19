@@ -185,4 +185,12 @@ const shared = [
     },
 ];
 
+const inboxItem = [
+    {
+        user: ['Eu Jin'],
+        createdAt: 'Saturday, 18 November 2023 10:02:44 GMT+07:00',
+
+    }
+];
+
 export { privatePage, workspace, shared }
