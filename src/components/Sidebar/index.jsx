@@ -70,15 +70,18 @@ const Sidebar = () => {
         };
     }, []);
 
-    const handleModalUser = (type) => {
-
+    const handleModalUser = (type, log) => {
         const modal = {
             0: 'isVisibleModalUser',
             1: 'isVisiableModalSearch',
             2: 'isVisiablePopupUpdate',
             3: 'isVisiableModalSetting',
             4: 'isVisiableModalNewpage',
-        }[type]
+        }[type];
+
+        if (log === 'outside' && state.isVisibleModalUser || log === 'modal') {
+            return;
+        };
 
         setState(prev => ({...prev, [modal]: !prev[modal]}));
     };
@@ -96,7 +99,7 @@ const Sidebar = () => {
     return (
         <>
             <div
-                className="w-full h-full sidebar bg-[rgb(247,247,245)] border-r border-[rgb(241,241,239)]"
+                className="w-full z-0 h-full sidebar bg-[rgb(247,247,245)] border-r border-[rgb(241,241,239)]"
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
             >
@@ -106,16 +109,16 @@ const Sidebar = () => {
                             <IconDoubleLeft className={`${state.isVisibleIcon ? 'visible' : 'invisible'}`}/>
                         </div>
                     </div>
-                    <div ref={popUpUserRef}  className="w-full flex flex-col mb-4">
+                    <div className="w-full flex flex-col mb-4">
                         {HeaderTopItem.map((item, index) => {
                             return (
-                                <div onClick={() => handleModalUser(item.type)} className={classNameTopSidebarItem} key={`sidebar-top-item-${index}`}>
+                                <div ref={item.type === 0 ? popUpUserRef : null} onClick={() => handleModalUser(item.type, 'outside')} className={classNameTopSidebarItem} key={`sidebar-top-item-${index}`}>
                                     <div className="mr-2">
                                         <item.icon />
                                     </div>
                                     <div className={`text-[13px] font-medium`}>{item.label}</div>
                                     {state.isVisibleModalUser && item.type === 0 && (
-                                        <div className="absolute z-50 -bottom-[215px]">
+                                        <div className="absolute z-50 top-full">
                                             <ModalUser handleModalUser={handleModalUser} ref={popUpUserRef}/>
                                         </div>
                                     )}

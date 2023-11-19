@@ -20,11 +20,9 @@ const PopUpShare = React.forwardRef((props, ref) => {
     useEffect(() => {
         const handleClickOutside = (e) => {
             if (ref.current && !ref.current.contains(e.target)) {
-                console.log("2");
                 handlePopUpShare();
             } else {
                 // prevent close pop up
-                console.log("3");
                 handlePopUpShare(1);
             }
         };

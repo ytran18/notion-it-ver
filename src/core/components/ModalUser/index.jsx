@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -14,6 +14,8 @@ const ModalUser = React.forwardRef((props, ref) => {
 
     const { handleModalUser } = props;
 
+    const popUpRef = useRef(null);
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -21,7 +23,9 @@ const ModalUser = React.forwardRef((props, ref) => {
         const handleClickOutside = (e) => {
             if (ref.current && !ref.current.contains(e.target)) {
                 handleModalUser(0);
-            };
+            } else {
+                handleModalUser(0, 'modal');
+            }
         };
 
         document.addEventListener('mousedown', handleClickOutside);
@@ -43,7 +47,7 @@ const ModalUser = React.forwardRef((props, ref) => {
     const classNameItem = 'w-full p-2 cursor-pointer hover:bg-[rgb(239,239,239)] text-[12px]';
 
     return (
-        <div className="w-[320px] cursor-default flex flex-col bg-white border border-[rgb(224,224,223)] rounded-md shadow-md">
+        <div ref={popUpRef} className="w-[320px] cursor-default flex flex-col bg-white border border-[rgb(224,224,223)] rounded-md shadow-md">
             <div className="w-full flex items-center justify-between p-3">
                 <div className="text-[11px] font-medium">ynhutran84@gmail.com</div>
                 <IconMore className="transform scale-75"/> 
