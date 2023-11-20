@@ -142,7 +142,7 @@ const Sidebar = () => {
                         })}
                     </div>
                 </div>
-                <div className="w-full overflow-y-auto py-2 px-2 sidebar-bottom" id="sidebar-bottom">
+                <div className="w-full overflow-y-auto scrollbar-hide py-2 px-2 sidebar-bottom" id="sidebar-bottom">
                     {/* Workspace */}
                     <div className="w-full flex justify-between">
                         <div className="text-[rgb(150,150,146)] text-[13px] select-none cursor-pointer hover:text-[#333]">Workspace</div>
