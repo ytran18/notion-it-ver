@@ -58,12 +58,12 @@ const PopUpUpdates = React.forwardRef((props, ref) => {
         0: <Inbox />,
         1: <Archived />,
         2: <All />
-    }[state.tab];
+    }[state.tab] || 0;
 
     return (
         <div
             ref={popupRef}
-            className="w-[500px] h-[280px] flex flex-col bg-white rounded-md border border-[rgb(231,231,231)]"
+            className="w-[500px] h-auto max-h-[70vh] flex flex-col bg-white rounded-md border border-[rgb(231,231,231)]"
             style={{boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px'}}
         >
             <div className="p-2 flex items-center relative justify-between border-b border-[rgb(219,219,219)]">
@@ -92,7 +92,7 @@ const PopUpUpdates = React.forwardRef((props, ref) => {
                     </div>
                 </div>
             </div>
-            <div className="p-2 w-full">
+            <div className="p-2 w-full flex-grow min-h-0 h-fit" style={{height: 'calc(100% - 45px)'}}>
                 {renderTab}
             </div>
         </div>

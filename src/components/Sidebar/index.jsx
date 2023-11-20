@@ -88,13 +88,13 @@ const Sidebar = () => {
         setState(prev => ({...prev, [modal]: !prev[modal]}));
     };
 
-    const handleMouseEnter = () => {
-        setState(prev => ({...prev, isVisibleIcon: true}));
-    };
+    // const handleMouseEnter = () => {
+    //     setState(prev => ({...prev, isVisibleIcon: true}));
+    // };
 
-    const handleMouseLeave = () => {
-        setState(prev => ({...prev, isVisibleIcon: false}));
-    };
+    // const handleMouseLeave = () => {
+    //     setState(prev => ({...prev, isVisibleIcon: false}));
+    // };
 
     const sidebarHeaderRef = (type) => {
         const ref = {
@@ -110,13 +110,13 @@ const Sidebar = () => {
         <>
             <div
                 className="w-full z-0 h-full sidebar bg-[rgb(247,247,245)] border-r border-[rgb(241,241,239)]"
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
+                // onMouseEnter={handleMouseEnter}
+                // onMouseLeave={handleMouseLeave}
             >
                 <div className={`w-full py-2 px-2 ${state.isScroll ? 'border-b-[2px] border-[rgb(238,238,236)]' : ''}`}>
                     <div className="w-full flex justify-end cursor-pointer mb-4">
                         <div className="hover:bg-[rgb(232,232,230)] p-[2px] rounded-md">
-                            <IconDoubleLeft className={`${state.isVisibleIcon ? 'visible' : 'invisible'}`}/>
+                            <IconDoubleLeft />
                         </div>
                     </div>
                     <div className="w-full flex flex-col mb-4">
@@ -147,7 +147,7 @@ const Sidebar = () => {
                     <div className="w-full flex justify-between">
                         <div className="text-[rgb(150,150,146)] text-[13px] select-none cursor-pointer hover:text-[#333]">Workspace</div>
                         <div className="hover:bg-[rgb(232,232,230)] p-[2px] rounded-md cursor-pointer">
-                            <IconPlusSmall className={`${state.isVisibleIcon ? 'visible' : 'invisible'}`}/>
+                            <IconPlusSmall />
                         </div>
                     </div>
                     {/* item workspace */}
@@ -178,7 +178,7 @@ const Sidebar = () => {
                     <div className="w-full flex justify-between">
                         <div className="text-[rgb(150,150,146)] text-[13px] select-none cursor-pointer hover:text-[#333]">Private</div>
                         <div className="hover:bg-[rgb(232,232,230)] p-[2px] rounded-md cursor-pointer">
-                            <IconPlusSmall className={`${state.isVisibleIcon ? 'visible' : 'invisible'}`}/>
+                            <IconPlusSmall />
                         </div>
                     </div>
                     {/* item private */}
