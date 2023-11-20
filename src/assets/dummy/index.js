@@ -200,7 +200,8 @@ const privatePage = [
 
 const workspace = [
     {
-        name: "Workspace", 
+        name: "Workspace",
+        id: '1d874c65-a262-4254-bb8a-082abb4e581a',
         icon: '1f646-1f3ff-200d-2642-fe0f',
         children: [],
     },
@@ -208,7 +209,8 @@ const workspace = [
 
 const shared = [
     {
-        name: "Project Management", 
+        name: "Project Management",
+        id: '2bf20fc2-d0e7-433e-8d15-abf0dd14a8c5',
         icon: '1f972',
         children: [],
     },

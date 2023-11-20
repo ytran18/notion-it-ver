@@ -37,8 +37,8 @@ const PageTree = (props) => {
         setState(prev => ({...prev, isExpanded: !prev.isExpanded}));
     };
 
-    const handleSelect = (name) => {
-        dispatch(pagePackage(name));
+    const handleSelect = (id) => {
+        dispatch(pagePackage(id));
     };
 
     const handleMouseEnter = () => {
@@ -53,29 +53,13 @@ const PageTree = (props) => {
         setState(prev => ({...prev, isVisiblePopUpOption: !prev.isVisiblePopUpOption}));
     };
     
-    useEffect(() => {
-        // const popupElement = document.querySelector('.action-item');
-        // const relativeElement = document.querySelector('.page-item');
-    
-        // if (popupElement && relativeElement) {
-        //     const popupRect = popupElement.getBoundingClientRect();
-        //     const relativeRect = relativeElement.getBoundingClientRect();
-        //     const windowHeight = window.innerHeight;
-        //     if (popupRect.bottom > windowHeight) {
-        //         popupElement.style.top = `-${popupRect.height}px`;
-        //     } else if (popupRect.top < relativeRect.top) {
-        //         popupElement.style.top = `${relativeRect.height}px`;
-        //     }
-        // }
-    },[state.isVisiblePopUpOption]);
-
     return (
         <div className="w-full h-full" id={`id-${entry.id}`}>
             <div
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
-                onClick={() => handleSelect(entry.name)} 
-                className={`w-full ${pageSelect === entry.name ? 'bg-[rgb(232,232,230)]' : ''} relative flex items-center hover:bg-[rgb(232,232,230)] rounded-md p-1 cursor-pointer`}
+                onClick={() => handleSelect(entry.id)} 
+                className={`w-full ${pageSelect === entry.id ? 'bg-[rgb(232,232,230)]' : ''} relative flex items-center hover:bg-[rgb(232,232,230)] rounded-md p-1 cursor-pointer`}
             >
                 <div onClick={handleExpandItem} className="pr-2">
                     {state.isExpanded ? (
