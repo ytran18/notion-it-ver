@@ -6,6 +6,16 @@ import MyNotification from "./MyNotification";
 import MyConnection from "./MyConnection";
 import LanguageAndRegion from "./LanguageAndRegion";
 
+import { useDispatch } from "react-redux";
+import { userPackage } from "core/redux/actions";
+
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { storage } from "core/firebase/firebase";
+
+import { changeAvatar } from './function';
+
+import { useUserPackageHook } from "core/redux/hooks";
+
 import { getRandomColor, createImageFromInitials } from "core/functions";
 
 import { ReactComponent as IconDefaultAvatar } from 'assets/icons/iconDefaultAvatar.svg';
@@ -16,9 +26,11 @@ import { ReactComponent as IconLanguage } from 'assets/icons/iconLanguage.svg';
 
 const ModalSetting = (props) => {
 
-    const { handleModalUser, currUser } = props;
+    const { handleModalUser } = props;
 
     const modalRef = useRef(null);
+    const dispatch = useDispatch();
+    const user = useUserPackageHook();
 
     const [state, setState] = useState({
         tab: 0,
@@ -26,7 +38,7 @@ const ModalSetting = (props) => {
     });
     
     useEffect(() => {
-        const avatar_src = currUser?.avatar_url?.length > 0 ? currUser?.avatar_url : createImageFromInitials(500, currUser?.display_name, getRandomColor());
+        const avatar_src = user?.avatar_url?.length > 0 ? user?.avatar_url : createImageFromInitials(500, user?.display_name, getRandomColor());
         setState(prev => ({...prev, avatar_src: avatar_src}));
     },[]);
 
@@ -56,8 +68,42 @@ const ModalSetting = (props) => {
         setState(prev => ({...prev, tab: tab}));
     };
 
+    const handleChangeAvartar = (e) => {
+        const file = e.target.files[0]
+        const imageRef = ref(storage, `images/${file.name}`)
+        uploadBytes(imageRef, file)
+            .then( (snapshot) => {
+                getDownloadURL(imageRef)
+                    .then(async(url) => {
+                        const data = {
+                            _id: user?._id,
+                            avatar_url: url,
+                        };
+
+                        let currUser = user;
+                        currUser = {
+                            ...user,
+                            avatar_url: url,
+                        };
+
+                        dispatch(userPackage(currUser));
+
+                        const res = await changeAvatar(data);
+                        if (res.success) {
+                            setState(prev => ({...prev, avatar_src: url}));
+                        };
+                    })
+                    .catch( (error) => {
+                        console.log("err: ",error.message)
+                    })
+            })
+            .catch( (error) => {
+                console.log(error.message)
+            })
+    }
+
     const renderTab = {
-        0: <MyAccount avatar_src={state.avatar_src} currUser={currUser}/>,
+        0: <MyAccount avatar_src={state.avatar_src} currUser={user} handleChangeAvartar={handleChangeAvartar}/>,
         1: <MySetting />,
         2: <MyNotification />,
         3: <MyConnection />,
@@ -70,10 +116,10 @@ const ModalSetting = (props) => {
                 <div className="flex flex-col p-2 bg-[rgb(251,252,250)]">
                     <div className="text-xs font-medium mb-2">Account</div>
                     <div className="text-xs font-medium mb-2 flex items-center cursor-default">
-                        <img src={state.avatar_src} className="w-[22px] rounded-full mr-2"/>
+                        <img src={state.avatar_src} className="w-[22px] h-[22px] object-cover rounded-full mr-2"/>
                         <div className="flex flex-col">
-                            <div className="text-xs font-medium">{currUser?.display_name}</div>
-                            <div className="text-xs opacity-50">{currUser?.email}</div>
+                            <div className="text-xs font-medium">{user?.display_name}</div>
+                            <div className="text-xs opacity-50">{user?.email}</div>
                         </div>
                     </div>
                     <div className="">

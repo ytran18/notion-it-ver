@@ -1,14 +1,11 @@
 import React, { useState } from "react";
 
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-import { storage } from "core/firebase/firebase";
-
 import { ReactComponent as IconClose } from 'assets/icons/iconCloseCircle.svg';
 import { ReactComponent as IconRight } from 'assets/icons/iconRight.svg';
 
 const MyAccount = (props) => {
 
-    const { avatar_src, currUser } = props;
+    const { avatar_src, currUser, handleChangeAvartar } = props;
 
     const [state, setState] = useState({
         name: currUser?.display_name || ``,
@@ -27,33 +24,13 @@ const MyAccount = (props) => {
         console.log("run");
     };
 
-    const handleChangeAvartar = (e) => {
-        const file = e.target.files[0]
-        const imageRef = ref(storage, `images/${file.name}`)
-        console.log(imageRef);
-        uploadBytes(imageRef, file)
-            .then( (snapshot) => {
-                getDownloadURL(imageRef)
-                    .then((url) => {
-                        console.log(url);
-                    })
-                    .catch( (error) => {
-                        console.log("err: ",error.message)
-                    })
-                console.log('Uploaded a blob or file!');
-            })
-            .catch( (error) => {
-                console.log(error.message)
-            })
-    }
-
     return (
         <div className="w-full flex flex-col">
             <div className="text-sm font-medium w-full p-3 border-b border-[rgb(237,237,236)]">My profile</div>
             <div className="flex items-center p-3 mb-7">
                 <div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} className="relative">
                     <label htmlFor="uploadAvatar" className="cursor-pointer">
-                        <img src={avatar_src} className="w-[60px] rounded-full mr-4"/>
+                        <img src={avatar_src} className="w-[60px] h-[60px] object-cover rounded-full mr-4"/>
                         {currUser?.avatar_url?.length > 0 && (
                             <div
                                 onClick={handleRemoveAvatar}
