@@ -139,7 +139,7 @@ const ModalSetting = (props) => {
                         })}
                     </div>
                 </div>
-                <div className="py-6 px-10 flex-1">
+                <div className="py-6 px-10 flex-1 overflow-y-auto">
                     {renderTab}
                 </div>
             </div>
