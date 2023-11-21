@@ -9,7 +9,7 @@ import { ReactComponent as IconGoogle } from 'assets/icons/iconGoogle.svg';
 import { ReactComponent as IconApple } from 'assets/icons/iconApple.svg';
 import { ReactComponent as IconClose } from 'assets/icons/iconCloseSmallSolid.svg';
 
-import { signupWithEmail, verifyLoginCode } from './function';
+import { signupWithEmail, verifyLoginCode, loginWithGoogle } from './function';
 
 const Login = () => {
 
@@ -70,6 +70,11 @@ const Login = () => {
             setState(prev => ({...prev, isSentEmailSuccess: 2}));
         }
     };
+
+    const handleLoginWithGoogle = async () => {
+        const res = await loginWithGoogle();
+        console.log(res);
+    };
     
     useEffect(() => {
         if (state.isSentEmailSuccess === 2) {
@@ -93,7 +98,10 @@ const Login = () => {
                 </div>
             </div>
             <div className="py-14 flex flex-col border-b-[2px] border-[rgb(239,239,239)]">
-                <div className="w-80 h-9 border my-2 flex items-center justify-center border-[rgb(219,219,219)] rounded cursor-pointer">
+                <div 
+                    onClick={handleLoginWithGoogle} 
+                    className="w-80 h-9 border my-2 flex items-center justify-center border-[rgb(219,219,219)] rounded cursor-pointer"
+                >
                     <IconGoogle className="mr-2"/>
                     <div className="font-semibold text-[13px]">Continue with Google</div>
                 </div>

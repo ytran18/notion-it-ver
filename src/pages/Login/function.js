@@ -31,3 +31,18 @@ export const verifyLoginCode = async ( data ) => {
     })
     return rs;
 };
+
+export const loginWithGoogle = async () => {
+    let rs;
+    await fetch(`${api}/log-in/auth/google`, { 
+        method: "GET", 
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    }).then((response) => {
+        return response.json();
+    }).then(data => {
+        rs = data;
+    })
+    return rs;
+};
