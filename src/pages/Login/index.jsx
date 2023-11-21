@@ -61,7 +61,7 @@ const Login = () => {
             if (isLoginWithCode === 0) {
                 setState(prev => ({...prev, btnContent: 'Continue with login code'}));
             } else {
-                dispatch(userPackage(email))
+                dispatch(userPackage(res?.message))
                 navigate({
                     pathname: '/',
                 });

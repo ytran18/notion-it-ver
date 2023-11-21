@@ -6,6 +6,8 @@ import ModalSearch from "core/components/ModalSearch";
 import ModalSetting from "core/components/ModalSetting";
 import PopUpUpdates from "core/components/PopUpUpdates";
 
+import { useUserPackageHook } from "core/redux/hooks";
+
 import { ReactComponent as IconDoubleLeft } from 'assets/icons/iconDoubleLeft.svg';
 import { ReactComponent as IconDefaultAvatar } from 'assets/icons/iconIdentification.svg';
 import { ReactComponent as IconSearch } from 'assets/icons/iconSearch.svg';
@@ -34,11 +36,12 @@ const Sidebar = () => {
         isVisiableModalNewpage: false,
     });
 
+    const currUser = useUserPackageHook();
     const popUpUserRef = useRef(null);
     const popUpUpdatesRef = useRef(null);
 
     const HeaderTopItem = [
-        { label: `Roy's Notion`, icon: IconDefaultAvatar, type: 0 },
+        { label: `${currUser?.display_name}'s Notion`, icon: IconDefaultAvatar, type: 0 },
         { label: `Search`, icon: IconSearch, type: 1 },
         { label: `Updates`, icon: IconClock, type: 2 },
         { label: `Settings & members`, icon: IconSettings, type: 3 },
@@ -129,7 +132,7 @@ const Sidebar = () => {
                                     <div className={`text-[13px] font-medium`}>{item.label}</div>
                                     {state.isVisibleModalUser && item.type === 0 && (
                                         <div className="absolute z-50 top-full">
-                                            <ModalUser handleModalUser={handleModalUser} ref={popUpUserRef}/>
+                                            <ModalUser handleModalUser={handleModalUser} currUser={currUser} ref={popUpUserRef}/>
                                         </div>
                                     )}
                                     {state.isVisiablePopupUpdate && item.type === 2 && (
@@ -209,7 +212,7 @@ const Sidebar = () => {
                 <ModalSearch handleModalUser={handleModalUser}/>
             )}
             {state.isVisiableModalSetting && (
-                <ModalSetting handleModalUser={handleModalUser}/>
+                <ModalSetting handleModalUser={handleModalUser} currUser={currUser}/>
             )}
         </>
     );
