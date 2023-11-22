@@ -24,7 +24,9 @@ import { privatePage, workspace, shared } from 'assets/dummy';
 
 import './sidebar.css';
 
-const Sidebar = () => {
+const Sidebar = (props) => {
+
+    const { pages, handleSelectPage } = props;
 
     const [state, setState] = useState({
         isVisibleIcon: false,
@@ -155,13 +157,13 @@ const Sidebar = () => {
                     </div>
                     {/* item workspace */}
                     <div className="mb-4">
-                        {workspace.map((item, index) => {
+                        {/* {workspace.map((item, index) => {
                             return (
                                 <div className="" key={`item-workspace-${index}`}>
                                     <PageTree entry={item}/>
                                 </div>
                             )
-                        })}
+                        })} */}
                     </div>
                     {/* Shared */}
                     <div className="w-full flex justify-between">
@@ -169,13 +171,13 @@ const Sidebar = () => {
                     </div>
                     {/* item shared */}
                     <div className="mb-4">
-                        {shared.map((item, index) => {
+                        {/* {shared.map((item, index) => {
                             return (
                                 <div className="" key={`item-shared-${index}`}>
                                     <PageTree entry={item}/>
                                 </div>
                             )
-                        })}
+                        })} */}
                     </div>
                     {/* Private */}
                     <div className="w-full flex justify-between">
@@ -186,10 +188,10 @@ const Sidebar = () => {
                     </div>
                     {/* item private */}
                     <div className="mb-4">
-                        { privatePage.map((item, index) => {
+                        { pages.map((item, index) => {
                             return (
                                 <div className="" key={`item-private-${index}`}>
-                                    <PageTree entry={item}/>
+                                    <PageTree entry={item} handleSelectPage={handleSelectPage}/>
                                 </div>
                             )
                         }) }

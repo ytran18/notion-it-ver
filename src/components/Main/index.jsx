@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 
 import data from '@emoji-mart/data';
 
+import { storage } from "core/firebase/firebase";
+import { ref, listAll, getDownloadURL } from "firebase/storage";
+
 import ModalBackgroundCover from "core/components/ModalBackgroundCover";
 import ModalEmoji from "core/components/ModalEmoji";
 import Comment from "core/components/Comment";
@@ -13,7 +16,9 @@ import { ReactComponent as IconPhoto } from 'assets/icons/iconPhoto.svg';
 
 import allImages from "assets/img";
 
-const Main = () => {
+const Main = (props) => {
+
+    const { currPage } = props;
 
     const [state, setState] = useState({
         hasCoverBackground: false,
@@ -25,6 +30,7 @@ const Main = () => {
         randomEmoji: ``,
         isVisibleModalEmoji: false,
         isVisibleComment: false,
+        pageTitle: currPage?.page_name || '',
     });
 
     const optionHeader = [
@@ -34,10 +40,50 @@ const Main = () => {
     ];
 
     useEffect(() => {
-        if (!state.hasCoverBackground) return;
+        if (currPage) {
+            setState(prev => ({
+                ...prev, 
+                pageTitle: currPage?.page_name,
+                randomImg: currPage?.page_cover_img,
+                randomEmoji: currPage?.page_icon,
+                hasCoverBackground: currPage?.page_cover_img?.length > 0 ? true: false,
+                // isVisibleIconHeader: currPage?.page_icon?.length > 0 ? true : false,
+            }));
+        };
+    },[currPage]);
 
-        const randomImage = allImages[Math.floor(Math.random() * allImages.length)];
-        setState(prev => ({...prev, randomImg: randomImage}));
+    useEffect(() => {
+        async function getRandomBgCover () {
+
+            if (!state.hasCoverBackground || state.randomImg.length > 0) return;
+    
+            const randomImage = allImages[Math.floor(Math.random() * allImages.length)];
+    
+            const regex = /\/static\/media\/(.*?)\./;
+            const selectedImage = regex.exec(randomImage)[1];
+    
+            const regexStorage = /\/(.*?)\./;
+            const storageRef = await ref(storage, "bg-cover");
+            const result = await listAll(storageRef);
+            const bgCover = result.items.map((imageRef) => (
+                {
+                    path: regexStorage.exec(imageRef?._location?.path)[1],
+                    url: getDownloadURL(imageRef)
+                }
+            ));
+            
+            bgCover.map((item) => {
+                if (item.path === selectedImage) {
+                    item.url.then(async(url) => {
+                        console.log(url);
+                    });
+                }
+            })
+            setState(prev => ({...prev, randomImg: randomImage}));
+        }
+
+        getRandomBgCover();
+
     },[state.hasCoverBackground]);
 
     useEffect(() => {
@@ -58,7 +104,28 @@ const Main = () => {
         }));
     },[state.isVisibleIconHeader]);
 
-    const handleChangeBg = (img) => {
+    const handleChangeBg = async (img) => {
+        const regex = /\/static\/media\/(.*?)\./;
+        const selectedImage = regex.exec(img)[1];
+
+        const regexStorage = /\/(.*?)\./;
+        const storageRef = await ref(storage, "bg-cover");
+        const result = await listAll(storageRef);
+        const bgCover = result.items.map((imageRef) => (
+            {
+                path: regexStorage.exec(imageRef?._location?.path)[1],
+                url: getDownloadURL(imageRef)
+            }
+        ));
+        
+        bgCover.map((item) => {
+            if (item.path === selectedImage) {
+                item.url.then(async(url) => {
+                    console.log(url);
+                });
+            }
+        })
+
         setState(prev => ({...prev, randomImg: img}));
     };
 
@@ -160,7 +227,8 @@ const Main = () => {
                     onMouseLeave={handleMouseLeaveTitle}
                 >
                     <input 
-                        placeholder="Untitled" 
+                        placeholder="Untitled"
+                        value={state.pageTitle}
                         type="text" 
                         className="w-full mt-8 outline-none truncate text-4xl py-3 h-14 text-[rgb(55,53,47)] font-bold placeholder:opacity-50"
                     />

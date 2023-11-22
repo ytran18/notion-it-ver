@@ -15,7 +15,7 @@ import './style.css';
 
 const PageTree = (props) => {
 
-    const { entry, depth } = props;
+    const { entry, depth, handleSelectPage } = props;
     const dispatch = useDispatch();
 
     const [state, setState] = useState({
@@ -39,6 +39,7 @@ const PageTree = (props) => {
 
     const handleSelect = (id) => {
         dispatch(pagePackage(id));
+        handleSelectPage(entry);
     };
 
     const handleMouseEnter = () => {
@@ -58,8 +59,8 @@ const PageTree = (props) => {
             <div
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
-                onClick={() => handleSelect(entry.id)} 
-                className={`w-full ${pageSelect === entry.id ? 'bg-[rgb(232,232,230)]' : ''} relative flex items-center hover:bg-[rgb(232,232,230)] rounded-md p-1 cursor-pointer`}
+                onClick={() => handleSelect(entry._id)} 
+                className={`w-full ${pageSelect === entry._id ? 'bg-[rgb(232,232,230)]' : ''} relative flex items-center hover:bg-[rgb(232,232,230)] rounded-md p-1 my-1 cursor-pointer`}
             >
                 <div onClick={handleExpandItem} className="pr-2">
                     {state.isExpanded ? (
@@ -71,10 +72,10 @@ const PageTree = (props) => {
                 <div className="text-[13px] relative w-full justify-between font-medium flex items-center">
                     <div className={`flex items-center ${state.isVisibleActionIcon ? 'w-[60%]' : 'w-full'}`}>
                         <div className="mr-2 flex justify-center items-center text-[16px] select-none">
-                            {renderIcon(entry?.icon)}
+                            {renderIcon(entry?.page_icon)}
                         </div>
                         <div className="truncate select-none">
-                            {entry?.name}
+                            {entry?.page_name}
                         </div>
                     </div>
                     {state.isVisibleActionIcon && (
