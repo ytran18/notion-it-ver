@@ -112,7 +112,7 @@ const ModalSetting = (props) => {
 
     return (
         <div className="fixed w-screen h-screen top-0 left-0 bottom-0 right-0 bg-[rgb(89,89,89)] bg-opacity-90 flex justify-center items-center drop-shadow-2xl shadow-2xl z-[120]">
-            <div ref={modalRef} className="w-4/5 p-1 flex h-4/5 bg-white rounded-lg shadow-md">
+            <div ref={modalRef} className="w-4/5 p-1 flex h-5/6 bg-white rounded-lg shadow-md">
                 <div className="flex flex-col p-2 bg-[rgb(251,252,250)]">
                     <div className="text-xs font-medium mb-2">Account</div>
                     <div className="text-xs font-medium mb-2 flex items-center cursor-default">
@@ -127,7 +127,7 @@ const ModalSetting = (props) => {
                             return (
                                 <div
                                     onClick={() => handleChangeTab(item.tab)}
-                                    className={`flex ${state.tab === item.tab ? 'bg-[rgb(235,235,234)]' : ''} hover:bg-[rgb(235,235,234)] p-[2px] cursor-pointer rounded-md items-center`} 
+                                    className={`flex ${state.tab === item.tab ? 'bg-[rgb(235,235,234)]' : ''} hover:bg-[rgb(235,235,234)] p-[2px] cursor-pointer rounded-md items-center my-1`} 
                                     key={`modal-setting-items-${index}`}
                                 >
                                     <div className="p-[2px]">
