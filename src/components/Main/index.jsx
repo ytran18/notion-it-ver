@@ -44,9 +44,11 @@ const Main = (props) => {
 
     useEffect(() => {
         if (currPage) {
-
             const emojiCodePoint = parseInt(currPage?.page_icon, 16);
-            const emoji = String.fromCodePoint(emojiCodePoint);
+            let emoji = ''
+            if (emojiCodePoint) {
+                emoji = String.fromCodePoint(emojiCodePoint);
+            }
 
             setState(prev => ({
                 ...prev, 
