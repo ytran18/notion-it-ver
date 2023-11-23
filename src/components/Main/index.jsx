@@ -187,8 +187,14 @@ const Main = (props) => {
         setState(prev => ({...prev, isDisplayCoverOption: false}));
     };
 
-    const handleModalCover = (type) => {
+    const handleModalCover = async (type) => {
         if (type === 'remove') {
+            const data = {
+                page_id: currPage?._id,
+                page_cover_img: "",
+            }
+
+            await updatePageCover(data);
             setState(prev => ({...prev, hasCoverBackground: false}));
         };
         setState(prev => ({...prev, isVisibleModalCoverBackground: !prev.isVisibleModalCoverBackground, isDisplayCoverOption: false}));
