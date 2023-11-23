@@ -9,6 +9,8 @@ import ModalBackgroundCover from "core/components/ModalBackgroundCover";
 import ModalEmoji from "core/components/ModalEmoji";
 import Comment from "core/components/Comment";
 
+import { changePageTitle } from './function';
+
 import { ReactComponent as IconSmile } from 'assets/icons/iconSmile.svg';
 import { ReactComponent as IconChatSolid } from 'assets/icons/iconChatSolid.svg';
 import { ReactComponent as IconPhoto } from 'assets/icons/iconPhoto.svg';
@@ -31,6 +33,7 @@ const Main = (props) => {
         isVisibleModalEmoji: false,
         isVisibleComment: false,
         pageTitle: currPage?.page_name || '',
+        status: 0,
     });
 
     const optionHeader = [
@@ -47,6 +50,7 @@ const Main = (props) => {
                 randomImg: currPage?.page_cover_img,
                 randomEmoji: currPage?.page_icon,
                 hasCoverBackground: currPage?.page_cover_img?.length > 0 ? true: false,
+                status: 1,
                 // isVisibleIconHeader: currPage?.page_icon?.length > 0 ? true : false,
             }));
         };
@@ -181,6 +185,27 @@ const Main = (props) => {
         setState(prev => ({...prev, randomEmoji: emoji, isVisibleModalEmoji: false}));
     };
 
+    const handleChangePageTitle = async (data) => {
+        await changePageTitle(data);
+    };
+
+    useEffect(() => {
+        if (state.status === 1) {
+            return;
+        }
+        const data = {
+            page_name: state.pageTitle,
+            page_id: currPage?._id,
+        };
+
+        const saveTimeout = setTimeout(() => {
+            handleChangePageTitle(data);
+        }, 2000);
+
+
+        return () => clearTimeout(saveTimeout);
+    },[state.pageTitle, state.status]);
+
     const classNameCoverOption = 'text-xs cursor-pointer font-medium p-2 hover:bg-[rgb(239,239,238)]';
 
     return (
@@ -229,6 +254,7 @@ const Main = (props) => {
                     <input 
                         placeholder="Untitled"
                         value={state.pageTitle}
+                        onChange={(e) => setState(prev => ({...prev, pageTitle: e.target.value, status: 2}))}
                         type="text" 
                         className="w-full mt-8 outline-none truncate text-4xl py-3 h-14 text-[rgb(55,53,47)] font-bold placeholder:opacity-50"
                     />

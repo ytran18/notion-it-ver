@@ -70,7 +70,7 @@ const PageTree = (props) => {
                     )}
                 </div>
                 <div className="text-[13px] relative w-full justify-between font-medium flex items-center">
-                    <div className={`flex items-center ${state.isVisibleActionIcon ? 'w-[60%]' : 'w-full'}`}>
+                    <div className={`flex items-center ${state.isVisibleActionIcon ? 'w-[60%]' : 'w-[90%]'}`}>
                         <div className="mr-2 flex justify-center items-center text-[16px] select-none">
                             {renderIcon(entry?.page_icon)}
                         </div>
