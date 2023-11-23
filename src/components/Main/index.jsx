@@ -85,7 +85,11 @@ const Main = (props) => {
             bgCover.map((item) => {
                 if (item.path === selectedImage) {
                     item.url.then(async(url) => {
-                        console.log(url);
+                        const data = {
+                            page_id: currPage?._id,
+                            page_cover_img: url,
+                        };
+                        await updatePageCover(data);
                     });
                 }
             })
