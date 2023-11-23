@@ -20,13 +20,11 @@ import { ReactComponent as IconTemplate } from 'assets/icons/iconTemplate.svg';
 import { ReactComponent as IconImport } from 'assets/icons/iconImport.svg';
 import { ReactComponent as IconTrash } from 'assets/icons/iconTrash.svg';
 
-import { privatePage, workspace, shared } from 'assets/dummy';
-
 import './sidebar.css';
 
 const Sidebar = (props) => {
 
-    const { pages, handleSelectPage } = props;
+    const { pages, handleSelectPage, handleAddPage, handleOption } = props;
 
     const [state, setState] = useState({
         isVisibleIcon: false,
@@ -182,7 +180,10 @@ const Sidebar = (props) => {
                     {/* Private */}
                     <div className="w-full flex justify-between">
                         <div className="text-[rgb(150,150,146)] text-[13px] select-none cursor-pointer hover:text-[#333]">Private</div>
-                        <div className="hover:bg-[rgb(232,232,230)] p-[2px] rounded-md cursor-pointer">
+                        <div 
+                            className="hover:bg-[rgb(232,232,230)] p-[2px] rounded-md cursor-pointer"
+                            onClick={handleAddPage}
+                        >
                             <IconPlusSmall />
                         </div>
                     </div>
@@ -191,7 +192,7 @@ const Sidebar = (props) => {
                         { pages.map((item, index) => {
                             return (
                                 <div className="" key={`item-private-${index}`}>
-                                    <PageTree entry={item} handleSelectPage={handleSelectPage}/>
+                                    <PageTree entry={item} handleSelectPage={handleSelectPage} handleOption={handleOption} />
                                 </div>
                             )
                         }) }

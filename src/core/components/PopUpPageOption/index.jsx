@@ -12,7 +12,7 @@ import { ReactComponent as IconLoop } from 'assets/icons/iconLoop.svg';
 
 const PopUpPageOption = (props) => {
 
-    const { handleMoreAction, itemId } = props;
+    const { handleMoreAction, itemId, handleOption } = props;
 
     const popupRef = useRef(null);
 
@@ -65,7 +65,11 @@ const PopUpPageOption = (props) => {
             <div className="border-b border-[rgb(219,219,219)] px-1 py-2">
                 {OptionsHead.map((item, index) => {
                     return (
-                        <div className="flex items-center py-[4px] px-4 hover:bg-[rgb(239,239,239)] rounded-md" key={`pop-up-page-option-${item.type}`}>
+                        <div
+                            onClick={() => handleOption(item.type, itemId)}
+                            className="flex items-center py-[4px] px-4 hover:bg-[rgb(239,239,239)] rounded-md" 
+                            key={`pop-up-page-option-${item.type}`}
+                        >
                             <item.icon className="mr-3"/>
                             <div className="text-[13px] font-normal">{item.label}</div>
                         </div>

@@ -55,7 +55,7 @@ const ModalBackgroundCover = (props) => {
     const classNameTab = 'text-sm cursor-pointer flex flex-col items-center hover:bg-[rgb(239,239,239)] py-1 px-2 rounded-md';
 
     return (
-        <div ref={modalRef} className={`flex z-10 ${bottom} flex-col absolute right-10 bg-white shadow-lg w-[540px] min-w-[180px] ${state.tab === 0 ? 'h-[485px]' : 'h-auto'} max-h-[485px] modal-background-cover rounded-md`}>
+        <div ref={modalRef} className={`flex z-[999] ${bottom} flex-col absolute right-10 bg-white shadow-lg w-[540px] min-w-[180px] ${state.tab === 0 ? 'h-[485px]' : 'h-auto'} max-h-[485px] modal-background-cover rounded-md`}>
             <div className="w-full p-2 border-b relative flex justify-between items-center">
                 <div className="flex items-center">
                     {

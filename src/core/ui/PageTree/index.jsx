@@ -15,7 +15,7 @@ import './style.css';
 
 const PageTree = (props) => {
 
-    const { entry, depth, handleSelectPage } = props;
+    const { entry, depth, handleSelectPage, handleOption } = props;
     const dispatch = useDispatch();
 
     const [state, setState] = useState({
@@ -75,7 +75,7 @@ const PageTree = (props) => {
                             {renderIcon(entry?.page_icon)}
                         </div>
                         <div className="truncate select-none">
-                            {entry?.page_name}
+                            {entry?.page_name || 'Untitled'}
                         </div>
                     </div>
                     {state.isVisibleActionIcon && (
@@ -92,7 +92,7 @@ const PageTree = (props) => {
                 {
                     state.isVisiblePopUpOption && (
                         <div className='absolute z-[999] top-[70%] left-[80%]'>
-                            <PopUpPageOption itemId={entry.id} handleMoreAction={handleMoreAction} />
+                            <PopUpPageOption itemId={entry?._id} handleMoreAction={handleMoreAction} handleOption={handleOption} />
                         </div>
                     )
                 }

@@ -15,3 +15,19 @@ export const changePageTitle = async ( value ) => {
     })
     return rs;
 };
+
+export const updatePageCover = async ( value ) => {
+    let rs;
+    await fetch(`${api}/page/bg-cover/upload`, { 
+        method: "POST", 
+        body: JSON.stringify(value),
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    }).then((response) => {
+        return response.json();
+    }).then(data => {
+        rs = data;
+    })
+    return rs;
+};

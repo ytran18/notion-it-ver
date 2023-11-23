@@ -9,7 +9,7 @@ import ModalBackgroundCover from "core/components/ModalBackgroundCover";
 import ModalEmoji from "core/components/ModalEmoji";
 import Comment from "core/components/Comment";
 
-import { changePageTitle } from './function';
+import { changePageTitle, updatePageCover } from './function';
 
 import { ReactComponent as IconSmile } from 'assets/icons/iconSmile.svg';
 import { ReactComponent as IconChatSolid } from 'assets/icons/iconChatSolid.svg';
@@ -131,7 +131,11 @@ const Main = (props) => {
         bgCover.map((item) => {
             if (item.path === selectedImage) {
                 item.url.then(async(url) => {
-                    console.log(url);
+                    const data = {
+                        page_id: currPage?._id,
+                        page_cover_img: url,
+                    };
+                    await updatePageCover(data);
                 });
             }
         })
