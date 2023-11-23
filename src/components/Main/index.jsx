@@ -97,7 +97,7 @@ const Main = (props) => {
     },[state.hasCoverBackground]);
 
     useEffect(() => {
-        if (!state.isVisibleIconHeader) return;
+        if (!state.isVisibleIconHeader || state.randomEmoji.length > 0) return;
 
         const emojis = data.emojis;
 
