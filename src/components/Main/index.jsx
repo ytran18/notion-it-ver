@@ -44,14 +44,18 @@ const Main = (props) => {
 
     useEffect(() => {
         if (currPage) {
+
+            const emojiCodePoint = parseInt(currPage?.page_icon, 16);
+            const emoji = String.fromCodePoint(emojiCodePoint);
+
             setState(prev => ({
                 ...prev, 
                 pageTitle: currPage?.page_name,
                 randomImg: currPage?.page_cover_img,
-                randomEmoji: currPage?.page_icon,
+                randomEmoji: emoji,
                 hasCoverBackground: currPage?.page_cover_img?.length > 0 ? true: false,
                 status: 1,
-                // isVisibleIconHeader: currPage?.page_icon?.length > 0 ? true : false,
+                isVisibleIconHeader: currPage?.page_icon?.length > 0 ? true : false,
             }));
         };
     },[currPage]);
