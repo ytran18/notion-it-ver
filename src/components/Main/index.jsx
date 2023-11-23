@@ -9,7 +9,7 @@ import ModalBackgroundCover from "core/components/ModalBackgroundCover";
 import ModalEmoji from "core/components/ModalEmoji";
 import Comment from "core/components/Comment";
 
-import { changePageTitle, updatePageCover } from './function';
+import { changePageTitle, updatePageCover, updateIcon } from './function';
 
 import { ReactComponent as IconSmile } from 'assets/icons/iconSmile.svg';
 import { ReactComponent as IconChatSolid } from 'assets/icons/iconChatSolid.svg';
@@ -97,21 +97,32 @@ const Main = (props) => {
     },[state.hasCoverBackground]);
 
     useEffect(() => {
-        if (!state.isVisibleIconHeader || state.randomEmoji.length > 0) return;
-
-        const emojis = data.emojis;
-
-        const keys = Object.keys(emojis);
-        const randomKey = keys[Math.floor(Math.random() * keys.length)];
-        const randomEmoji = emojis[randomKey].skins?.[0]?.unified;
-        
-        const emojiCodePoint = parseInt(randomEmoji, 16);
-        const emoji = String.fromCodePoint(emojiCodePoint);
+        async function getRandomIcon () {
+            if (!state.isVisibleIconHeader || state.randomEmoji.length > 0) return;
     
-        setState(prev => ({
-            ...prev,
-            randomEmoji: emoji
-        }));
+            const emojis = data.emojis;
+    
+            const keys = Object.keys(emojis);
+            const randomKey = keys[Math.floor(Math.random() * keys.length)];
+            const randomEmoji = emojis[randomKey].skins?.[0]?.unified;
+            
+            const emojiCodePoint = parseInt(randomEmoji, 16);
+            const emoji = String.fromCodePoint(emojiCodePoint);
+
+            const value = {
+                page_id: currPage?._id,
+                page_icon: randomEmoji
+            };
+
+            await updateIcon(value);
+        
+            setState(prev => ({
+                ...prev,
+                randomEmoji: emoji
+            }));
+        }
+
+        getRandomIcon();
     },[state.isVisibleIconHeader]);
 
     const handleChangeBg = async (img) => {
@@ -179,18 +190,33 @@ const Main = (props) => {
         setState(prev => ({...prev, isVisibleModalCoverBackground: !prev.isVisibleModalCoverBackground, isDisplayCoverOption: false}));
     };
     
-    const handleModalEmoji = (type) => {
+    const handleModalEmoji = async (type) => {
         if (type === 'remove') {
             setState(prev => ({...prev, isVisibleIconHeader: false}));
         };
+
+        const data = {
+            page_id: currPage?._id,
+            page_icon: "",
+        };
+
+        await updateIcon(data);
+
         setState(prev => ({...prev, isVisibleModalEmoji: !prev.isVisibleModalEmoji}));
     };
 
-    const onEmojiSelect = (e) => {
+    const onEmojiSelect = async (e) => {
         const emojiSelect = e.unified;
         
         const emojiCodePoint = parseInt(emojiSelect, 16);
         const emoji = String.fromCodePoint(emojiCodePoint);
+
+        const data = {
+            page_id: currPage?._id,
+            page_icon: emojiSelect,
+        };
+
+        await updateIcon(data);
 
         setState(prev => ({...prev, randomEmoji: emoji, isVisibleModalEmoji: false}));
     };

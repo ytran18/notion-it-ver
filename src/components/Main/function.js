@@ -31,3 +31,19 @@ export const updatePageCover = async ( value ) => {
     })
     return rs;
 };
+
+export const updateIcon = async ( value ) => {
+    let rs;
+    await fetch(`${api}/page/icon/upload`, { 
+        method: "POST", 
+        body: JSON.stringify(value),
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    }).then((response) => {
+        return response.json();
+    }).then(data => {
+        rs = data;
+    })
+    return rs;
+};
