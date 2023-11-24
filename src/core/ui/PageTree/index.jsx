@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 import { useDispatch } from 'react-redux';
 import { pagePackage } from "core/redux/actions";
@@ -24,6 +24,8 @@ const PageTree = (props) => {
         isVisiblePopUpOption: false,
     });
 
+    const expandRef = useRef(null);
+
     const pageSelect = usePagePackageHook();
 
     const renderIcon = (icon) => {
@@ -37,7 +39,10 @@ const PageTree = (props) => {
         setState(prev => ({...prev, isExpanded: !prev.isExpanded}));
     };
 
-    const handleSelect = (id) => {
+    const handleSelect = (id, e) => {
+        if (expandRef.current && expandRef.current.contains(e.target)) {
+            return;
+        }
         dispatch(pagePackage(id));
         handleSelectPage(entry);
     };
@@ -59,10 +64,10 @@ const PageTree = (props) => {
             <div
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
-                onClick={() => handleSelect(entry._id)} 
+                onClick={(e) => handleSelect(entry._id, e)} 
                 className={`w-full ${pageSelect === entry._id ? 'bg-[rgb(232,232,230)]' : ''} relative flex items-center hover:bg-[rgb(232,232,230)] rounded-md p-1 my-1 cursor-pointer`}
             >
-                <div onClick={handleExpandItem} className="pr-2">
+                <div ref={expandRef} onClick={handleExpandItem} className="pr-2">
                     {state.isExpanded ? (
                         <IconDown className="hover:bg-[rgb(209,209,208)] transition-all duration-200"/>
                     ) : (
