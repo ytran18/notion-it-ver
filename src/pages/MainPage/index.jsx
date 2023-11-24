@@ -164,7 +164,7 @@ const MainPage = () => {
         const res = await func(data);
 
         if (res?.success) {
-            getAllPage(user?._id, true, null, true, false, pageId);
+            getAllPage(user?._id, true, null, true, false, type === 2 ? '' : pageId);
         };
     };
 
