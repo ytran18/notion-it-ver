@@ -12,7 +12,7 @@ import { pagePackage } from "core/redux/actions";
 import { useUserPackageHook, usePagePackageHook } from "core/redux/hooks";
 
 // function
-import { getPage, getSinglePage, addPage, deletePage } from './function';
+import { getPage, getSinglePage, addPage, deletePage, handleFavoritePage } from './function';
 
 import './main-page.css';
 
@@ -26,6 +26,9 @@ const MainPage = () => {
     const [state, setState] = useState({
         pages: [],
         currPage: {},
+        favoritesPages: [],
+        workspacePages: [],
+        sharedPages: [],
     });
 
     useEffect(() => {
@@ -36,34 +39,53 @@ const MainPage = () => {
         };
     },[]);
 
-    const getAllPage = async (id) => {
+    const getAllPage = async (id, isSelect, selectId, isFirstRender, isAdded) => {
+        let favoritesPages = [];
+        let workspacePages = [];
+        let sharedPages = [];
+
         const res = await getPage(id);
         if (res?.success) {
-            return res?.message;
-        } else {
-            return false;
-        }
+            res?.message?.map((item) => {
+                if (item?.is_favorite) {
+                    favoritesPages.push(item);
+                };
+                if (item?.is_workspace) {
+                    workspacePages.push(item);
+                };
+                if (item?.is_shared) {
+                    sharedPages.push(item);
+                };
+            });
+
+            if (isSelect) {
+                if (selectId === null) {
+                    handleSelectPage(res?.message?.[0])
+                } else {
+                    handleSelectPage(selectId, isFirstRender);
+                }
+            };
+
+            if (isAdded) {
+                dispatch(pagePackage(isAdded));
+            }
+            setState(prev => ({
+                ...prev, 
+                pages: res?.message, 
+                favoritesPages: favoritesPages, 
+                workspacePages: workspacePages, 
+                sharedPages: sharedPages,
+            }));
+
+        };
     };
 
     useEffect(() => {
-        getAllPage(user?._id)
-            .then((value) => {
-                handleSelectPage(prevPage, true);
-                setState(prev => ({...prev, pages: value}));
-            })
-            .catch((err) => {
-                console.log(err);
-            })
-        },[]);
+        getAllPage(user?._id, true, prevPage, true);
+    },[]);
         
     useEffect(() => {
-        getAllPage(user?._id)
-            .then((value) => {
-                setState(prev => ({...prev, pages: value}));
-            })
-            .catch((err) => {
-                console.log(err);
-            })
+        getAllPage(user?._id, false, false, false, false);
     },[state.currPage]);
 
     useEffect(() => {
@@ -115,16 +137,8 @@ const MainPage = () => {
 
         const res = await addPage(data);
         if (res?.success) {
-            getAllPage(user?._id)
-                .then((value) => {
-                    dispatch(pagePackage(res?.message?._id));
-                    handleSelectPage(res?.message?._id, true);
-                    setState(prev => ({...prev, pages: value}));
-                })
-                .catch((err) => {
-                    console.log(err);
-                })
-        }
+            getAllPage(user?._id, true, res?.message?._id, true, res?.message?._id);
+        };
     };
 
     const handleOption = async (type, pageId) => {
@@ -134,17 +148,20 @@ const MainPage = () => {
             };
             const res = await deletePage(data);
             if (res?.success) {
-                getAllPage(user?._id)
-                    .then((value) => {
-                        dispatch(pagePackage(value[0]?._id));
-                        handleSelectPage(value[0]?._id, true);
-                        setState(prev => ({...prev, pages: value}));
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                    })
+                getAllPage(user?._id, true, null, true, false);
             }
         };
+    };
+
+    const handleFavorite = async (value) => {
+        const data = {
+            page_id: state.currPage?._id,
+            is_favorite: value,
+        }
+        const res = await handleFavoritePage(data);
+        if (res?.success) {
+            getAllPage(user?._id);
+        }
     };
 
     return (
@@ -155,6 +172,9 @@ const MainPage = () => {
                     handleSelectPage={handleSelectPage} 
                     handleAddPage={handleAddPage} 
                     handleOption={handleOption}
+                    favoritesPages={state.favoritesPages}
+                    workspacePages={state.workspacePages}
+                    sharedPages={state.sharedPages}
                 />
             </div>
             <div id="resizeHandler" className='resize-handler' />
@@ -162,6 +182,7 @@ const MainPage = () => {
                 <div className="">
                     <Header 
                         currPage={state.currPage}
+                        handleFavorite={handleFavorite}
                     />
                 </div>
                 <div className="main">

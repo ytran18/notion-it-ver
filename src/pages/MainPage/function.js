@@ -55,3 +55,19 @@ export const deletePage = async ( id ) => {
     })
     return rs;
 };
+
+export const handleFavoritePage = async ( data ) => {
+    let rs;
+    await fetch(`${api}/page/favorite`, { 
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    }).then((response) => {
+        return response.json();
+    }).then(data => {
+        rs = data;
+    })
+    return rs;
+};

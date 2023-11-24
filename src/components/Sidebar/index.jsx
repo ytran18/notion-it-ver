@@ -24,7 +24,7 @@ import './sidebar.css';
 
 const Sidebar = (props) => {
 
-    const { pages, handleSelectPage, handleAddPage, handleOption } = props;
+    const { pages, handleSelectPage, handleAddPage, handleOption, favoritesPages, workspacePages, sharedPages } = props;
 
     const [state, setState] = useState({
         isVisibleIcon: false,
@@ -91,14 +91,6 @@ const Sidebar = (props) => {
         setState(prev => ({...prev, [modal]: !prev[modal]}));
     };
 
-    // const handleMouseEnter = () => {
-    //     setState(prev => ({...prev, isVisibleIcon: true}));
-    // };
-
-    // const handleMouseLeave = () => {
-    //     setState(prev => ({...prev, isVisibleIcon: false}));
-    // };
-
     const sidebarHeaderRef = (type) => {
         const ref = {
             0: popUpUserRef,
@@ -111,11 +103,7 @@ const Sidebar = (props) => {
 
     return (
         <>
-            <div
-                className="w-full z-0 h-full sidebar bg-[rgb(247,247,245)] border-r border-[rgb(241,241,239)]"
-                // onMouseEnter={handleMouseEnter}
-                // onMouseLeave={handleMouseLeave}
-            >
+            <div className="w-full z-0 h-full sidebar bg-[rgb(247,247,245)] border-r border-[rgb(241,241,239)]">
                 <div className={`w-full py-2 px-2 ${state.isScroll ? 'border-b-[2px] border-[rgb(238,238,236)]' : ''}`}>
                     <div className="w-full flex justify-end cursor-pointer mb-4">
                         <div className="hover:bg-[rgb(232,232,230)] p-[2px] rounded-md">
@@ -146,37 +134,64 @@ const Sidebar = (props) => {
                     </div>
                 </div>
                 <div className="w-full overflow-y-auto scrollbar-hide py-2 px-2 sidebar-bottom" id="sidebar-bottom">
+                    {/* Favorites */}
+                    {favoritesPages?.length > 0 && (
+                        <>
+                            <div className="w-full flex justify-between items-center">
+                                <div className="text-[rgb(150,150,146)] text-[13px] select-none cursor-pointer hover:text-[#333]">Favorites</div>
+                                <div className="hover:bg-[rgb(232,232,230)] p-[2px] rounded-md cursor-pointer">
+                                    <IconPlusSmall />
+                                </div>
+                            </div>
+                            <div className="mb-4">
+                                {favoritesPages.map((item, index) => {
+                                    return (
+                                        <div className="" key={`item-favorites-${index}`}>
+                                            <PageTree entry={item}/>
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        </>
+                    )}
+
                     {/* Workspace */}
-                    <div className="w-full flex justify-between items-center">
-                        <div className="text-[rgb(150,150,146)] text-[13px] select-none cursor-pointer hover:text-[#333]">Workspace</div>
-                        <div className="hover:bg-[rgb(232,232,230)] p-[2px] rounded-md cursor-pointer">
-                            <IconPlusSmall />
-                        </div>
-                    </div>
-                    {/* item workspace */}
-                    <div className="mb-4">
-                        {/* {workspace.map((item, index) => {
-                            return (
-                                <div className="" key={`item-workspace-${index}`}>
-                                    <PageTree entry={item}/>
+                    {workspacePages?.length > 0 && (
+                        <>
+                            <div className="w-full flex justify-between items-center">
+                                <div className="text-[rgb(150,150,146)] text-[13px] select-none cursor-pointer hover:text-[#333]">Workspace</div>
+                                <div className="hover:bg-[rgb(232,232,230)] p-[2px] rounded-md cursor-pointer">
+                                    <IconPlusSmall />
                                 </div>
-                            )
-                        })} */}
-                    </div>
+                            </div>
+                            <div className="mb-4">
+                                {workspacePages.map((item, index) => {
+                                    return (
+                                        <div className="" key={`item-workspace-${index}`}>
+                                            <PageTree entry={item}/>
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        </>
+                    )}
                     {/* Shared */}
-                    <div className="w-full flex justify-between">
-                        <div className="text-[rgb(150,150,146)] text-[13px] select-none cursor-pointer hover:text-[#333]">Shared</div>
-                    </div>
-                    {/* item shared */}
-                    <div className="mb-4">
-                        {/* {shared.map((item, index) => {
-                            return (
-                                <div className="" key={`item-shared-${index}`}>
-                                    <PageTree entry={item}/>
-                                </div>
-                            )
-                        })} */}
-                    </div>
+                    {sharedPages?.length > 0 && (
+                        <>
+                            <div className="w-full flex justify-between">
+                                <div className="text-[rgb(150,150,146)] text-[13px] select-none cursor-pointer hover:text-[#333]">Shared</div>
+                            </div>
+                            <div className="mb-4">
+                                {sharedPages.map((item, index) => {
+                                    return (
+                                        <div className="" key={`item-shared-${index}`}>
+                                            <PageTree entry={item}/>
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        </>
+                    )}
                     {/* Private */}
                     <div className="w-full flex justify-between items-center">
                         <div className="text-[rgb(150,150,146)] text-[13px] select-none cursor-pointer hover:text-[#333]">Private</div>
@@ -189,7 +204,7 @@ const Sidebar = (props) => {
                     </div>
                     {/* item private */}
                     <div className="mb-4">
-                        { pages.map((item, index) => {
+                        { pages?.map((item, index) => {
                             return (
                                 <div className="" key={`item-private-${index}`}>
                                     <PageTree entry={item} handleSelectPage={handleSelectPage} handleOption={handleOption} />

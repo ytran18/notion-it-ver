@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 import PopUpPageSetting from "core/components/PopupPageSetting";
 import ModalHistory from "core/components/ModalHistory";
@@ -16,11 +16,11 @@ import { ReactComponent as IconDoubleLeft } from 'assets/icons/iconDoubleLeft.sv
 
 const Header = (props) => {
 
-    const { currPage } = props;
+    const { currPage, handleFavorite } = props;
 
     const [state, setState] = useState({
         isVisiblePopupPageSetting: false,
-        isFavorite: false,
+        isFavorite: currPage?.is_favorite,
         isVisibleModalHistory: false,
         isVisibleModalComment: false,
         isVisiblePopUpShare: false,
@@ -29,11 +29,21 @@ const Header = (props) => {
     const modalSettingPopUpRef = useRef(null);
     const popupShareRef = useRef(null);
 
+    useEffect(() => {
+        if (currPage) {
+            setState(prev => ({
+                ...prev,
+                isFavorite: currPage?.is_favorite,
+            }));
+        };
+    },[currPage]);
+
     const handlePageSettingPopUp = () => {
         setState(prev => ({...prev, isVisiblePopupPageSetting: !prev.isVisiblePopupPageSetting}));
     };
 
     const handleAddToFavorite = () => {
+        handleFavorite(!state.isFavorite);
         setState(prev => ({...prev, isFavorite: !prev.isFavorite}));
     };
 
@@ -109,7 +119,7 @@ const Header = (props) => {
                         </div>
                         <div ref={modalSettingPopUpRef} className="mx-2 p-[3px] hover:bg-[rgb(239,239,239)] relative">
                             <IconMore
-                                className="cursor-pointer "
+                                className="cursor-pointer"
                                 onClick={handlePageSettingPopUp}
                             />
                             {state.isVisiblePopupPageSetting && (
