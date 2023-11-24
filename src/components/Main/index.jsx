@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import data from '@emoji-mart/data';
 
@@ -20,7 +20,7 @@ import allImages from "assets/img";
 
 const Main = (props) => {
 
-    const { currPage } = props;
+    const { currPage, isCreatePage } = props;
 
     const [state, setState] = useState({
         hasCoverBackground: false,
@@ -35,6 +35,15 @@ const Main = (props) => {
         pageTitle: currPage?.page_name || '',
         status: 0,
     });
+    
+    const titleRef = useRef(null);
+
+    useEffect(() => {
+        console.log(isCreatePage, titleRef.current);
+        if (isCreatePage && titleRef.current) {
+            titleRef.current.focus();
+        };
+    },[isCreatePage]);
 
     const optionHeader = [
         { label: 'Add icon', icon: IconSmile, type: 'icon' },
@@ -296,7 +305,8 @@ const Main = (props) => {
                     onMouseEnter={handleMouseEnterTitle} 
                     onMouseLeave={handleMouseLeaveTitle}
                 >
-                    <input 
+                    <input
+                        ref={titleRef}
                         placeholder="Untitled"
                         value={state.pageTitle}
                         onChange={(e) => setState(prev => ({...prev, pageTitle: e.target.value, status: 2}))}

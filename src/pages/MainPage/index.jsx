@@ -30,6 +30,7 @@ const MainPage = () => {
         workspacePages: [],
         sharedPages: [],
         isShowSidebar: true,
+        isCreatePage: false,
     });
 
     useEffect(() => {
@@ -61,6 +62,7 @@ const MainPage = () => {
 
             if (isSelect) {
                 if (selectId === null) {
+                    dispatch(pagePackage(res?.message?.[0]?._id));
                     handleSelectPage(res?.message?.[0])
                 } else {
                     handleSelectPage(selectId, isFirstRender);
@@ -69,6 +71,7 @@ const MainPage = () => {
 
             if (isAdded) {
                 dispatch(pagePackage(isAdded));
+                setState(prev => ({...prev, isCreatePage: true}));
             }
             setState(prev => ({
                 ...prev, 
@@ -116,7 +119,7 @@ const MainPage = () => {
     const handleSelectPage = async (currPage, isFirstRender) => {
         const res = isFirstRender ? await getSinglePage(currPage) : await getSinglePage(currPage?._id);
         if (res?.success) {
-            setState(prev => ({...prev, currPage:res?.message}));
+            setState(prev => ({...prev, currPage:res?.message, isCreatePage: false}));
         };
     };
 
@@ -154,7 +157,7 @@ const MainPage = () => {
         }[type];
 
         const res = await func(data);
-        
+
         if (res?.success) {
             getAllPage(user?._id, true, null, true, false);
         };
@@ -208,7 +211,10 @@ const MainPage = () => {
                     />
                 </div>
                 <div className="main">
-                    <Main currPage={state.currPage}/>
+                    <Main 
+                        currPage={state.currPage}
+                        isCreatePage={state.isCreatePage}
+                    />
                 </div>
             </div>
         </div>
