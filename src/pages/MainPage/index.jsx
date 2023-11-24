@@ -160,7 +160,9 @@ const MainPage = () => {
             <div id="resizeHandler" className='resize-handler' />
             <div className="flex flex-col w-full h-full" id="right-panel">
                 <div className="">
-                    <Header />
+                    <Header 
+                        currPage={state.currPage}
+                    />
                 </div>
                 <div className="main">
                     <Main currPage={state.currPage}/>

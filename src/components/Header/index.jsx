@@ -14,7 +14,9 @@ import { ReactComponent as IconComment } from 'assets/icons/iconComment.svg';
 import { ReactComponent as IconMore } from 'assets/icons/iconMore.svg';
 import { ReactComponent as IconDoubleLeft } from 'assets/icons/iconDoubleLeft.svg';
 
-const Header = () => {
+const Header = (props) => {
+
+    const { currPage } = props;
 
     const [state, setState] = useState({
         isVisiblePopupPageSetting: false,
@@ -48,7 +50,6 @@ const Header = () => {
     };
 
     const handlePopUpShare = (type) => {
-        console.log(type);
         if (type == 1) {
             return;
         } else {
@@ -69,7 +70,7 @@ const Header = () => {
                     <div title="New tab" className="mr-2 hover:bg-[rgb(239,239,239)]">
                         <IconPlus className="cursor-pointer"/>
                     </div>
-                    <div className="px-2 hover:bg-[rgb(239,239,239)] text-sm font-medium cursor-pointer select-none">Quy do</div>
+                    <div className="px-2 hover:bg-[rgb(239,239,239)] text-sm font-medium cursor-pointer select-none">{currPage?.page_name}</div>
                 </div>
                 <div className="flex items-center justify-between w-[385px]">
                     <div className="fle items-center ml-4">
