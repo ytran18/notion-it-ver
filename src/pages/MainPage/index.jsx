@@ -165,7 +165,12 @@ const MainPage = () => {
     };
 
     return (
-        <div className="w-screen h-screen flex">
+        <div
+            className="w-screen h-screen flex"
+            onContextMenu={(e) => {
+                e.preventDefault();
+            }}
+        >
             <div className="h-full w-[220px] min-w-[220px] max-w-[480px]" id="sidebar">
                 <Sidebar 
                     pages={state.pages} 
