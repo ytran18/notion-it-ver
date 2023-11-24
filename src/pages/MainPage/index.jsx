@@ -41,7 +41,7 @@ const MainPage = () => {
         };
     },[]);
 
-    const getAllPage = async (id, isSelect, selectId, isFirstRender, isAdded) => {
+    const getAllPage = async (id, isSelect, selectId, isFirstRender, isAdded, optionPageId) => {
         let favoritesPages = [];
         let workspacePages = [];
         let sharedPages = [];
@@ -62,8 +62,13 @@ const MainPage = () => {
 
             if (isSelect) {
                 if (selectId === null) {
-                    dispatch(pagePackage(res?.message?.[0]?._id));
-                    handleSelectPage(res?.message?.[0])
+                    if (optionPageId !== state.currPage?._id) {
+                        dispatch(pagePackage(state.currPage?._id));
+                        handleSelectPage(state.currPage);
+                    } else {
+                        dispatch(pagePackage(res?.message?.[0]?._id));
+                        handleSelectPage(res?.message?.[0]);
+                    }
                 } else {
                     handleSelectPage(selectId, isFirstRender);
                 }
@@ -159,7 +164,7 @@ const MainPage = () => {
         const res = await func(data);
 
         if (res?.success) {
-            getAllPage(user?._id, true, null, true, false);
+            getAllPage(user?._id, true, null, true, false, pageId);
         };
     };
 
