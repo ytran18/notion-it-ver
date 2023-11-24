@@ -12,7 +12,7 @@ import { pagePackage } from "core/redux/actions";
 import { useUserPackageHook, usePagePackageHook } from "core/redux/hooks";
 
 // function
-import { getPage, getSinglePage, addPage, deletePage, handleFavoritePage } from './function';
+import { getPage, getSinglePage, addPage, deletePage, handleFavoritePage, duplicatePage } from './function';
 
 import './main-page.css';
 
@@ -143,14 +143,20 @@ const MainPage = () => {
     };
 
     const handleOption = async (type, pageId) => {
-        if (type === 0) {
-            const data = {
-                page_id: pageId,
-            };
-            const res = await deletePage(data);
-            if (res?.success) {
-                getAllPage(user?._id, true, null, true, false);
-            }
+        let data = {
+            page_id: pageId,
+        };
+
+        const func = {
+            0: deletePage,
+            1: handleFavoritePage,
+            2: duplicatePage,
+        }[type];
+
+        const res = await func(data);
+        
+        if (res?.success) {
+            getAllPage(user?._id, true, null, true, false);
         };
     };
 

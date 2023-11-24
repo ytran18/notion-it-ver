@@ -71,3 +71,19 @@ export const handleFavoritePage = async ( data ) => {
     })
     return rs;
 };
+
+export const duplicatePage = async ( id ) => {
+    let rs;
+    await fetch(`${api}/page/duplicate`, { 
+        method: "POST",
+        body: JSON.stringify(id),
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    }).then((response) => {
+        return response.json();
+    }).then(data => {
+        rs = data;
+    })
+    return rs;
+};
