@@ -87,7 +87,10 @@ const PopUpUpdates = React.forwardRef((props, ref) => {
                     <div className="p-[2px] hover:bg-[rgb(239,239,239)] mx-2 rounded">
                         <IconFilterCircle />
                     </div>
-                    <div className="p-[2px] hover:bg-[rgb(239,239,239)] rounded">
+                    <div
+                        onClick={() => handleModalUser(3)}
+                        className="p-[2px] hover:bg-[rgb(239,239,239)] rounded"
+                    >
                         <IconSettings />
                     </div>
                 </div>

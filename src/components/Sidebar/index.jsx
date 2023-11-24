@@ -129,7 +129,7 @@ const Sidebar = (props) => {
                                     <div className="mr-2">
                                         <item.icon />
                                     </div>
-                                    <div className={`text-[13px] font-medium`}>{item.label}</div>
+                                    <div className={`text-[13px] font-medium truncate`}>{item.label}</div>
                                     {state.isVisibleModalUser && item.type === 0 && (
                                         <div className="absolute z-50 top-full">
                                             <ModalUser handleModalUser={handleModalUser} currUser={currUser} ref={popUpUserRef}/>

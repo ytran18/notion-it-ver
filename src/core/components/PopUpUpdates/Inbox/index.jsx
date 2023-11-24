@@ -14,7 +14,7 @@ const Inbox = () => {
                 <div className={classNameItem}>Mark all as read</div>
                 <div className={classNameItem}>Archive read</div>
             </div>
-            <div className="overflow-y-auto p-2 h-fit max-h-[500px]">
+            <div className="overflow-y-auto scrollbar-hide p-2 h-fit max-h-[500px]">
                 {inboxItem.map((item, index) => {
                     return (
                         <div className="" key={item.update_id}>

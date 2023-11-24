@@ -83,7 +83,7 @@ const PopUpPageSetting = React.forwardRef((props, ref) => {
     // transition-timing-function: ease;
     return (
         <div 
-            className="w-[240px] bg-white rounded-md overflow-y-auto border border-[rgb(213,213,213)] shadow-md" 
+            className="w-[240px] bg-white rounded-md overflow-y-auto scrollbar-hide border border-[rgb(213,213,213)] shadow-md" 
             style={{height: 'calc(100vh - 150px)'}}
         >
             <div className="w-full p-3 flex flex-col border-b border-[rgb(219,219,219)]">
