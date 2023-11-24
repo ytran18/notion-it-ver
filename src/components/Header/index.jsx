@@ -14,6 +14,7 @@ import { ReactComponent as IconComment } from 'assets/icons/iconComment.svg';
 import { ReactComponent as IconMore } from 'assets/icons/iconMore.svg';
 import { ReactComponent as IconDoubleLeft } from 'assets/icons/iconDoubleLeft.svg';
 import { ReactComponent as IconBars } from 'assets/icons/iconBars.svg';
+import { ReactComponent as IconDocument } from 'assets/icons/iconDocument.svg';
 
 const Header = (props) => {
 
@@ -68,6 +69,16 @@ const Header = (props) => {
         }
     };
 
+    const renderIcon = (icon) => {
+        if (icon === '') return <IconDocument />
+        const emojiCodePoint = parseInt(icon, 16);
+        if (emojiCodePoint) {
+            const emoji = String.fromCodePoint(emojiCodePoint);
+            return emoji;
+        }
+        return;
+    };
+
     return (
         <>
             <div className="w-full h-full z-[101] relative flex justify-between py-2">
@@ -89,6 +100,9 @@ const Header = (props) => {
                     </div>
                     <div title="New tab" className="mr-2 hover:bg-[rgb(239,239,239)]">
                         <IconPlus className="cursor-pointer"/>
+                    </div>
+                    <div className="mr-[2px] hover:bg-[rgb(239,239,239)]">
+                        {renderIcon(currPage?.page_icon)}
                     </div>
                     <div className="px-2 hover:bg-[rgb(239,239,239)] text-sm font-medium cursor-pointer select-none">{currPage?.page_name}</div>
                 </div>
