@@ -29,6 +29,7 @@ const MainPage = () => {
         favoritesPages: [],
         workspacePages: [],
         sharedPages: [],
+        isShowSidebar: true,
     });
 
     useEffect(() => {
@@ -164,6 +165,10 @@ const MainPage = () => {
         }
     };
 
+    const handleHideSidebar = () => {
+        setState(prev => ({...prev, isShowSidebar: !prev.isShowSidebar}));
+    };
+
     return (
         <div
             className="w-screen h-screen flex"
@@ -171,23 +176,29 @@ const MainPage = () => {
                 e.preventDefault();
             }}
         >
-            <div className="h-full w-[220px] min-w-[220px] max-w-[480px]" id="sidebar">
-                <Sidebar 
-                    pages={state.pages} 
-                    handleSelectPage={handleSelectPage} 
-                    handleAddPage={handleAddPage} 
-                    handleOption={handleOption}
-                    favoritesPages={state.favoritesPages}
-                    workspacePages={state.workspacePages}
-                    sharedPages={state.sharedPages}
-                />
-            </div>
+            {state.isShowSidebar && (
+                <div className="h-full w-[220px] min-w-[220px] max-w-[480px]" id="sidebar">
+                    <Sidebar 
+                        pages={state.pages} 
+                        handleSelectPage={handleSelectPage} 
+                        handleAddPage={handleAddPage} 
+                        handleOption={handleOption}
+                        handleHideSidebar={handleHideSidebar}
+                        favoritesPages={state.favoritesPages}
+                        workspacePages={state.workspacePages}
+                        sharedPages={state.sharedPages}
+                        isShowSidebar={state.isShowSidebar}
+                    />
+                </div>
+            )}
             <div id="resizeHandler" className='resize-handler' />
             <div className="flex flex-col w-full h-full" id="right-panel">
                 <div className="">
                     <Header 
                         currPage={state.currPage}
+                        isShowSidebar={state.isShowSidebar}
                         handleFavorite={handleFavorite}
+                        handleHideSidebar={handleHideSidebar}
                     />
                 </div>
                 <div className="main">

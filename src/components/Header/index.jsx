@@ -13,10 +13,11 @@ import { ReactComponent as IconStar } from 'assets/icons/iconStar.svg';
 import { ReactComponent as IconComment } from 'assets/icons/iconComment.svg';
 import { ReactComponent as IconMore } from 'assets/icons/iconMore.svg';
 import { ReactComponent as IconDoubleLeft } from 'assets/icons/iconDoubleLeft.svg';
+import { ReactComponent as IconBars } from 'assets/icons/iconBars.svg';
 
 const Header = (props) => {
 
-    const { currPage, handleFavorite } = props;
+    const { currPage, handleFavorite, isShowSidebar, handleHideSidebar } = props;
 
     const [state, setState] = useState({
         isVisiblePopupPageSetting: false,
@@ -70,7 +71,16 @@ const Header = (props) => {
     return (
         <>
             <div className="w-full h-full z-[101] relative flex justify-between py-2">
-                <div className="flex items-center">
+                <div className={`flex items-center ${isShowSidebar ? 'ml-0' : 'ml-16'}`}>
+                    {!isShowSidebar && (
+                        <div 
+                            onClick={handleHideSidebar}
+                            title="Show sidebar" 
+                            className="mx-2 hover:bg-[rgb(239,239,239)]"
+                        >
+                            <IconBars className="cursor-pointer "/>
+                        </div>
+                    )}
                     <div title="Go back" className="mx-2 hover:bg-[rgb(239,239,239)]">
                         <IconLeft className="cursor-pointer "/>
                     </div>

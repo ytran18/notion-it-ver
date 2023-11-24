@@ -24,7 +24,8 @@ import './sidebar.css';
 
 const Sidebar = (props) => {
 
-    const { pages, handleSelectPage, handleAddPage, handleOption, favoritesPages, workspacePages, sharedPages } = props;
+    const { pages, handleSelectPage, handleAddPage, handleOption, favoritesPages, 
+            workspacePages, sharedPages, handleHideSidebar, isShowSidebar } = props;
 
     const [state, setState] = useState({
         isVisibleIcon: false,
@@ -106,7 +107,10 @@ const Sidebar = (props) => {
             <div className="w-full z-0 h-full sidebar bg-[rgb(247,247,245)] border-r border-[rgb(241,241,239)]">
                 <div className={`w-full py-2 px-2 ${state.isScroll ? 'border-b-[2px] border-[rgb(238,238,236)]' : ''}`}>
                     <div className="w-full flex justify-end cursor-pointer mb-4">
-                        <div className="hover:bg-[rgb(232,232,230)] p-[2px] rounded-md">
+                        <div
+                            onClick={handleHideSidebar}
+                            className="hover:bg-[rgb(232,232,230)] p-[2px] rounded-md"
+                        >
                             <IconDoubleLeft />
                         </div>
                     </div>
