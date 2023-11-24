@@ -66,7 +66,7 @@ const PopUpPageOption = (props) => {
                 {OptionsHead.map((item, index) => {
                     return (
                         <div
-                            onClick={() => handleOption(item.type, itemId)}
+                            onClick={() => {handleOption(item.type, itemId); handleMoreAction()}}
                             className="flex items-center py-[4px] px-4 hover:bg-[rgb(239,239,239)] rounded-md" 
                             key={`pop-up-page-option-${item.type}`}
                         >
