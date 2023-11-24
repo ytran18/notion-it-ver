@@ -147,7 +147,7 @@ const Sidebar = (props) => {
                 </div>
                 <div className="w-full overflow-y-auto scrollbar-hide py-2 px-2 sidebar-bottom" id="sidebar-bottom">
                     {/* Workspace */}
-                    <div className="w-full flex justify-between">
+                    <div className="w-full flex justify-between items-center">
                         <div className="text-[rgb(150,150,146)] text-[13px] select-none cursor-pointer hover:text-[#333]">Workspace</div>
                         <div className="hover:bg-[rgb(232,232,230)] p-[2px] rounded-md cursor-pointer">
                             <IconPlusSmall />
@@ -178,7 +178,7 @@ const Sidebar = (props) => {
                         })} */}
                     </div>
                     {/* Private */}
-                    <div className="w-full flex justify-between">
+                    <div className="w-full flex justify-between items-center">
                         <div className="text-[rgb(150,150,146)] text-[13px] select-none cursor-pointer hover:text-[#333]">Private</div>
                         <div 
                             className="hover:bg-[rgb(232,232,230)] p-[2px] rounded-md cursor-pointer"

@@ -26,7 +26,7 @@ const ModalEmoji = (props) => {
     useEffect(() => {
         const handleClickOutside = (e) => {
             if (modalRef.current && !modalRef.current.contains(e.target)) {
-                handleModalEmoji();
+                handleModalEmoji('cancel');
             };
         };
 

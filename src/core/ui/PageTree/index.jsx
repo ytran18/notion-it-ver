@@ -25,6 +25,7 @@ const PageTree = (props) => {
     });
 
     const expandRef = useRef(null);
+    const optionRef = useRef(null);
 
     const pageSelect = usePagePackageHook();
 
@@ -40,7 +41,7 @@ const PageTree = (props) => {
     };
 
     const handleSelect = (id, e) => {
-        if (expandRef.current && expandRef.current.contains(e.target)) {
+        if ((expandRef.current && expandRef.current.contains(e.target)) || (optionRef.current && optionRef.current.contains(e.target))) {
             return;
         }
         dispatch(pagePackage(id));
@@ -84,7 +85,7 @@ const PageTree = (props) => {
                         </div>
                     </div>
                     {state.isVisibleActionIcon && (
-                        <div className='flex absolute items-center right-0'>
+                        <div ref={optionRef} className='flex absolute items-center right-0'>
                             <div className="hover:bg-[rgb(209,209,208)] rounded-md" onClick={handleMoreAction}>
                                 <IconMore className="transform scale-75"/>
                             </div>

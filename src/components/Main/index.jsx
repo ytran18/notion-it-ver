@@ -203,15 +203,14 @@ const Main = (props) => {
     const handleModalEmoji = async (type) => {
         if (type === 'remove') {
             setState(prev => ({...prev, isVisibleIconHeader: false}));
+            const data = {
+                page_id: currPage?._id,
+                page_icon: "",
+            };
+    
+            await updateIcon(data);
         };
-
-        const data = {
-            page_id: currPage?._id,
-            page_icon: "",
-        };
-
-        await updateIcon(data);
-
+        
         setState(prev => ({...prev, isVisibleModalEmoji: !prev.isVisibleModalEmoji}));
     };
 
@@ -284,7 +283,7 @@ const Main = (props) => {
                     <div 
                         className={`w-[78px] mb-2 h-[78px] flex items-center justify-center hover:bg-[rgb(239,239,239)] z-10 relative text-7xl cursor-pointer`}
                     >
-                        <div onClick={handleModalEmoji}>{state.randomEmoji}</div>
+                        <div onClick={() => handleModalEmoji('open')}>{state.randomEmoji}</div>
                         {state.isVisibleModalEmoji && (
                             <div className="absolute -bottom-[400px]">
                                 <ModalEmoji handleModalEmoji={handleModalEmoji} onEmojiSelect={onEmojiSelect}/>
