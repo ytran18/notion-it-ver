@@ -144,7 +144,7 @@ const Sidebar = (props) => {
                                 {favoritesPages.map((item, index) => {
                                     return (
                                         <div className="" key={`item-favorites-${index}`}>
-                                            <PageTree entry={item}/>
+                                            <PageTree entry={item} handleSelectPage={handleSelectPage} handleOption={handleOption}/>
                                         </div>
                                     )
                                 })}
@@ -165,7 +165,7 @@ const Sidebar = (props) => {
                                 {workspacePages.map((item, index) => {
                                     return (
                                         <div className="" key={`item-workspace-${index}`}>
-                                            <PageTree entry={item}/>
+                                            <PageTree entry={item} handleSelectPage={handleSelectPage} handleOption={handleOption}/>
                                         </div>
                                     )
                                 })}
@@ -182,7 +182,7 @@ const Sidebar = (props) => {
                                 {sharedPages.map((item, index) => {
                                     return (
                                         <div className="" key={`item-shared-${index}`}>
-                                            <PageTree entry={item}/>
+                                            <PageTree entry={item} handleSelectPage={handleSelectPage} handleOption={handleOption}/>
                                         </div>
                                     )
                                 })}
