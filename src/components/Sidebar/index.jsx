@@ -139,9 +139,6 @@ const Sidebar = (props) => {
                         <>
                             <div className="w-full flex justify-between items-center">
                                 <div className="text-[rgb(150,150,146)] text-[13px] select-none cursor-pointer hover:text-[#333]">Favorites</div>
-                                <div className="hover:bg-[rgb(232,232,230)] p-[2px] rounded-md cursor-pointer">
-                                    <IconPlusSmall />
-                                </div>
                             </div>
                             <div className="mb-4">
                                 {favoritesPages.map((item, index) => {
