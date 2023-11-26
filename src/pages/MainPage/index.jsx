@@ -150,9 +150,16 @@ const MainPage = () => {
         };
     };
 
-    const handleOption = async (type, pageId) => {
+    const handleOption = async (type, pageId, isFavorite) => {
         let data = {
             page_id: pageId,
+        };
+
+        if (type === 1) {
+            data = {
+                ...data,
+                is_favorite: !isFavorite,
+            };
         };
 
         const func = {

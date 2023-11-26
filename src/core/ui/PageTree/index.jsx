@@ -15,7 +15,7 @@ import './style.css';
 
 const PageTree = (props) => {
 
-    const { entry, depth, handleSelectPage, handleOption } = props;
+    const { entry, depth, handleSelectPage, handleOption, type } = props;
     const dispatch = useDispatch();
 
     const [state, setState] = useState({
@@ -66,7 +66,7 @@ const PageTree = (props) => {
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
                 onClick={(e) => handleSelect(entry._id, e)} 
-                className={`w-full ${pageSelect === entry._id ? 'bg-[rgb(232,232,230)]' : ''} relative flex items-center hover:bg-[rgb(232,232,230)] rounded-md p-1 my-1 cursor-pointer`}
+                className={`w-full ${pageSelect === entry?._id ? 'bg-[rgb(232,232,230)]' : ''} relative flex items-center hover:bg-[rgb(232,232,230)] rounded-md p-1 my-1 cursor-pointer`}
             >
                 <div ref={expandRef} onClick={handleExpandItem} className="pr-2">
                     {state.isExpanded ? (
@@ -98,7 +98,7 @@ const PageTree = (props) => {
                 {
                     state.isVisiblePopUpOption && (
                         <div className='absolute z-[999] top-full left-[80%]'>
-                            <PopUpPageOption itemId={entry?._id} handleMoreAction={handleMoreAction} handleOption={handleOption} />
+                            <PopUpPageOption itemId={entry?._id} isFavorite={entry?.is_favorite} handleMoreAction={handleMoreAction} handleOption={handleOption} />
                         </div>
                     )
                 }

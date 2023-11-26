@@ -9,16 +9,17 @@ import { ReactComponent as IconPeekModeSide } from 'assets/icons/iconPeekModeSid
 import { ReactComponent as IconLink } from 'assets/icons/iconLink.svg';
 import { ReactComponent as IconMoveTo } from 'assets/icons/iconMoveTo.svg';
 import { ReactComponent as IconLoop } from 'assets/icons/iconLoop.svg';
+import { ReactComponent as IconUnstar } from 'assets/icons/iconUnstar.svg';
 
 const PopUpPageOption = (props) => {
 
-    const { handleMoreAction, itemId, handleOption } = props;
+    const { handleMoreAction, itemId, handleOption, isFavorite } = props;
 
     const popupRef = useRef(null);
 
     const OptionsHead = [
         { label: 'Delete', type: 0, icon: IconDelete },
-        { label: 'Add to Favorites', type: 1, icon: IconStar },
+        { label: isFavorite ? 'Remove from Favorites' : 'Add to Favorites', type: 1, icon: isFavorite ? IconUnstar : IconStar },
         { label: 'Duplicate', type: 2, icon: IconDuplicate },
         { label: 'Rename', type: 3, icon: IconRename },
     ];
@@ -66,7 +67,7 @@ const PopUpPageOption = (props) => {
                 {OptionsHead.map((item, index) => {
                     return (
                         <div
-                            onClick={() => {handleOption(item.type, itemId); handleMoreAction()}}
+                            onClick={() => {handleOption(item.type, itemId, isFavorite); handleMoreAction()}}
                             className="flex items-center py-[4px] px-4 hover:bg-[rgb(239,239,239)] rounded-md" 
                             key={`pop-up-page-option-${item.type}`}
                         >
