@@ -13,7 +13,7 @@ import { ReactComponent as IconUnstar } from 'assets/icons/iconUnstar.svg';
 
 const PopUpPageOption = (props) => {
 
-    const { handleMoreAction, itemId, handleOption, isFavorite } = props;
+    const { handleMoreAction, itemId, handleOption, isFavorite, type } = props;
 
     const popupRef = useRef(null);
 
@@ -47,7 +47,7 @@ const PopUpPageOption = (props) => {
 
     useEffect(() => {
         const popupElement = document.querySelector('.action-item');
-        const relativeElement = document.querySelector(`#id-${itemId}`);
+        const relativeElement = document.querySelector(`#id-${itemId}${type}`);
         if (popupElement && relativeElement) {
             const popupRect = popupElement.getBoundingClientRect();
             const relativeRect = relativeElement.getBoundingClientRect();

@@ -61,7 +61,7 @@ const PageTree = (props) => {
     };
     
     return (
-        <div className="w-full h-full" id={`id-${entry?._id}`}>
+        <div className="w-full h-full" id={`id-${entry?._id}${type}`}>
             <div
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
@@ -98,7 +98,7 @@ const PageTree = (props) => {
                 {
                     state.isVisiblePopUpOption && (
                         <div className='absolute z-[999] top-full left-[80%]'>
-                            <PopUpPageOption itemId={entry?._id} isFavorite={entry?.is_favorite} handleMoreAction={handleMoreAction} handleOption={handleOption} />
+                            <PopUpPageOption type={type} itemId={entry?._id} isFavorite={entry?.is_favorite} handleMoreAction={handleMoreAction} handleOption={handleOption} />
                         </div>
                     )
                 }
