@@ -43,7 +43,39 @@ export const addPage = async ( data ) => {
 export const deletePage = async ( id ) => {
     let rs;
     await fetch(`${api}/page/remove`, { 
+        method: "POST",
+        body: JSON.stringify(id),
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    }).then((response) => {
+        return response.json();
+    }).then(data => {
+        rs = data;
+    })
+    return rs;
+};
+
+export const deletePagePernament = async ( id ) => {
+    let rs;
+    await fetch(`${api}/page/remove/page`, { 
         method: "DELETE",
+        body: JSON.stringify(id),
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    }).then((response) => {
+        return response.json();
+    }).then(data => {
+        rs = data;
+    })
+    return rs;
+};
+
+export const recoverPageFromTrash = async ( id ) => {
+    let rs;
+    await fetch(`${api}/page/recover`, { 
+        method: "POST",
         body: JSON.stringify(id),
         headers: {
             'Content-Type': 'application/json',

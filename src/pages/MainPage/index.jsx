@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { useNavigate } from 'react-router-dom';
+import { Await, useNavigate } from 'react-router-dom';
 
 import Header from "components/Header";
 import Sidebar from "components/Sidebar";
@@ -12,7 +12,8 @@ import { pagePackage } from "core/redux/actions";
 import { useUserPackageHook, usePagePackageHook } from "core/redux/hooks";
 
 // function
-import { getPage, getSinglePage, addPage, deletePage, handleFavoritePage, duplicatePage } from './function';
+import { getPage, getSinglePage, addPage, deletePage, handleFavoritePage,
+        duplicatePage, deletePagePernament, recoverPageFromTrash } from './function';
 
 import './main-page.css';
 
@@ -31,6 +32,7 @@ const MainPage = () => {
         sharedPages: [],
         isShowSidebar: true,
         isCreatePage: false,
+        deletedPages: [],
     });
 
     useEffect(() => {
@@ -42,12 +44,21 @@ const MainPage = () => {
     },[]);
 
     const getAllPage = async (id, isSelect, selectId, isFirstRender, isAdded, optionPageId) => {
+        // id: id of user
+        // isSelect: check is select page
+        // selectId: if isSelect = true then selectId is id of page selected ( can be null )
+        // isFirstRender: check that get page by id or object
+        // isAdded: check if page is new page
+        // optionPageId: id of context menu page select
+        let pages = [];
         let favoritesPages = [];
         let workspacePages = [];
         let sharedPages = [];
+        let deletedPages = [];
 
         const res = await getPage(id);
         if (res?.success) {
+            console.log(res?.message);
             res?.message?.map((item) => {
                 if (item?.is_favorite) {
                     favoritesPages.push(item);
@@ -58,6 +69,12 @@ const MainPage = () => {
                 if (item?.is_shared) {
                     sharedPages.push(item);
                 };
+
+                if (item?.is_delete) {
+                    deletedPages.push(item);
+                } else {
+                    pages.push(item);
+                }
             });
 
             if (isSelect) {
@@ -80,10 +97,11 @@ const MainPage = () => {
             }
             setState(prev => ({
                 ...prev, 
-                pages: res?.message, 
+                pages: pages, 
                 favoritesPages: favoritesPages, 
                 workspacePages: workspacePages, 
                 sharedPages: sharedPages,
+                deletedPages: deletedPages,
             }));
 
         };
@@ -175,6 +193,16 @@ const MainPage = () => {
         };
     };
 
+    const handleTrash = async (id, type) => {
+        const data = {
+            page_id: id,
+        };
+        const res = type === 'delete' ? await deletePagePernament(data) : await recoverPageFromTrash(data);
+        if (res?.success) {
+            getAllPage(user?._id, false, null, false, false, null);
+        };
+    };
+
     const handleFavorite = async (value) => {
         const data = {
             page_id: state.currPage?._id,
@@ -198,7 +226,7 @@ const MainPage = () => {
             }}
         >
             {state.isShowSidebar && (
-                <div className="h-full w-[220px] min-w-[220px] max-w-[480px]" id="sidebar">
+                <div className="h-full w-[220px] min-w-[220px] max-w-[480px] z-20" id="sidebar">
                     <Sidebar 
                         pages={state.pages} 
                         handleSelectPage={handleSelectPage} 
@@ -209,11 +237,13 @@ const MainPage = () => {
                         workspacePages={state.workspacePages}
                         sharedPages={state.sharedPages}
                         isShowSidebar={state.isShowSidebar}
+                        deletedPages={state.deletedPages}
+                        handleTrash={handleTrash}
                     />
                 </div>
             )}
             <div id="resizeHandler" className='resize-handler' />
-            <div className="flex flex-col w-full h-full" id="right-panel">
+            <div className="flex flex-col w-full h-full z-10" id="right-panel">
                 <div className="">
                     <Header 
                         currPage={state.currPage}
@@ -222,7 +252,7 @@ const MainPage = () => {
                         handleHideSidebar={handleHideSidebar}
                     />
                 </div>
-                <div className="main">
+                <div className="main z-20">
                     <Main 
                         currPage={state.currPage}
                         isCreatePage={state.isCreatePage}

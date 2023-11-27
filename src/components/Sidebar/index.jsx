@@ -5,6 +5,7 @@ import ModalUser from "core/components/ModalUser";
 import ModalSearch from "core/components/ModalSearch";
 import ModalSetting from "core/components/ModalSetting";
 import PopUpUpdates from "core/components/PopUpUpdates";
+import PopUpTrash from "core/components/PopUpTrash";
 
 import { useUserPackageHook } from "core/redux/hooks";
 
@@ -25,7 +26,7 @@ import './sidebar.css';
 const Sidebar = (props) => {
 
     const { pages, handleSelectPage, handleAddPage, handleOption, favoritesPages, 
-            workspacePages, sharedPages, handleHideSidebar, isShowSidebar } = props;
+            workspacePages, sharedPages, handleHideSidebar, isShowSidebar, deletedPages, handleTrash } = props;
 
     const [state, setState] = useState({
         isVisibleIcon: false,
@@ -35,11 +36,13 @@ const Sidebar = (props) => {
         isVisiablePopupUpdate: false,
         isVisiableModalSetting: false,
         isVisiableModalNewpage: false,
+        isVisiblePopUpTrash: false,
     });
 
     const currUser = useUserPackageHook();
     const popUpUserRef = useRef(null);
     const popUpUpdatesRef = useRef(null);
+    const popUpTrashRef = useRef(null);
 
     const HeaderTopItem = [
         { label: `${currUser?.display_name}'s Notion`, icon: IconDefaultAvatar, type: 0 },
@@ -50,10 +53,10 @@ const Sidebar = (props) => {
     ];
 
     const ItemFooterSidebar = [
-        { label: 'Create a teamspace', icon: IconTeamSpace },
-        { label: 'Templates', icon: IconTemplate },
-        { label: 'Import', icon: IconImport },
-        { label: 'Trash', icon: IconTrash },
+        { label: 'Create a teamspace', icon: IconTeamSpace, type: 0 },
+        { label: 'Templates', icon: IconTemplate, type: 1 },
+        { label: 'Import', icon: IconImport, type: 2 },
+        { label: 'Trash', icon: IconTrash, type: 3 },
     ];
 
     useEffect(() => {
@@ -92,6 +95,15 @@ const Sidebar = (props) => {
         setState(prev => ({...prev, [modal]: !prev[modal]}));
     };
 
+    const handleFooterAction = (type, where) => {
+        if (type === 3) {
+            if (where === 'sidebar' && state.isVisiblePopUpTrash) {
+                return;
+            }
+            setState(prev => ({...prev, isVisiblePopUpTrash: !prev.isVisiblePopUpTrash}));
+        };
+    };
+
     const sidebarHeaderRef = (type) => {
         const ref = {
             0: popUpUserRef,
@@ -100,11 +112,18 @@ const Sidebar = (props) => {
         return ref;
     };
 
+    const sidebarFooterRef = (type) => {
+        const ref = {
+            3: popUpTrashRef,
+        }[type];
+        return ref;
+    }
+
     const classNameTopSidebarItem = 'w-full flex select-none relative items-center hover:bg-[rgb(232,232,230)] rounded-md p-1 cursor-pointer';
 
     return (
         <>
-            <div className="w-full z-0 h-full sidebar bg-[rgb(247,247,245)] border-r border-[rgb(241,241,239)]">
+            <div className="w-full relative z-0 h-full sidebar bg-[rgb(247,247,245)] border-r border-[rgb(241,241,239)]">
                 <div className={`w-full py-2 px-2 ${state.isScroll ? 'border-b-[2px] border-[rgb(238,238,236)]' : ''}`}>
                     <div className="w-full flex justify-end cursor-pointer mb-4">
                         <div
@@ -216,11 +235,26 @@ const Sidebar = (props) => {
                     <div className="">
                         {ItemFooterSidebar.map((item, index) => {
                             return (
-                                <div className={classNameTopSidebarItem} key={`sidebar-footer-item-${index}`}>
+                                <div
+                                    ref={sidebarFooterRef(item.type)}
+                                    onClick={() => handleFooterAction(item.type, 'sidebar')} 
+                                    className={classNameTopSidebarItem} 
+                                    key={`sidebar-footer-item-${index}`}
+                                >
                                     <div className="mr-2 flex justify-center">
                                         <item.icon />
                                     </div>
                                     <div className={`select-none text-[13px] font-medium`}>{item.label}</div>
+                                    {state.isVisiblePopUpTrash && item.type === 3 && (
+                                        <div className="absolute left-[105%]">
+                                            <PopUpTrash 
+                                                handleFooterAction={handleFooterAction} 
+                                                deletedPages={deletedPages} 
+                                                ref={popUpTrashRef}
+                                                handleTrash={handleTrash}
+                                            />
+                                        </div>
+                                    )}
                                 </div>
                             )
                         })}

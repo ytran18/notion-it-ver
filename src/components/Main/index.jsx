@@ -263,7 +263,7 @@ const Main = (props) => {
     const classNameCoverOption = 'text-xs cursor-pointer font-medium p-2 hover:bg-[rgb(239,239,238)]';
 
     return (
-        <div className="cursor-text z-10 h-full w-full flex flex-col justify-center items-center overflow-y-auto">
+        <div className="cursor-text relative z-10 h-full w-full flex flex-col justify-center items-center overflow-y-auto">
             <div 
                 onMouseEnter={handleMouseEnterCoverOption} 
                 onMouseLeave={handleMouseLeaveCoverOption}
