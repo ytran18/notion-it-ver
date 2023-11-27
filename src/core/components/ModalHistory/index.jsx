@@ -25,9 +25,9 @@ const ModalHistory = (props) => {
             <div className="p-3">
                 <div className="text-sm font-medium mb-2 select-none">Page notification settings</div>
                 <div className="relative">
-                    <select id="small" className="block cursor-pointer w-full py-2 px-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500">
-                        <option selected className="text-sm">All comments</option>
-                        <option value="US">Replies and @mentions</option>
+                    <select defaultValue="All" id="small" className="block cursor-pointer w-full py-2 px-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500">
+                        <option value="All" className="text-sm">All comments</option>
+                        <option value="RAM">Replies and @mentions</option>
                     </select>
                     <IconBell className="absolute top-1/2 left-2 -translate-y-1/2"/>
                 </div>

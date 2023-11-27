@@ -307,7 +307,7 @@ const Main = (props) => {
                     <input
                         ref={titleRef}
                         placeholder="Untitled"
-                        value={state.pageTitle}
+                        value={state.pageTitle || ''}
                         onChange={(e) => setState(prev => ({...prev, pageTitle: e.target.value, status: 2}))}
                         type="text" 
                         className="w-full mt-8 outline-none truncate text-4xl py-3 h-14 text-[rgb(55,53,47)] font-bold placeholder:opacity-50"
