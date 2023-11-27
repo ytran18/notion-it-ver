@@ -39,7 +39,6 @@ const Main = (props) => {
     const titleRef = useRef(null);
 
     useEffect(() => {
-        console.log(isCreatePage, titleRef.current);
         if (isCreatePage && titleRef.current) {
             titleRef.current.focus();
         };
