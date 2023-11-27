@@ -58,7 +58,6 @@ const MainPage = () => {
 
         const res = await getPage(id);
         if (res?.success) {
-            console.log(res?.message);
             res?.message?.map((item) => {
                 if (item?.is_favorite) {
                     favoritesPages.push(item);

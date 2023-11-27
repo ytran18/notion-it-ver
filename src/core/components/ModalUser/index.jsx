@@ -7,9 +7,6 @@ import { clear } from "core/redux/actions";
 import { ReactComponent as IconMore } from 'assets/icons/iconMore.svg';
 import { ReactComponent as IconCheck } from 'assets/icons/iconCheck.svg';
 
-// test
-const imgSrc = 'https://lh3.googleusercontent.com/a/ACg8ocIsYVVjXmItPPEpsy_Td4La9MnmrcOrTO2cfcRJb6l8=s100';
-
 const ModalUser = React.forwardRef((props, ref) => {
 
     const { handleModalUser, currUser } = props;
@@ -54,7 +51,7 @@ const ModalUser = React.forwardRef((props, ref) => {
             </div>
             <div className="w-full border-b border-[rgb(237,237,236)] flex items-center justify-between p-3 cursor-pointer hover:bg-[rgb(239,239,239)]">
                 <div className="flex items-center">
-                    <img src={imgSrc} className="w-[32px] rounded-md mr-4"/>
+                    <img src={currUser?.avatar_url} className="w-[32px] h-[32px] object-cover rounded-md mr-4"/>
                     <div className="flex flex-col text-[11px]">
                         <div className="text-[12px] font-medium">{`${currUser?.display_name}'s Notion`}</div>
                         <div className="">Free Plan · 1 member</div>
