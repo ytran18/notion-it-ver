@@ -1,12 +1,16 @@
+import axios from "axios";
+
 const api = process.env.REACT_APP_API_SERVER;
 
 export const getPage = async ( id ) => {
     let rs;
-    await fetch(`${api}/page/get/all/${id}`, { 
-        method: "GET", 
-    }).then((response) => {
-        return response.json();
-    }).then(data => {
+    await axios.get(`${api}/page/get/all/${id}`, {
+        headers: {
+            Accept: 'application/json',
+            "Content-Type": "application/json;charset=UTF-8",
+        },
+    })
+    .then(({data}) => {
         rs = data;
     })
     return rs;
@@ -14,11 +18,13 @@ export const getPage = async ( id ) => {
 
 export const getSinglePage = async ( id ) => {
     let rs;
-    await fetch(`${api}/page/get/single/${id}`, { 
-        method: "GET", 
-    }).then((response) => {
-        return response.json();
-    }).then(data => {
+    await axios.get(`${api}/page/get/single/${id}`, {
+        headers: {
+            Accept: 'application/json',
+            "Content-Type": "application/json;charset=UTF-8",
+        },
+    })
+    .then(({data}) => {
         rs = data;
     })
     return rs;
@@ -26,15 +32,13 @@ export const getSinglePage = async ( id ) => {
 
 export const addPage = async ( data ) => {
     let rs;
-    await fetch(`${api}/page/add`, { 
-        method: "POST",
-        body: JSON.stringify(data),
+    await axios.post(`${api}/page/add`, data, {
         headers: {
-            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            "Content-Type": "application/json;charset=UTF-8",
         },
-    }).then((response) => {
-        return response.json();
-    }).then(data => {
+    })
+    .then(({data}) => {
         rs = data;
     })
     return rs;
@@ -42,15 +46,13 @@ export const addPage = async ( data ) => {
 
 export const deletePage = async ( id ) => {
     let rs;
-    await fetch(`${api}/page/remove`, { 
-        method: "POST",
-        body: JSON.stringify(id),
+    await axios.post(`${api}/page/remove`, id, {
         headers: {
-            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            "Content-Type": "application/json;charset=UTF-8",
         },
-    }).then((response) => {
-        return response.json();
-    }).then(data => {
+    })
+    .then(({data}) => {
         rs = data;
     })
     return rs;
@@ -58,15 +60,13 @@ export const deletePage = async ( id ) => {
 
 export const deletePagePernament = async ( id ) => {
     let rs;
-    await fetch(`${api}/page/remove/page`, { 
-        method: "DELETE",
-        body: JSON.stringify(id),
+    await axios.post(`${api}/page/remove/page`, id, {
         headers: {
-            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            "Content-Type": "application/json;charset=UTF-8",
         },
-    }).then((response) => {
-        return response.json();
-    }).then(data => {
+    })
+    .then(({data}) => {
         rs = data;
     })
     return rs;
@@ -74,15 +74,13 @@ export const deletePagePernament = async ( id ) => {
 
 export const recoverPageFromTrash = async ( id ) => {
     let rs;
-    await fetch(`${api}/page/recover`, { 
-        method: "POST",
-        body: JSON.stringify(id),
+    await axios.post(`${api}/page/recover`, id, {
         headers: {
-            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            "Content-Type": "application/json;charset=UTF-8",
         },
-    }).then((response) => {
-        return response.json();
-    }).then(data => {
+    })
+    .then(({data}) => {
         rs = data;
     })
     return rs;
@@ -90,15 +88,13 @@ export const recoverPageFromTrash = async ( id ) => {
 
 export const handleFavoritePage = async ( data ) => {
     let rs;
-    await fetch(`${api}/page/favorite`, { 
-        method: "POST",
-        body: JSON.stringify(data),
+    await axios.post(`${api}/page/favorite`, data, {
         headers: {
-            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            "Content-Type": "application/json;charset=UTF-8",
         },
-    }).then((response) => {
-        return response.json();
-    }).then(data => {
+    })
+    .then(({data}) => {
         rs = data;
     })
     return rs;
@@ -106,15 +102,13 @@ export const handleFavoritePage = async ( data ) => {
 
 export const duplicatePage = async ( id ) => {
     let rs;
-    await fetch(`${api}/page/duplicate`, { 
-        method: "POST",
-        body: JSON.stringify(id),
+    await axios.post(`${api}/page/duplicate`, id, {
         headers: {
-            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            "Content-Type": "application/json;charset=UTF-8",
         },
-    }).then((response) => {
-        return response.json();
-    }).then(data => {
+    })
+    .then(({data}) => {
         rs = data;
     })
     return rs;

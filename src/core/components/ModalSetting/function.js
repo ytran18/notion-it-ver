@@ -1,16 +1,16 @@
+import axios from "axios";
+
 const api = process.env.REACT_APP_API_SERVER;
 
 export const changeAvatar = async ( value ) => {
     let rs;
-    await fetch(`${api}/user/avatar/upload`, { 
-        method: "POST", 
-        body: JSON.stringify(value),
+    await axios.post(`${api}/user/avatar/upload`, value, {
         headers: {
-            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            "Content-Type": "application/json;charset=UTF-8",
         },
-    }).then((response) => {
-        return response.json();
-    }).then(data => {
+    })
+    .then(({data}) => {
         rs = data;
     })
     return rs;

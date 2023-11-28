@@ -33,6 +33,7 @@ const MainPage = () => {
         isShowSidebar: true,
         isCreatePage: false,
         deletedPages: [],
+        render: false,
     });
 
     useEffect(() => {
@@ -43,7 +44,7 @@ const MainPage = () => {
         };
     },[]);
 
-    const getAllPage = async (id, isSelect, selectId, isFirstRender, isAdded, optionPageId) => {
+    const getAllPage = async (id, isSelect, selectId, isFirstRender, isAdded, optionPageId, isEditPage) => {
         // id: id of user
         // isSelect: check is select page
         // selectId: if isSelect = true then selectId is id of page selected ( can be null )
@@ -76,7 +77,7 @@ const MainPage = () => {
                 }
             });
 
-            if (isSelect) {
+            if (isSelect && !isEditPage) {
                 if (selectId === null) {
                     if (optionPageId !== state.currPage?._id) {
                         dispatch(pagePackage(state.currPage?._id));
@@ -107,12 +108,15 @@ const MainPage = () => {
     };
 
     useEffect(() => {
-        getAllPage(user?._id, true, prevPage, true);
-    },[]);
+        if (!state.render) {
+            getAllPage(user?._id, true, prevPage, true);
+            setState(prev => ({...prev, render: true}));
+        }
+    },[state.render]);
         
-    useEffect(() => {
-        getAllPage(user?._id, false, false, false, false);
-    },[state.currPage]);
+    // useEffect(() => {
+    //     getAllPage(user?._id, false, false, false, false);
+    // },[state.currPage]);
 
     useEffect(() => {
         const resizer = document.getElementById('resizeHandler');
@@ -255,6 +259,8 @@ const MainPage = () => {
                     <Main 
                         currPage={state.currPage}
                         isCreatePage={state.isCreatePage}
+                        getAllPage={getAllPage}
+                        currUser={user}
                     />
                 </div>
             </div>

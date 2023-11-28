@@ -8,6 +8,7 @@ import { ref, listAll, getDownloadURL } from "firebase/storage";
 import ModalBackgroundCover from "core/components/ModalBackgroundCover";
 import ModalEmoji from "core/components/ModalEmoji";
 import Comment from "core/components/Comment";
+import Block from "core/components/Block";
 
 import { changePageTitle, updatePageCover, updateIcon } from './function';
 
@@ -20,7 +21,7 @@ import allImages from "assets/img";
 
 const Main = (props) => {
 
-    const { currPage, isCreatePage } = props;
+    const { currPage, isCreatePage, getAllPage, currUser } = props;
 
     const [state, setState] = useState({
         hasCoverBackground: false,
@@ -234,12 +235,14 @@ const Main = (props) => {
         };
 
         await updateIcon(data);
+        getAllPage(currUser?._id, true, currPage?._id, false, false, null, true);
 
         setState(prev => ({...prev, randomEmoji: emoji, isVisibleModalEmoji: false}));
     };
 
     const handleChangePageTitle = async (data) => {
         await changePageTitle(data);
+        getAllPage(currUser?._id, true, currPage?._id, false, false, null, true);
     };
 
     useEffect(() => {
@@ -258,6 +261,12 @@ const Main = (props) => {
 
         return () => clearTimeout(saveTimeout);
     },[state.pageTitle, state.status]);
+
+    const handleEnter = (e) => {
+        if (e.key === 'Enter') {
+            console.log('Enter');
+        };
+    };
 
     const classNameCoverOption = 'text-xs cursor-pointer font-medium p-2 hover:bg-[rgb(239,239,238)]';
 
@@ -309,7 +318,8 @@ const Main = (props) => {
                         placeholder="Untitled"
                         value={state.pageTitle || ''}
                         onChange={(e) => setState(prev => ({...prev, pageTitle: e.target.value, status: 2}))}
-                        type="text" 
+                        type="text"
+                        onKeyDown={handleEnter}
                         className="w-full mt-8 outline-none truncate text-4xl py-3 h-14 text-[rgb(55,53,47)] font-bold placeholder:opacity-50"
                     />
                     <div className={`absolute ${state.isDisplayOption ? 'opacity-100' : 'opacity-0'} -top-0 transition-opacity duration-[270ms] w-full flex flex-wrap`}>

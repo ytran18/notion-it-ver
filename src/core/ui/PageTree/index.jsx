@@ -32,8 +32,11 @@ const PageTree = (props) => {
     const renderIcon = (icon) => {
         if (icon === '') return <IconDocument />
         const emojiCodePoint = parseInt(icon, 16);
-        const emoji = String.fromCodePoint(emojiCodePoint);
-        return emoji;
+        if (emojiCodePoint) {
+            const emoji = String.fromCodePoint(emojiCodePoint);
+            return emoji;
+        }
+        return;
     };
 
     const handleExpandItem = () => {

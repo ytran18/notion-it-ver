@@ -1,16 +1,16 @@
+import axios from "axios";
+
 const api = process.env.REACT_APP_API_SERVER;
 
 export const signupWithEmail = async ( value ) => {
     let rs;
-    await fetch(`${api}/sign-up/mail/check?type=mail`, { 
-        method: "POST", 
-        body: JSON.stringify(value),
+    await axios.post(`${api}/sign-up/mail/check?type=mail`, value, {
         headers: {
-            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            "Content-Type": "application/json;charset=UTF-8",
         },
-    }).then((response) => {
-        return response.json();
-    }).then(data => {
+    })
+    .then(({data}) => {
         rs = data;
     })
     return rs;
@@ -18,15 +18,13 @@ export const signupWithEmail = async ( value ) => {
 
 export const verifyLoginCode = async ( data ) => {
     let rs;
-    await fetch(`${api}/sign-up/mail/verify`, { 
-        method: "POST", 
-        body: JSON.stringify(data),
+    await axios.post(`${api}/sign-up/mail/verify`, data, {
         headers: {
-            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            "Content-Type": "application/json;charset=UTF-8",
         },
-    }).then((response) => {
-        return response.json();
-    }).then(data => {
+    })
+    .then(({data}) => {
         rs = data;
     })
     return rs;
