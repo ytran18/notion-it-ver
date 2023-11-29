@@ -35,6 +35,7 @@ const Main = (props) => {
         isVisibleComment: false,
         pageTitle: currPage?.page_name || '',
         status: 0,
+        numberOfBlock: [],
     });
     
     const titleRef = useRef(null);
@@ -44,6 +45,12 @@ const Main = (props) => {
             titleRef.current.focus();
         };
     },[isCreatePage]);
+
+    useEffect(() => {
+        if (titleRef.current) {
+            titleRef.current.focus();
+        };
+    },[currPage]);
 
     const optionHeader = [
         { label: 'Add icon', icon: IconSmile, type: 'icon' },
@@ -264,7 +271,7 @@ const Main = (props) => {
 
     const handleEnter = (e) => {
         if (e.key === 'Enter') {
-            console.log('Enter');
+            setState(prev => ({...prev, numberOfBlock: [...prev.numberOfBlock, 0]}));
         };
     };
 
@@ -345,6 +352,15 @@ const Main = (props) => {
                             <Comment />
                         </div>
                     )}
+                    <div className="flex flex-col w-full">
+                        {state.numberOfBlock.map((item, index) => {
+                            return (
+                                <div className="my-2 w-full" key={`block-${index}`}>
+                                    <Block />
+                                </div>
+                            )
+                        })}
+                    </div>
                 </div>
             </div>
         </div>

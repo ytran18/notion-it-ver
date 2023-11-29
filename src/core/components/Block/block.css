@@ -1,0 +1,9 @@
+.text-block-placeholder::before {
+    content: attr(placeholder);
+    position: absolute;
+    opacity: 0.6;
+}
+
+.text-block-placeholder-hidden::before {
+    display: none;
+}
