@@ -56,11 +56,10 @@ const PopUpTrash = React.forwardRef((props, ref) => {
             <div className="flex relative items-center p-1 border-b border-[rgb(237,237,236)]">
                 {tabs.map((item, index) => {
                     return (
-                        <div className="flex flex-col items-center">
+                        <div className="flex flex-col items-center" key={`pop-up-trash-${index}`}>
                             <div
                                 onClick={() => handleChangeTab(item.type)}
                                 className="text-sm px-3 py-1 cursor-pointer hover:bg-[rgb(239,239,239)] rounded" 
-                                key={`pop-up-trash-${index}`}
                             >
                                 {item.label}
                             </div>
