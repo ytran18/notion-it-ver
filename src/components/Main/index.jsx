@@ -39,8 +39,6 @@ const Main = (props) => {
     });
     
     const titleRef = useRef(null);
-    const blockRefs = useRef([]);
-    const titleOptionRef = useRef({value: false});
 
     useEffect(() => {
         if (isCreatePage && titleRef.current) {
@@ -277,19 +275,15 @@ const Main = (props) => {
         };
     };
 
-    const setBlockRef = useCallback((ref, index) => {
-        blockRefs.current[index] = ref;
-    },[]);
+    const handleArrow = (index, type) => {
+        const inputNo = type === 'ArrowUp' ? index - 1 : index + 1
+        const element = document.getElementById(`block-id-${inputNo}`);
+        if (element) {
+            element.focus();
+        };
+    };
 
     const classNameCoverOption = 'text-xs cursor-pointer font-medium p-2 hover:bg-[rgb(239,239,238)]';
-
-    const renderBlock = useMemo(() => {
-        return (index) => (
-            <>
-                <Block handleEnter={handleEnter} ref={blockRefs[index]}/>
-            </>
-        )
-    },[]);
 
     return (
         <div className="cursor-text relative z-10 h-full w-full flex flex-col items-center overflow-y-auto">
@@ -372,9 +366,14 @@ const Main = (props) => {
                                 <div
                                     className="my-2 w-full"
                                     key={`block-${index}`}
-                                    ref={ref => setBlockRef(ref, index)}
                                 >
-                                    {renderBlock(index)}
+                                    <Block
+                                        id={`block-id-${index}`}
+                                        handleEnter={handleEnter} 
+                                        index={index} 
+                                        ref={blockRefs.current}
+                                        handleArrow={handleArrow}
+                                    />
                                 </div>
                             )
                         })}

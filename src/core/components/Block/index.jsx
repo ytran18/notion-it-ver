@@ -1,10 +1,10 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, forwardRef } from "react";
 
 import './block.css';
 
-const Block = React.forwardRef((props, ref) => {
+const Block = forwardRef((props) => {
 
-    const { handleEnter } = props;
+    const { handleEnter, index, handleArrow, id } = props;
 
     const [state, setState] = useState({
         textContent: '',
@@ -29,7 +29,8 @@ const Block = React.forwardRef((props, ref) => {
         if (e.key === 'Enter') {
             e.preventDefault();
             handleEnter(e);
-        }
+        };
+
         if (e.ctrlKey && e.key === 'a') {
             e.preventDefault();
             if (textBlockRef.current) {
@@ -39,12 +40,18 @@ const Block = React.forwardRef((props, ref) => {
                 selection.removeAllRanges();
                 selection.addRange(range);
             }
-        }
+        };
+
+        if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+            e.preventDefault();
+            handleArrow(index, e.key);
+        };
     };
 
     return (
         <div className="w-full h-6 bg-white rounded-md">
             <div
+                id={id}
                 ref={textBlockRef}
                 className={`w-full ${state.textContent.length > 0 ? 'text-block-placeholder-hidden' : 'text-block-placeholder'} relative h-full min-h-[1rem] text-[rgb(55,53,47)] font-medium`} 
                 placeholder="Press 'space' for AI, '/' for commands…" 
