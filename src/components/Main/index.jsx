@@ -371,7 +371,6 @@ const Main = (props) => {
                                         id={`block-id-${index}`}
                                         handleEnter={handleEnter} 
                                         index={index} 
-                                        ref={blockRefs.current}
                                         handleArrow={handleArrow}
                                     />
                                 </div>

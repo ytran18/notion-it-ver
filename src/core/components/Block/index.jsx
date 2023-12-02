@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, forwardRef } from "react";
 
 import './block.css';
 
-const Block = forwardRef((props) => {
+const Block = (props) => {
 
     const { handleEnter, index, handleArrow, id } = props;
 
@@ -63,6 +63,6 @@ const Block = forwardRef((props) => {
             </div>
         </div>
     )
-});
+};
 
 export default Block;
