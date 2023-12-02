@@ -2,7 +2,9 @@ import React, { useState, useRef, useEffect } from "react";
 
 import './block.css';
 
-const Block = () => {
+const Block = React.forwardRef((props, ref) => {
+
+    const { handleEnter } = props;
 
     const [state, setState] = useState({
         textContent: '',
@@ -24,6 +26,10 @@ const Block = () => {
 
     // handle ctrl + A in this current div
     const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            handleEnter(e);
+        }
         if (e.ctrlKey && e.key === 'a') {
             e.preventDefault();
             if (textBlockRef.current) {
@@ -37,7 +43,7 @@ const Block = () => {
     };
 
     return (
-        <div className="w-full h-10 bg-white rounded-md">
+        <div className="w-full h-6 bg-white rounded-md">
             <div
                 ref={textBlockRef}
                 className={`w-full ${state.textContent.length > 0 ? 'text-block-placeholder-hidden' : 'text-block-placeholder'} relative h-full min-h-[1rem] text-[rgb(55,53,47)] font-medium`} 
@@ -50,6 +56,6 @@ const Block = () => {
             </div>
         </div>
     )
-};
+});
 
 export default Block;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
 
 import data from '@emoji-mart/data';
 
@@ -39,6 +39,8 @@ const Main = (props) => {
     });
     
     const titleRef = useRef(null);
+    const blockRefs = useRef([]);
+    const titleOptionRef = useRef({value: false});
 
     useEffect(() => {
         if (isCreatePage && titleRef.current) {
@@ -194,14 +196,14 @@ const Main = (props) => {
         setState(prev => ({...prev, isDisplayOption: false}));
     };
 
-    const handleMouseEnterCoverOption = () => {
+    const handleMouseEnterCoverOption = useCallback(() => {
         if (state.isVisibleModalCoverBackground) return;
         setState(prev => ({...prev, isDisplayCoverOption: true}));
-    };
+    },[]);
 
-    const handleMouseLeaveCoverOption = () => {
+    const handleMouseLeaveCoverOption = useCallback(() => {
         setState(prev => ({...prev, isDisplayCoverOption: false}));
-    };
+    },[]);
 
     const handleModalCover = async (type) => {
         if (type === 'remove') {
@@ -275,10 +277,22 @@ const Main = (props) => {
         };
     };
 
+    const setBlockRef = useCallback((ref, index) => {
+        blockRefs.current[index] = ref;
+    },[]);
+
     const classNameCoverOption = 'text-xs cursor-pointer font-medium p-2 hover:bg-[rgb(239,239,238)]';
 
+    const renderBlock = useMemo(() => {
+        return (index) => (
+            <>
+                <Block handleEnter={handleEnter} ref={blockRefs[index]}/>
+            </>
+        )
+    },[]);
+
     return (
-        <div className="cursor-text relative z-10 h-full w-full flex flex-col justify-center items-center overflow-y-auto">
+        <div className="cursor-text relative z-10 h-full w-full flex flex-col items-center overflow-y-auto">
             <div 
                 onMouseEnter={handleMouseEnterCoverOption} 
                 onMouseLeave={handleMouseLeaveCoverOption}
@@ -355,8 +369,12 @@ const Main = (props) => {
                     <div className="flex flex-col w-full">
                         {state.numberOfBlock.map((item, index) => {
                             return (
-                                <div className="my-2 w-full" key={`block-${index}`}>
-                                    <Block />
+                                <div
+                                    className="my-2 w-full"
+                                    key={`block-${index}`}
+                                    ref={ref => setBlockRef(ref, index)}
+                                >
+                                    {renderBlock(index)}
                                 </div>
                             )
                         })}
