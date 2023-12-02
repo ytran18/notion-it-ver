@@ -283,6 +283,16 @@ const Main = (props) => {
         };
     };
 
+    const handleDelete = (index) => {
+        const element = document.getElementById(`block-parent-id-${index}`);
+        const prevElement = document.getElementById(`block-id-${index - 1}`);
+
+        if (prevElement) {
+            prevElement.focus();
+            element.remove();
+        };
+    };
+
     const classNameCoverOption = 'text-xs cursor-pointer font-medium p-2 hover:bg-[rgb(239,239,238)]';
 
     return (
@@ -366,12 +376,14 @@ const Main = (props) => {
                                 <div
                                     className="my-2 w-full"
                                     key={`block-${index}`}
+                                    id={`block-parent-id-${index}`}
                                 >
                                     <Block
                                         id={`block-id-${index}`}
                                         handleEnter={handleEnter} 
-                                        index={index} 
                                         handleArrow={handleArrow}
+                                        handleDelete={handleDelete}
+                                        index={index} 
                                     />
                                 </div>
                             )

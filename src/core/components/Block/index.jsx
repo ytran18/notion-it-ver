@@ -1,10 +1,10 @@
-import React, { useState, useRef, useEffect, forwardRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 import './block.css';
 
 const Block = (props) => {
 
-    const { handleEnter, index, handleArrow, id } = props;
+    const { handleEnter, index, handleArrow, id, handleDelete } = props;
 
     const [state, setState] = useState({
         textContent: '',
@@ -46,6 +46,11 @@ const Block = (props) => {
             e.preventDefault();
             handleArrow(index, e.key);
         };
+
+        if (e.keyCode === 8 || e.keyCode === 46) {
+            e.preventDefault();
+            handleDelete(index);
+        }
     };
 
     return (
