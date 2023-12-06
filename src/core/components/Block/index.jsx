@@ -8,6 +8,7 @@ const Block = (props) => {
 
     const [state, setState] = useState({
         textContent: '',
+        isFirstTimeRender: true,
     });
 
     const textBlockRef = useRef(null); // text block ref
@@ -26,6 +27,18 @@ const Block = (props) => {
 
     // handle ctrl + A in this current div
     const handleKeyDown = (e) => {
+        const blocks = document.querySelectorAll('[id^="block-id-"]');
+        let prevEleIndex = null;
+        let nextEleIndex = null;
+
+        blocks.forEach((item,index) => {
+            if (item.id === id) {
+                prevEleIndex = index - 1;
+                nextEleIndex = index + 1;
+                return;
+            }
+        });
+
         if (e.key === 'Enter') {
             e.preventDefault();
             handleEnter(e);
@@ -44,12 +57,14 @@ const Block = (props) => {
 
         if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
             e.preventDefault();
-            handleArrow(index, e.key);
+            handleArrow(index, e.key, e.key === 'ArrowUp' ? blocks[prevEleIndex]?.id : blocks[nextEleIndex]?.id);
         };
 
         if (e.keyCode === 8 || e.keyCode === 46) {
-            e.preventDefault();
-            handleDelete(index);
+            if (state.textContent.length > 0) return;
+            if (state.isFirstTimeRender) e?.preventDefault();
+            setState(prev => ({...prev, isFirstTimeRender: false}));
+            handleDelete(index, blocks[prevEleIndex]?.id);
         }
     };
 

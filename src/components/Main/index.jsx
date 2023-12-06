@@ -18,6 +18,7 @@ import { ReactComponent as IconPhoto } from 'assets/icons/iconPhoto.svg';
 
 
 import allImages from "assets/img";
+import { doc } from "firebase/firestore";
 
 const Main = (props) => {
 
@@ -275,22 +276,38 @@ const Main = (props) => {
         };
     };
 
-    const handleArrow = (index, type) => {
-        const inputNo = type === 'ArrowUp' ? index - 1 : index + 1
-        const element = document.getElementById(`block-id-${inputNo}`);
+    const handleArrow = (index, type, prevOrNextId) => {
+        const element = document.getElementById(`${prevOrNextId}`);
         if (element) {
             element.focus();
         };
     };
 
-    const handleDelete = (index) => {
+    const handleDelete = async (index, prevId) => {
         const element = document.getElementById(`block-parent-id-${index}`);
-        const prevElement = document.getElementById(`block-id-${index - 1}`);
+        let prevElement;
+
+        if (prevId !== undefined) {
+            prevElement = document.getElementById(`${prevId}`);
+        } else {
+            prevElement = document.getElementById('page-title')
+        }
 
         if (prevElement) {
+            await element.remove();
             prevElement.focus();
-            element.remove();
-        };
+
+            const range = document.createRange();
+            const sel = window.getSelection();
+            const lastChild = prevElement.lastChild;
+
+            if (lastChild && lastChild.nodeType === Node.TEXT_NODE) {
+                range.selectNodeContents(lastChild);
+                range.collapse(false);
+                sel.removeAllRanges();
+                sel.addRange(range);
+            }
+        }
     };
 
     const classNameCoverOption = 'text-xs cursor-pointer font-medium p-2 hover:bg-[rgb(239,239,238)]';
@@ -341,6 +358,7 @@ const Main = (props) => {
                     <input
                         ref={titleRef}
                         placeholder="Untitled"
+                        id="page-title"
                         value={state.pageTitle || ''}
                         onChange={(e) => setState(prev => ({...prev, pageTitle: e.target.value, status: 2}))}
                         type="text"
