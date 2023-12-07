@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
 
 import data from '@emoji-mart/data';
+import { v4 as uuidv4 } from 'uuid';
 
 import { storage } from "core/firebase/firebase";
 import { ref, listAll, getDownloadURL } from "firebase/storage";
@@ -35,8 +36,9 @@ const Main = (props) => {
         isVisibleComment: false,
         pageTitle: currPage?.page_name || '',
         status: 0,
-        numberOfBlock: [],
         idBlockActive: '',
+        blocks: [],
+        deleteId: 0,
     });
     
     const titleRef = useRef(null);
@@ -270,9 +272,40 @@ const Main = (props) => {
         return () => clearTimeout(saveTimeout);
     },[state.pageTitle, state.status]);
 
-    const handleEnter = (e, idActive) => {
+    // render block
+    const handleEnter = (e, currIndex) => {
         if (e.key === 'Enter') {
-            setState(prev => ({...prev, numberOfBlock: [...prev.numberOfBlock, 0], idBlockActive: idActive}));
+            setState(prev => {
+                const newBlocks = [...prev.blocks];
+                const id = uuidv4();
+
+                const blockElement = (
+                    <div
+                        className="my-2 w-full"
+                        key={`block-${id}`}
+                        id={`block-parent-id-${id}`}
+                    >
+                        <Block
+                            id={`block-id-${id}`}
+                            handleEnter={handleEnter} 
+                            handleArrow={handleArrow}
+                            handleDelete={handleDelete}
+                            handleClickInBlock={handleClickInBlock}
+                            index={id}
+                            idActive={state.idBlockActive}
+                        />
+                    </div>
+                );
+
+                
+                if (currIndex !== undefined && currIndex >= -1 && currIndex < newBlocks.length - 1) {
+                    newBlocks.splice(currIndex + 1, 0, blockElement);
+                } else {
+                    newBlocks.push(blockElement);
+                }
+            
+                return { ...prev, blocks: newBlocks };
+            });            
         };
     };
 
@@ -285,7 +318,6 @@ const Main = (props) => {
     };
 
     const handleDelete = async (index, prevId) => {
-        const element = document.getElementById(`block-parent-id-${index}`);
         let prevElement;
 
         if (prevId !== undefined) {
@@ -296,7 +328,7 @@ const Main = (props) => {
         }
 
         if (prevElement) {
-            element.remove();
+            setState(prev => ({...prev, deleteId: index}));
             prevElement.focus();
 
             const range = document.createRange();
@@ -312,11 +344,22 @@ const Main = (props) => {
         }
     };
 
-    // display placeholder of block
+    const handleClickInBlock = (id) => {
+        setState(prev => ({...prev, idBlockActive: id}));
+    };
+
+    // handle remove block (setState)
     useEffect(() => {
-        const blocks = document.querySelectorAll('[id^="block-id-"]');
-        setState(prev => ({...prev, idBlockActive: blocks[blocks.length - 1]?.id}));
-    },[state.numberOfBlock]);
+        const blocks = state.blocks;
+        if (state.deleteId) {
+            const blocksCopy = [...blocks];
+            const blockToRemove = blocksCopy.find((item) => `block-${state.deleteId}` === item.key);
+            if (blockToRemove) {
+                const updateBlocks = blocksCopy.filter((item) => `block-${state.deleteId}` !== item.key);
+                setState(prev => ({...prev, blocks: updateBlocks}))
+            }
+        }
+    }, [state.deleteId]);
 
     const classNameCoverOption = 'text-xs cursor-pointer font-medium p-2 hover:bg-[rgb(239,239,238)]';
 
@@ -397,24 +440,9 @@ const Main = (props) => {
                         </div>
                     )}
                     <div className="flex flex-col w-full">
-                        {state.numberOfBlock.map((item, index) => {
-                            return (
-                                <div
-                                    className="my-2 w-full"
-                                    key={`block-${index}`}
-                                    id={`block-parent-id-${index}`}
-                                >
-                                    <Block
-                                        id={`block-id-${index}`}
-                                        handleEnter={handleEnter} 
-                                        handleArrow={handleArrow}
-                                        handleDelete={handleDelete}
-                                        index={index}
-                                        idActive={state.idBlockActive}
-                                    />
-                                </div>
-                            )
-                        })}
+                        {state.blocks.map((item) => (
+                            item
+                        ))}
                     </div>
                 </div>
             </div>

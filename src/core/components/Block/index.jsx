@@ -4,7 +4,7 @@ import './block.css';
 
 const Block = (props) => {
 
-    const { handleEnter, index, handleArrow, id, handleDelete, idActive } = props;
+    const { handleEnter, index, handleArrow, id, handleDelete, idActive, handleClickInBlock } = props;
 
     const [state, setState] = useState({
         textContent: '',
@@ -21,6 +21,20 @@ const Block = (props) => {
         };
     },[]);
 
+    useEffect(() => {
+        const handleClickBlock = (e) => {
+            if (textBlockRef.current && textBlockRef.current.contains(e.target)) {
+                handleClickInBlock(id);
+            };
+        };
+
+        document.addEventListener('mousedown', handleClickBlock);
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickBlock);
+        };
+    },[]);
+
     // handle onChange content
     const handleContentChange = (e) => {
         setState(prev => ({...prev, textContent: e.target.textContent}));
@@ -31,18 +45,20 @@ const Block = (props) => {
         const blocks = document.querySelectorAll('[id^="block-id-"]');
         let prevEleIndex = null;
         let nextEleIndex = null;
+        let currEleIndex = null;
 
         blocks.forEach((item,index) => {
             if (item.id === id) {
                 prevEleIndex = index - 1;
                 nextEleIndex = index + 1;
+                currEleIndex = index
                 return;
             }
         });
 
         if (e.key === 'Enter') {
             e.preventDefault();
-            handleEnter(e);
+            handleEnter(e, currEleIndex);
         };
 
         if (e.ctrlKey && e.key === 'a') {
