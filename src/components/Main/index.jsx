@@ -18,7 +18,6 @@ import { ReactComponent as IconPhoto } from 'assets/icons/iconPhoto.svg';
 
 
 import allImages from "assets/img";
-import { doc } from "firebase/firestore";
 
 const Main = (props) => {
 
@@ -37,6 +36,7 @@ const Main = (props) => {
         pageTitle: currPage?.page_name || '',
         status: 0,
         numberOfBlock: [],
+        idBlockActive: '',
     });
     
     const titleRef = useRef(null);
@@ -270,9 +270,9 @@ const Main = (props) => {
         return () => clearTimeout(saveTimeout);
     },[state.pageTitle, state.status]);
 
-    const handleEnter = (e) => {
+    const handleEnter = (e, idActive) => {
         if (e.key === 'Enter') {
-            setState(prev => ({...prev, numberOfBlock: [...prev.numberOfBlock, 0]}));
+            setState(prev => ({...prev, numberOfBlock: [...prev.numberOfBlock, 0], idBlockActive: idActive}));
         };
     };
 
@@ -280,6 +280,7 @@ const Main = (props) => {
         const element = document.getElementById(`${prevOrNextId}`);
         if (element) {
             element.focus();
+            setState(prev => ({...prev, idBlockActive: prevOrNextId}));
         };
     };
 
@@ -289,12 +290,13 @@ const Main = (props) => {
 
         if (prevId !== undefined) {
             prevElement = document.getElementById(`${prevId}`);
+            setState(prev => ({...prev, idBlockActive: prevId}));
         } else {
             prevElement = document.getElementById('page-title')
         }
 
         if (prevElement) {
-            await element.remove();
+            element.remove();
             prevElement.focus();
 
             const range = document.createRange();
@@ -309,6 +311,12 @@ const Main = (props) => {
             }
         }
     };
+
+    // display placeholder of block
+    useEffect(() => {
+        const blocks = document.querySelectorAll('[id^="block-id-"]');
+        setState(prev => ({...prev, idBlockActive: blocks[blocks.length - 1]?.id}));
+    },[state.numberOfBlock]);
 
     const classNameCoverOption = 'text-xs cursor-pointer font-medium p-2 hover:bg-[rgb(239,239,238)]';
 
@@ -401,7 +409,8 @@ const Main = (props) => {
                                         handleEnter={handleEnter} 
                                         handleArrow={handleArrow}
                                         handleDelete={handleDelete}
-                                        index={index} 
+                                        index={index}
+                                        idActive={state.idBlockActive}
                                     />
                                 </div>
                             )

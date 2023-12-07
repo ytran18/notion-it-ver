@@ -4,11 +4,12 @@ import './block.css';
 
 const Block = (props) => {
 
-    const { handleEnter, index, handleArrow, id, handleDelete } = props;
+    const { handleEnter, index, handleArrow, id, handleDelete, idActive } = props;
 
     const [state, setState] = useState({
         textContent: '',
         isFirstTimeRender: true,
+        isBlockActive: false,
     });
 
     const textBlockRef = useRef(null); // text block ref
@@ -73,7 +74,7 @@ const Block = (props) => {
             <div
                 id={id}
                 ref={textBlockRef}
-                className={`w-full ${state.textContent.length > 0 ? 'text-block-placeholder-hidden' : 'text-block-placeholder'} relative h-full min-h-[1rem] text-[rgb(55,53,47)] font-medium`} 
+                className={`w-full ${(state.textContent.length > 0 || idActive !== id) ? 'text-block-placeholder-hidden' : 'text-block-placeholder'} relative h-full min-h-[1rem] text-[rgb(55,53,47)] font-medium`} 
                 placeholder="Press 'space' for AI, '/' for commands…" 
                 contentEditable={true}
                 style={{maxWwidth: '100%', width: '100%', whiteSpace: 'pre-wrap', wordBreak: 'break-word', caretColor: 'rgb(55, 53, 47)', padding: '3px 2px', outline: 'none'}}
