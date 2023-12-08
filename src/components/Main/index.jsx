@@ -279,23 +279,18 @@ const Main = (props) => {
                 const newBlocks = [...prev.blocks];
                 const id = uuidv4();
 
-                const blockElement = (
-                    <div
-                        className="my-2 w-full"
-                        key={`block-${id}`}
-                        id={`block-parent-id-${id}`}
-                    >
-                        <Block
-                            id={`block-id-${id}`}
-                            handleEnter={handleEnter} 
-                            handleArrow={handleArrow}
-                            handleDelete={handleDelete}
-                            handleClickInBlock={handleClickInBlock}
-                            index={id}
-                            idActive={state.idBlockActive}
-                        />
-                    </div>
-                );
+                const blockElement = {
+                    element: (
+                        <div
+                            className="my-2 w-full"
+                            key={`block-${id}`}
+                            id={`block-parent-id-${id}`}
+                        >
+                            
+                        </div>
+                    ),
+                    uuid: id, 
+                };
 
                 
                 if (currIndex !== undefined && currIndex >= -1 && currIndex < newBlocks.length - 1) {
@@ -304,7 +299,7 @@ const Main = (props) => {
                     newBlocks.push(blockElement);
                 }
             
-                return { ...prev, blocks: newBlocks };
+                return { ...prev, blocks: newBlocks, idBlockActive: `block-id-${id}` };
             });            
         };
     };
@@ -440,9 +435,25 @@ const Main = (props) => {
                         </div>
                     )}
                     <div className="flex flex-col w-full">
-                        {state.blocks.map((item) => (
-                            item
-                        ))}
+                        {state.blocks.map((item) => {
+                            return (
+                                <React.Fragment key={item.uuid}>
+                                    {React.cloneElement(item.element, { 
+                                        children: (
+                                            <Block
+                                                id={`block-id-${item.uuid}`}
+                                                handleEnter={handleEnter} 
+                                                handleArrow={handleArrow}
+                                                handleDelete={handleDelete}
+                                                handleClickInBlock={handleClickInBlock}
+                                                index={item.uuid}
+                                                idActive={state.idBlockActive}
+                                            />
+                                        )
+                                    })}
+                                </React.Fragment>
+                            )
+                        })}
                     </div>
                 </div>
             </div>
