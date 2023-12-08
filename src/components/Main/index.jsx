@@ -272,6 +272,22 @@ const Main = (props) => {
         return () => clearTimeout(saveTimeout);
     },[state.pageTitle, state.status]);
 
+    // handle click in page title
+
+    useEffect(() => {
+        const handleClickBlock = (e) => {
+            if (titleRef.current && titleRef.current.contains(e.target)) {
+                setState(prev => ({...prev, idBlockActive: 'undefined'}));
+            };
+        };
+
+        document.addEventListener('mousedown', handleClickBlock);
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickBlock);
+        };
+    },[]);
+
     // render block
     const handleEnter = (e, currIndex) => {
         if (e.key === 'ArrowDown') {
