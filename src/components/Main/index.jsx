@@ -274,6 +274,13 @@ const Main = (props) => {
 
     // render block
     const handleEnter = (e, currIndex) => {
+        if (e.key === 'ArrowDown') {
+            if (state.blocks.length > 0) {
+                const element = document.getElementById(`block-id-${state.blocks?.[0]?.uuid}`);
+                if (element) element.focus();
+            };
+        };
+
         if (e.key === 'Enter') {
             setState(prev => {
                 const newBlocks = [...prev.blocks];
@@ -305,7 +312,13 @@ const Main = (props) => {
     };
 
     const handleArrow = (index, type, prevOrNextId) => {
-        const element = document.getElementById(`${prevOrNextId}`);
+        let element;
+        if (type === 'ArrowUp' && prevOrNextId === undefined) {
+            element = document.getElementById('page-title');
+        } else {
+            element = document.getElementById(`${prevOrNextId}`);
+        };
+
         if (element) {
             element.focus();
             setState(prev => ({...prev, idBlockActive: prevOrNextId}));
