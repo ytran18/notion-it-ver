@@ -1,5 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 
+import { ReactComponent as IconPlus } from 'assets/icons/iconPlus.svg'
+import { ReactComponent as IconDrag } from 'assets/icons/iconDrag.svg'
+
 import './block.css';
 
 const Block = (props) => {
@@ -10,6 +13,7 @@ const Block = (props) => {
         textContent: '',
         isFirstTimeRender: true,
         isBlockActive: false,
+        isDisplayOptionBtn: false,
     });
 
     const textBlockRef = useRef(null); // text block ref
@@ -85,8 +89,21 @@ const Block = (props) => {
         }
     };
 
+    // handle display option btn 
+    const handleMouseEnter = () => {
+        setState(prev => ({...prev, isDisplayOptionBtn: true}));
+    };
+    
+    const handleMouseLeave = () => {
+        setState(prev => ({...prev, isDisplayOptionBtn: false}));
+    };
+
     return (
-        <div className="w-full h-6 bg-white rounded-md">
+        <div 
+            className="w-full h-6 relative bg-white rounded-md" id="notion-it-block"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+        >
             <div
                 id={id}
                 ref={textBlockRef}
@@ -98,6 +115,16 @@ const Block = (props) => {
                 onInput={handleContentChange}
             >
             </div>
+            {state.isDisplayOptionBtn && (
+                <div className="absolute transition-all duration-300 flex items-center right-full -top-[48%] translate-y-1/2">
+                    <div className="cursor-pointer p-[1px] hover:bg-[rgb(239,239,239)] rounded mx-1">
+                        <IconPlus />
+                    </div>
+                    <div className="cursor-pointer p-[1px] hover:bg-[rgb(239,239,239)] rounded">
+                        <IconDrag />
+                    </div>
+                </div>
+            )}
         </div>
     )
 };
