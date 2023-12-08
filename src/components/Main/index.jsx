@@ -361,9 +361,9 @@ const Main = (props) => {
         const blocks = state.blocks;
         if (state.deleteId) {
             const blocksCopy = [...blocks];
-            const blockToRemove = blocksCopy.find((item) => `block-${state.deleteId}` === item.key);
+            const blockToRemove = blocksCopy.find((item) => `block-${state.deleteId}` === item.element.key);
             if (blockToRemove) {
-                const updateBlocks = blocksCopy.filter((item) => `block-${state.deleteId}` !== item.key);
+                const updateBlocks = blocksCopy.filter((item) => `block-${state.deleteId}` !== item.element.key);
                 setState(prev => ({...prev, blocks: updateBlocks}))
             }
         }
