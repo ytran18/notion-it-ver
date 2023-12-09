@@ -11,6 +11,9 @@ import ModalEmoji from "core/components/ModalEmoji";
 import Comment from "core/components/Comment";
 import Block from "core/components/Block";
 import Loading from "core/components/Loading";
+import ModalListBlocks from "core/components/ModalListBlocks";
+
+import { moveCursorToEndOfLine } from 'core/functions/index';
 
 import { changePageTitle, updatePageCover, updateIcon } from './function';
 
@@ -40,6 +43,7 @@ const Main = (props) => {
         idBlockActive: '',
         blocks: [],
         deleteId: 0,
+        isDisplayModalSelectBlocks: false,
     });
     
     const titleRef = useRef(null);
@@ -341,6 +345,7 @@ const Main = (props) => {
         if (element) {
             element.focus();
             setState(prev => ({...prev, idBlockActive: prevOrNextId}));
+            moveCursorToEndOfLine(element);
         };
     };
 
@@ -357,22 +362,29 @@ const Main = (props) => {
         if (prevElement) {
             setState(prev => ({...prev, deleteId: index}));
             prevElement.focus();
-
-            const range = document.createRange();
-            const sel = window.getSelection();
-            const lastChild = prevElement.lastChild;
-
-            if (lastChild && lastChild.nodeType === Node.TEXT_NODE) {
-                range.selectNodeContents(lastChild);
-                range.collapse(false);
-                sel.removeAllRanges();
-                sel.addRange(range);
-            }
+            moveCursorToEndOfLine(prevElement);
         }
     };
 
     const handleClickInBlock = (id) => {
         setState(prev => ({...prev, idBlockActive: id}));
+    };
+
+    // handle display modal list blocks
+    const handleModalListBlocks = (idActive) => {
+        if (idActive) {
+            const element = document.getElementById(`${idActive}`);
+            setState(prev => ({...prev, idBlockActive: idActive}));
+
+            if (element) {
+                setTimeout(() => {
+                    element.focus();
+                    moveCursorToEndOfLine(element);
+                }, 0);
+            };
+        };
+
+        setState(prev => ({...prev, isDisplayModalSelectBlocks: !prev.isDisplayModalSelectBlocks}));
     };
 
     // handle remove block (setState)
@@ -480,8 +492,10 @@ const Main = (props) => {
                                                         handleArrow={handleArrow}
                                                         handleDelete={handleDelete}
                                                         handleClickInBlock={handleClickInBlock}
+                                                        handleModalListBlocks={handleModalListBlocks}
                                                         index={item.uuid}
                                                         idActive={state.idBlockActive}
+                                                        isDisplayModalSelectBlocks={state.isDisplayModalSelectBlocks}
                                                     />
                                                 )
                                             })}
@@ -491,6 +505,9 @@ const Main = (props) => {
                             </div>
                         </div>
                     </div>
+                    {state.isDisplayModalSelectBlocks && (
+                        <ModalListBlocks handleModalListBlocks={handleModalListBlocks} idActive={state.idBlockActive}/>
+                    )}
                 </>
             ): (
                 <Loading />

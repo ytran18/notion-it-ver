@@ -7,7 +7,7 @@ import './block.css';
 
 const Block = (props) => {
 
-    const { handleEnter, index, handleArrow, id, handleDelete, idActive, handleClickInBlock } = props;
+    const { handleEnter, index, handleArrow, id, handleDelete, idActive, handleClickInBlock, handleModalListBlocks } = props;
 
     const [state, setState] = useState({
         textContent: '',
@@ -101,7 +101,7 @@ const Block = (props) => {
             if (state.isFirstTimeRender) e?.preventDefault();
             setState(prev => ({...prev, isFirstTimeRender: false}));
             handleDelete(index, blocks[prevEleIndex]?.id);
-        }
+        };
     };
 
     // handle display option btn 
@@ -114,33 +114,38 @@ const Block = (props) => {
     };
 
     return (
-        <div 
-            className="w-full h-6 relative bg-white rounded-md" id="notion-it-block"
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-        >
-            <div
-                id={id}
-                ref={textBlockRef}
-                className={`w-full ${(state.textContent.length > 0 || idActive !== id) ? 'text-block-placeholder-hidden' : 'text-block-placeholder'} relative h-full min-h-[1rem] text-[rgb(55,53,47)] font-medium`} 
-                placeholder="Press 'space' for AI, '/' for commands…" 
-                contentEditable={true}
-                style={{maxWwidth: '100%', width: '100%', whiteSpace: 'pre-wrap', wordBreak: 'break-word', caretColor: 'rgb(55, 53, 47)', padding: '3px 2px', outline: 'none'}}
-                onKeyDown={handleKeyDown}
-                onInput={handleContentChange}
+        <>
+            <div 
+                className="w-full h-6 relative bg-white rounded-md" id="notion-it-block"
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
             >
-            </div>
-            {state.isDisplayOptionBtn && (
-                <div className="absolute transition-all duration-300 flex items-center right-full -top-[48%] translate-y-1/2">
-                    <div className="cursor-pointer p-[1px] hover:bg-[rgb(239,239,239)] rounded mx-1">
-                        <IconPlus />
-                    </div>
-                    <div className="cursor-pointer p-[1px] hover:bg-[rgb(239,239,239)] rounded">
-                        <IconDrag />
-                    </div>
+                <div
+                    id={id}
+                    ref={textBlockRef}
+                    className={`w-full ${(state.textContent.length > 0 || idActive !== id) ? 'text-block-placeholder-hidden' : 'text-block-placeholder'} relative h-full min-h-[1rem] text-[rgb(55,53,47)] font-medium`} 
+                    placeholder="Press 'space' for AI, '/' for commands…" 
+                    contentEditable={true}
+                    style={{maxWwidth: '100%', width: '100%', whiteSpace: 'pre-wrap', wordBreak: 'break-word', caretColor: 'rgb(55, 53, 47)', padding: '3px 2px', outline: 'none'}}
+                    onKeyDown={handleKeyDown}
+                    onInput={handleContentChange}
+                >
                 </div>
-            )}
-        </div>
+                {state.isDisplayOptionBtn && (
+                    <div className="absolute transition-all duration-300 flex items-center right-full -top-[48%] translate-y-1/2">
+                        <div
+                            onClick={() => handleModalListBlocks('')}
+                            className="cursor-pointer p-[1px] hover:bg-[rgb(239,239,239)] rounded mx-1"
+                        >
+                            <IconPlus />
+                        </div>
+                        <div className="cursor-pointer p-[1px] hover:bg-[rgb(239,239,239)] rounded">
+                            <IconDrag />
+                        </div>
+                    </div>
+                )}
+            </div>
+        </>
     )
 };
 

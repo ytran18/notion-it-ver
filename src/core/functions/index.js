@@ -56,4 +56,17 @@ const createImageFromInitials = (size, name, color) => {
     return canvas.toDataURL()
 };
 
-export { getHoursAgo, getRandomColor, createImageFromInitials };
+const moveCursorToEndOfLine = (element) => {
+    const range = document.createRange();
+    const sel = window.getSelection();
+    const lastChild = element.lastChild;
+
+    if (lastChild && lastChild.nodeType === Node.TEXT_NODE) {
+        range.selectNodeContents(lastChild);
+        range.collapse(false);
+        sel.removeAllRanges();
+        sel.addRange(range);
+    }
+} 
+
+export { getHoursAgo, getRandomColor, createImageFromInitials, moveCursorToEndOfLine };
