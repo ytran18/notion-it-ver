@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 
 import data from '@emoji-mart/data';
 import { v4 as uuidv4 } from 'uuid';
@@ -15,7 +15,7 @@ import Loading from "core/components/Loading";
 import { changePageTitle, updatePageCover, updateIcon } from './function';
 
 import { ReactComponent as IconSmile } from 'assets/icons/iconSmile.svg';
-import { ReactComponent as IconChatSolid } from 'assets/icons/iconChatSolid.svg';
+// import { ReactComponent as IconChatSolid } from 'assets/icons/iconChatSolid.svg';
 import { ReactComponent as IconPhoto } from 'assets/icons/iconPhoto.svg';
 
 
@@ -59,7 +59,7 @@ const Main = (props) => {
     const optionHeader = [
         { label: 'Add icon', icon: IconSmile, type: 'icon' },
         { label: 'Add cover', icon: IconPhoto, type: 'cover' },
-        { label: 'Add comment', icon: IconChatSolid, type: 'comment' },
+        // { label: 'Add comment', icon: IconChatSolid, type: 'comment' },
     ];
 
     useEffect(() => {

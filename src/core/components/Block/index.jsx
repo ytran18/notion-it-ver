@@ -25,6 +25,21 @@ const Block = (props) => {
         };
     },[]);
 
+    // remove br tag when render
+    if (textBlockRef.current) {
+        const element = textBlockRef.current.children;
+
+        Array.from(element).forEach(divElement => {
+            if (divElement.tagName.toLowerCase() === 'div') {
+                const brElements = divElement.querySelectorAll('br');
+    
+                brElements.forEach(brElement => {
+                    brElement.parentNode.removeChild(brElement);
+                });
+            }
+        });
+    }
+
     useEffect(() => {
         const handleClickBlock = (e) => {
             if (textBlockRef.current && textBlockRef.current.contains(e.target)) {
