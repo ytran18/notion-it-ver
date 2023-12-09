@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 
-import { Await, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import Header from "components/Header";
 import Sidebar from "components/Sidebar";
 import Main from "components/Main";
+
+// Loading component
+import Loading from "core/components/Loading";
 
 // redux
 import { useDispatch } from 'react-redux';
@@ -222,48 +225,49 @@ const MainPage = () => {
     };
 
     return (
-        <div
-            className="w-screen h-screen flex"
-            onContextMenu={(e) => {
-                e.preventDefault();
-            }}
-        >
-            {state.isShowSidebar && (
-                <div className="h-full w-[220px] min-w-[220px] max-w-[480px] z-20" id="sidebar">
-                    <Sidebar 
-                        pages={state.pages} 
-                        handleSelectPage={handleSelectPage} 
-                        handleAddPage={handleAddPage} 
-                        handleOption={handleOption}
-                        handleHideSidebar={handleHideSidebar}
-                        favoritesPages={state.favoritesPages}
-                        workspacePages={state.workspacePages}
-                        sharedPages={state.sharedPages}
-                        isShowSidebar={state.isShowSidebar}
-                        deletedPages={state.deletedPages}
-                        handleTrash={handleTrash}
-                    />
-                </div>
+        <div className="w-screen h-screen flex">
+            {state.pages.length > 0 ? (
+                <>
+                    {state.isShowSidebar && (
+                        <div className="h-full w-[220px] min-w-[220px] max-w-[480px] z-20" id="sidebar">
+                            <Sidebar 
+                                pages={state.pages} 
+                                handleSelectPage={handleSelectPage} 
+                                handleAddPage={handleAddPage} 
+                                handleOption={handleOption}
+                                handleHideSidebar={handleHideSidebar}
+                                favoritesPages={state.favoritesPages}
+                                workspacePages={state.workspacePages}
+                                sharedPages={state.sharedPages}
+                                isShowSidebar={state.isShowSidebar}
+                                deletedPages={state.deletedPages}
+                                handleTrash={handleTrash}
+                            />
+                        </div>
+                    )}
+                    <div id="resizeHandler" className='resize-handler' />
+                    <div className="flex flex-col w-full h-full z-10" id="right-panel">
+                        <div className="">
+                            <Header 
+                                currPage={state.currPage}
+                                isShowSidebar={state.isShowSidebar}
+                                handleFavorite={handleFavorite}
+                                handleHideSidebar={handleHideSidebar}
+                            />
+                        </div>
+                        <div className="main z-20">
+                            <Main 
+                                currPage={state.currPage}
+                                isCreatePage={state.isCreatePage}
+                                getAllPage={getAllPage}
+                                currUser={user}
+                            />
+                        </div>
+                    </div>
+                </>
+            ) : (
+                <Loading />
             )}
-            <div id="resizeHandler" className='resize-handler' />
-            <div className="flex flex-col w-full h-full z-10" id="right-panel">
-                <div className="">
-                    <Header 
-                        currPage={state.currPage}
-                        isShowSidebar={state.isShowSidebar}
-                        handleFavorite={handleFavorite}
-                        handleHideSidebar={handleHideSidebar}
-                    />
-                </div>
-                <div className="main z-20">
-                    <Main 
-                        currPage={state.currPage}
-                        isCreatePage={state.isCreatePage}
-                        getAllPage={getAllPage}
-                        currUser={user}
-                    />
-                </div>
-            </div>
         </div>
     );
 };

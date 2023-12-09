@@ -10,6 +10,7 @@ import ModalBackgroundCover from "core/components/ModalBackgroundCover";
 import ModalEmoji from "core/components/ModalEmoji";
 import Comment from "core/components/Comment";
 import Block from "core/components/Block";
+import Loading from "core/components/Loading";
 
 import { changePageTitle, updatePageCover, updateIcon } from './function';
 
@@ -391,103 +392,109 @@ const Main = (props) => {
 
     return (
         <div className="cursor-text relative z-10 h-full w-full flex flex-col items-center overflow-y-auto">
-            <div 
-                onMouseEnter={handleMouseEnterCoverOption} 
-                onMouseLeave={handleMouseLeaveCoverOption}
-                style={{
-                    backgroundImage: `url(${state.randomImg})`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                }}
-                className={`${state.hasCoverBackground ? 'block opacity-100' : 'hidden opacity-0'} h-[30vh] min-h-[30vh] w-full relative cursor-default transition-opacity duration-300`}
-            >
-                <div className={`absolute flex bg-white items-center bottom-2 rounded-md right-1/4 transition-opacity duration-[270ms] ${state.isDisplayCoverOption ? 'opacity-100' : 'opacity-0'}`}>
+            {Object.keys(currPage).length > 0 ? (
+                <>
                     <div 
-                        className={`${classNameCoverOption} rounded-tl-md rounded-bl-md border-r`}
-                        onClick={() => handleModalCover('add')}
+                        onMouseEnter={handleMouseEnterCoverOption} 
+                        onMouseLeave={handleMouseLeaveCoverOption}
+                        style={{
+                            backgroundImage: `url(${state.randomImg})`,
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center',
+                        }}
+                        className={`${state.hasCoverBackground ? 'block opacity-100' : 'hidden opacity-0'} h-[30vh] min-h-[30vh] w-full relative cursor-default transition-opacity duration-300`}
                     >
-                        Change cover
-                    </div>
-                    <div className={`${classNameCoverOption} rounded-tr-md rounded-br-md`}>Reposition</div>
-                </div>
-                {state.isVisibleModalCoverBackground && (
-                    <ModalBackgroundCover handleModalCover={handleModalCover} handleChangeBg={handleChangeBg}/>
-                )}
-            </div>
-            <div className={`w-[65%] ${state.hasCoverBackground ? 'pb-14 pt-4' : 'py-14'} h-full`}>
-                {state.isVisibleIconHeader && (
-                    <div 
-                        className={`w-[78px] mb-2 h-[78px] flex items-center justify-center hover:bg-[rgb(239,239,239)] z-10 relative text-7xl cursor-pointer`}
-                    >
-                        <div onClick={() => handleModalEmoji('open')}>{state.randomEmoji}</div>
-                        {state.isVisibleModalEmoji && (
-                            <div className="absolute -bottom-[400px]">
-                                <ModalEmoji handleModalEmoji={handleModalEmoji} onEmojiSelect={onEmojiSelect}/>
+                        <div className={`absolute flex bg-white items-center bottom-2 rounded-md right-1/4 transition-opacity duration-[270ms] ${state.isDisplayCoverOption ? 'opacity-100' : 'opacity-0'}`}>
+                            <div 
+                                className={`${classNameCoverOption} rounded-tl-md rounded-bl-md border-r`}
+                                onClick={() => handleModalCover('add')}
+                            >
+                                Change cover
                             </div>
+                            <div className={`${classNameCoverOption} rounded-tr-md rounded-br-md`}>Reposition</div>
+                        </div>
+                        {state.isVisibleModalCoverBackground && (
+                            <ModalBackgroundCover handleModalCover={handleModalCover} handleChangeBg={handleChangeBg}/>
                         )}
                     </div>
-                )}
-                <div 
-                    className="w-full relative" 
-                    onMouseEnter={handleMouseEnterTitle} 
-                    onMouseLeave={handleMouseLeaveTitle}
-                >
-                    <input
-                        ref={titleRef}
-                        placeholder="Untitled"
-                        id="page-title"
-                        value={state.pageTitle || ''}
-                        onChange={(e) => setState(prev => ({...prev, pageTitle: e.target.value, status: 2}))}
-                        type="text"
-                        onKeyDown={(e) => handleEnter(e, null, true)}
-                        className="w-full mt-8 outline-none truncate text-4xl py-3 h-14 text-[rgb(55,53,47)] font-bold placeholder:opacity-50"
-                    />
-                    <div className={`absolute ${state.isDisplayOption ? 'opacity-100' : 'opacity-0'} -top-0 transition-opacity duration-[270ms] w-full flex flex-wrap`}>
-                        {
-                            state.isDisplayOption && (
-                                optionHeader.map((item, index) => {
-                                    return (
-                                        <div 
-                                            className={`${state.hasCoverBackground && item.label === 'Add cover' ? 'hidden' : 'flex'} ${state.isVisibleIconHeader && item.label === 'Add icon' ? 'hidden' : 'flex'} ${state.isVisibleComment && item.label === 'Add comment' ? 'hidden' : 'flex'}  text-[rgb(175,174,172)] cursor-pointer items-center hover:bg-[rgb(239,239,239)] p-[5px]`}
-                                            key={`option-header-${index}`}
-                                            onClick={() => handleOptionHeader(item.type)}
-                                        >
-                                            <item.icon className="mr-1"/>
-                                            <div className="text-sm font-normal">{item.label}</div>
-                                        </div>
+                    <div className={`w-[65%] ${state.hasCoverBackground ? 'pb-14 pt-4' : 'py-14'} h-full`}>
+                        {state.isVisibleIconHeader && (
+                            <div 
+                                className={`w-[78px] mb-2 h-[78px] flex items-center justify-center hover:bg-[rgb(239,239,239)] z-10 relative text-7xl cursor-pointer`}
+                            >
+                                <div onClick={() => handleModalEmoji('open')}>{state.randomEmoji}</div>
+                                {state.isVisibleModalEmoji && (
+                                    <div className="absolute -bottom-[400px]">
+                                        <ModalEmoji handleModalEmoji={handleModalEmoji} onEmojiSelect={onEmojiSelect}/>
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                        <div 
+                            className="w-full relative" 
+                            onMouseEnter={handleMouseEnterTitle} 
+                            onMouseLeave={handleMouseLeaveTitle}
+                        >
+                            <input
+                                ref={titleRef}
+                                placeholder="Untitled"
+                                id="page-title"
+                                value={state.pageTitle || ''}
+                                onChange={(e) => setState(prev => ({...prev, pageTitle: e.target.value, status: 2}))}
+                                type="text"
+                                onKeyDown={(e) => handleEnter(e, null, true)}
+                                className="w-full mt-8 outline-none truncate text-4xl py-3 h-14 text-[rgb(55,53,47)] font-bold placeholder:opacity-50"
+                            />
+                            <div className={`absolute ${state.isDisplayOption ? 'opacity-100' : 'opacity-0'} -top-0 transition-opacity duration-[270ms] w-full flex flex-wrap`}>
+                                {
+                                    state.isDisplayOption && (
+                                        optionHeader.map((item, index) => {
+                                            return (
+                                                <div 
+                                                    className={`${state.hasCoverBackground && item.label === 'Add cover' ? 'hidden' : 'flex'} ${state.isVisibleIconHeader && item.label === 'Add icon' ? 'hidden' : 'flex'} ${state.isVisibleComment && item.label === 'Add comment' ? 'hidden' : 'flex'}  text-[rgb(175,174,172)] cursor-pointer items-center hover:bg-[rgb(239,239,239)] p-[5px]`}
+                                                    key={`option-header-${index}`}
+                                                    onClick={() => handleOptionHeader(item.type)}
+                                                >
+                                                    <item.icon className="mr-1"/>
+                                                    <div className="text-sm font-normal">{item.label}</div>
+                                                </div>
+                                            )
+                                        })
                                     )
-                                })
-                            )
-                        }
-                    </div>
-                    {state.isVisibleComment && (
-                        <div className="">
-                            <Comment />
+                                }
+                            </div>
+                            {state.isVisibleComment && (
+                                <div className="">
+                                    <Comment />
+                                </div>
+                            )}
+                            <div className="flex flex-col w-full">
+                                {state.blocks.map((item) => {
+                                    return (
+                                        <React.Fragment key={item.uuid}>
+                                            {React.cloneElement(item.element, { 
+                                                children: (
+                                                    <Block
+                                                        id={`block-id-${item.uuid}`}
+                                                        handleEnter={handleEnter} 
+                                                        handleArrow={handleArrow}
+                                                        handleDelete={handleDelete}
+                                                        handleClickInBlock={handleClickInBlock}
+                                                        index={item.uuid}
+                                                        idActive={state.idBlockActive}
+                                                    />
+                                                )
+                                            })}
+                                        </React.Fragment>
+                                    )
+                                })}
+                            </div>
                         </div>
-                    )}
-                    <div className="flex flex-col w-full">
-                        {state.blocks.map((item) => {
-                            return (
-                                <React.Fragment key={item.uuid}>
-                                    {React.cloneElement(item.element, { 
-                                        children: (
-                                            <Block
-                                                id={`block-id-${item.uuid}`}
-                                                handleEnter={handleEnter} 
-                                                handleArrow={handleArrow}
-                                                handleDelete={handleDelete}
-                                                handleClickInBlock={handleClickInBlock}
-                                                index={item.uuid}
-                                                idActive={state.idBlockActive}
-                                            />
-                                        )
-                                    })}
-                                </React.Fragment>
-                            )
-                        })}
                     </div>
-                </div>
-            </div>
+                </>
+            ): (
+                <Loading />
+            )}
         </div>
     );
 };
