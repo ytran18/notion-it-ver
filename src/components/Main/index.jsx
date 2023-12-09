@@ -289,7 +289,7 @@ const Main = (props) => {
     },[]);
 
     // render block
-    const handleEnter = (e, currIndex) => {
+    const handleEnter = (e, currIndex, isTitle) => {
         if (e.key === 'ArrowDown') {
             if (state.blocks.length > 0) {
                 const element = document.getElementById(`block-id-${state.blocks?.[0]?.uuid}`);
@@ -316,8 +316,10 @@ const Main = (props) => {
                 };
 
                 
-                if (currIndex !== undefined && currIndex >= -1 && currIndex < newBlocks.length - 1) {
+                if (currIndex !== undefined && currIndex >= -1 && currIndex < newBlocks.length - 1 && !isTitle) {
                     newBlocks.splice(currIndex + 1, 0, blockElement);
+                } else if (isTitle) {
+                    newBlocks.unshift(blockElement);
                 } else {
                     newBlocks.push(blockElement);
                 }
@@ -437,7 +439,7 @@ const Main = (props) => {
                         value={state.pageTitle || ''}
                         onChange={(e) => setState(prev => ({...prev, pageTitle: e.target.value, status: 2}))}
                         type="text"
-                        onKeyDown={handleEnter}
+                        onKeyDown={(e) => handleEnter(e, null, true)}
                         className="w-full mt-8 outline-none truncate text-4xl py-3 h-14 text-[rgb(55,53,47)] font-bold placeholder:opacity-50"
                     />
                     <div className={`absolute ${state.isDisplayOption ? 'opacity-100' : 'opacity-0'} -top-0 transition-opacity duration-[270ms] w-full flex flex-wrap`}>
