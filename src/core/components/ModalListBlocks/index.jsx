@@ -27,41 +27,43 @@ import InLineEmojiImage from 'assets/img/blocks/inline-emoji.4fda0007.png';
 import GithubImage from 'assets/img/blocks/github-icon.png';
 import MapsImage from 'assets/img/blocks/maps.b1caf3fd.png';
 import FigmaImage from 'assets/img/blocks/figma-icon.png';
+import MermaidImage from 'assets/img/blocks/mermaid.png';
 
 const basicBlocks = [
-    { img: TextImage, title: 'Text', description: 'Just start writting with plain text.' },
-    { img: PageImage, title: 'Page', description: 'Embed a sub-page inside this page.' },
-    { img: TodoImage, title: 'To-do list', description: 'Track tasks with a to-do list.' },
-    { img: Heading1Image, title: 'Heading 1', description: 'Big section heading.' },
-    { img: Heading2Image, title: 'Heading 2', description: 'Medium section heading.' },
-    { img: Heading3Image, title: 'Heading 3', description: 'Small section heading.' },
-    { img: TableImage, title: 'Table', description: 'Add simple tabular content to your page.' },
-    { img: BulletedImage, title: 'Bulleted list', description: 'Create a simple bulleted list.' },
-    { img: NumberedImage, title: 'Numbered list', description: 'Create a list with numbering.' },
-    { img: ToggleImage, title: 'Toggle list', description: 'Toggles can hide and show content inside.' },
-    { img: QuoteImage, title: 'Quote', description: 'Capture a quote.' },
-    { img: DividerImage, title: 'Divider', description: 'Visually devide blocks.' },
-    { img: LinkToPageImage, title: 'Link to page', description: 'Link to an existing page.' },
-    { img: CalloutImage, title: 'Callout', description: 'Make writing stand out.' },
+    { img: TextImage, title: 'Text', description: 'Just start writting with plain text.', type: 'text' },
+    { img: PageImage, title: 'Page', description: 'Embed a sub-page inside this page.', type: 'page' },
+    { img: TodoImage, title: 'To-do list', description: 'Track tasks with a to-do list.', type: 'todo' },
+    { img: Heading1Image, title: 'Heading 1', description: 'Big section heading.', type: 'heading1' },
+    { img: Heading2Image, title: 'Heading 2', description: 'Medium section heading.', type: 'heading2' },
+    { img: Heading3Image, title: 'Heading 3', description: 'Small section heading.', type: 'heading3' },
+    { img: TableImage, title: 'Table', description: 'Add simple tabular content to your page.', type: 'table' },
+    { img: BulletedImage, title: 'Bulleted list', description: 'Create a simple bulleted list.', type: 'bulleted' },
+    { img: NumberedImage, title: 'Numbered list', description: 'Create a list with numbering.', type: 'numbered' },
+    { img: ToggleImage, title: 'Toggle list', description: 'Toggles can hide and show content inside.', type: 'toggle' },
+    { img: QuoteImage, title: 'Quote', description: 'Capture a quote.', type: 'quote' },
+    { img: DividerImage, title: 'Divider', description: 'Visually devide blocks.', type: 'divider' },
+    { img: LinkToPageImage, title: 'Link to page', description: 'Link to an existing page.', type: 'linktopage' },
+    { img: CalloutImage, title: 'Callout', description: 'Make writing stand out.', type: 'callout' },
 ];
 
 const mediaBlocks = [
-    { img: ImageImage, title: 'Image', description: 'Upload or embed with a link.' },
-    { img: WebBookmarkImage, title: 'Web Bookmark', description: 'Save a link as a visual bookmark.' },
-    { img: VideoImage, title: 'Video', description: 'Embed from Youtube, Vimeo...' },
-    { img: AudioImage, title: 'Audio', description: 'Embed from Soundcloud, Spotify...' },
-    { img: CodeImage, title: 'Code', description: 'Capture a code snippet.' },
-    { img: FileImage, title: 'File', description: 'Upload or embed with a link.' },
+    { img: ImageImage, title: 'Image', description: 'Upload or embed with a link.', type: 'image' },
+    { img: WebBookmarkImage, title: 'Web Bookmark', description: 'Save a link as a visual bookmark.', type: 'bookmark' },
+    { img: VideoImage, title: 'Video', description: 'Embed from Youtube, Vimeo...', type: 'video' },
+    { img: AudioImage, title: 'Audio', description: 'Embed from Soundcloud, Spotify...', type: 'audio' },
+    { img: CodeImage, title: 'Code', description: 'Capture a code snippet.', type: 'code' },
+    { img: FileImage, title: 'File', description: 'Upload or embed with a link.', type: 'file' },
 ];
 
 const inlineBlocks = [
-    { img: InLineEmojiImage, title: 'Emoji', description: 'Search for an emoji to place in text.' },
+    { img: InLineEmojiImage, title: 'Emoji', description: 'Search for an emoji to place in text.', type: 'inlineEmoji' },
 ];
 
 const toolsBlocks = [
-    { img: GithubImage, title: 'Github', description: 'Github actions.' },
-    { img: MapsImage, title: 'Google Maps', description: 'Embed a Google Map.' },
-    { img: FigmaImage, title: 'Figma', description: 'View figma design directly in Notion for IT.' },
+    { img: GithubImage, title: 'Github', description: 'Github actions.', type: 'github' },
+    { img: MapsImage, title: 'Google Maps', description: 'Embed a Google Map.', type: 'maps' },
+    { img: FigmaImage, title: 'Figma', description: 'View figma design directly in Notion for IT.', type: 'figma' },
+    { img: MermaidImage, title: 'Mermaid', description: 'Create a diagram by writing code.', type: 'mermaid' },
 ];
 
 const ModalListBlocks = (props) => {
