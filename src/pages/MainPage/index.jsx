@@ -261,6 +261,7 @@ const MainPage = () => {
                                 isCreatePage={state.isCreatePage}
                                 getAllPage={getAllPage}
                                 currUser={user}
+                                isShowSidebar={state.isShowSidebar}
                             />
                         </div>
                     </div>

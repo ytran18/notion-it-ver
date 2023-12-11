@@ -26,7 +26,7 @@ import allImages from "assets/img";
 
 const Main = (props) => {
 
-    const { currPage, isCreatePage, getAllPage, currUser } = props;
+    const { currPage, isCreatePage, getAllPage, currUser, isShowSidebar } = props;
 
     const [state, setState] = useState({
         hasCoverBackground: false,
@@ -506,7 +506,11 @@ const Main = (props) => {
                         </div>
                     </div>
                     {state.isDisplayModalSelectBlocks && (
-                        <ModalListBlocks handleModalListBlocks={handleModalListBlocks} idActive={state.idBlockActive}/>
+                        <ModalListBlocks 
+                            handleModalListBlocks={handleModalListBlocks} 
+                            idActive={state.idBlockActive}
+                            isShowSidebar={isShowSidebar}
+                        />
                     )}
                 </>
             ): (
