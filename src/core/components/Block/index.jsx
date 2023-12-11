@@ -134,7 +134,7 @@ const Block = (props) => {
                 {state.isDisplayOptionBtn && (
                     <div className="absolute transition-all duration-300 flex items-center right-full -top-[48%] translate-y-1/2">
                         <div
-                            onClick={() => handleModalListBlocks('')}
+                            onClick={() => handleModalListBlocks(id)}
                             className="cursor-pointer p-[1px] hover:bg-[rgb(239,239,239)] rounded mx-1"
                         >
                             <IconPlus />

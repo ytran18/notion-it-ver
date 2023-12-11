@@ -68,7 +68,7 @@ const toolsBlocks = [
 
 const ModalListBlocks = (props) => {
 
-    const { handleModalListBlocks, idActive, isShowSidebar } = props;
+    const { handleModalListBlocks, idActive, isShowSidebar, handleSelectBlock, idSelect } = props;
 
     const modalRef = useRef(null);
 
@@ -97,7 +97,14 @@ const ModalListBlocks = (props) => {
                     {basicBlocks.map((item, index) => {
                         return (
                             <div className="px-1" key={`block-preview-item-${index}`}>
-                                <BlockPreview img={item.img} title={item.title} description={item.description} />
+                                <BlockPreview 
+                                    img={item.img} 
+                                    title={item.title} 
+                                    description={item.description} 
+                                    type={item.type}
+                                    handleSelectBlock={handleSelectBlock}
+                                    idSelect={idSelect}
+                                />
                             </div>
                         )
                     })}
@@ -107,7 +114,14 @@ const ModalListBlocks = (props) => {
                     {mediaBlocks.map((item, index) => {
                         return (
                             <div className="px-1" key={`block-preview-item-${index}`}>
-                                <BlockPreview img={item.img} title={item.title} description={item.description} />
+                                <BlockPreview 
+                                    img={item.img} 
+                                    title={item.title} 
+                                    description={item.description} 
+                                    type={item.type}
+                                    handleSelectBlock={handleSelectBlock}
+                                    idSelect={idSelect}
+                                />
                             </div>
                         )
                     })}
@@ -117,7 +131,14 @@ const ModalListBlocks = (props) => {
                     {inlineBlocks.map((item, index) => {
                         return (
                             <div className="px-1" key={`block-preview-item-${index}`}>
-                                <BlockPreview img={item.img} title={item.title} description={item.description} />
+                                <BlockPreview 
+                                    img={item.img} 
+                                    title={item.title} 
+                                    description={item.description} 
+                                    type={item.type}
+                                    handleSelectBlock={handleSelectBlock}
+                                    idSelect={idSelect}
+                                />
                             </div>
                         )
                     })}
@@ -127,7 +148,14 @@ const ModalListBlocks = (props) => {
                     {toolsBlocks.map((item, index) => {
                         return (
                             <div className="px-1" key={`block-preview-item-${index}`}>
-                                <BlockPreview img={item.img} title={item.title} description={item.description} />
+                                <BlockPreview 
+                                    img={item.img} 
+                                    title={item.title} 
+                                    description={item.description} 
+                                    type={item.type}
+                                    handleSelectBlock={handleSelectBlock}
+                                    idSelect={idSelect}
+                                />
                             </div>
                         )
                     })}

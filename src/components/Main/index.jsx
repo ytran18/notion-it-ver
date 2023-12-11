@@ -44,6 +44,7 @@ const Main = (props) => {
         blocks: [],
         deleteId: 0,
         isDisplayModalSelectBlocks: false,
+        idSelect: '',
     });
     
     const titleRef = useRef(null);
@@ -371,10 +372,10 @@ const Main = (props) => {
     };
 
     // handle display modal list blocks
-    const handleModalListBlocks = (idActive) => {
-        if (idActive) {
-            const element = document.getElementById(`${idActive}`);
-            setState(prev => ({...prev, idBlockActive: idActive}));
+    const handleModalListBlocks = (idSelect) => {
+        if (idSelect) {
+            const element = document.getElementById(`${idSelect}`);
+            setState(prev => ({...prev, idBlockActive: idSelect, idSelect: idSelect}));
 
             if (element) {
                 setTimeout(() => {
@@ -399,6 +400,14 @@ const Main = (props) => {
             }
         }
     }, [state.deleteId]);
+
+    // handle select block
+    const handleSelectBlock = (type, id) => {
+        // type: type of block
+        // id: id of block select
+        console.log(id, type);
+        handleModalListBlocks(id);
+    };
 
     const classNameCoverOption = 'text-xs cursor-pointer font-medium p-2 hover:bg-[rgb(239,239,238)]';
 
@@ -509,7 +518,9 @@ const Main = (props) => {
                         <ModalListBlocks 
                             handleModalListBlocks={handleModalListBlocks} 
                             idActive={state.idBlockActive}
+                            idSelect={state.idSelect}
                             isShowSidebar={isShowSidebar}
+                            handleSelectBlock={handleSelectBlock}
                         />
                     )}
                 </>
