@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 
 import data from '@emoji-mart/data';
 import { v4 as uuidv4 } from 'uuid';
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 
 import ModalBackgroundCover from "core/components/ModalBackgroundCover";
 import ModalEmoji from "core/components/ModalEmoji";
@@ -356,9 +357,12 @@ const Main = (props) => {
     const handleSelectBlock = (type, id) => {
         // type: type of block
         // id: id of block select
-        console.log(id, type);
         handleModalListBlocks(id);
     };
+
+    const onMoveBlock = (result) => {
+        console.log(result);
+    }
 
     const classNameCoverOption = 'text-xs cursor-pointer font-medium p-2 hover:bg-[rgb(239,239,238)]';
 
@@ -440,29 +444,51 @@ const Main = (props) => {
                                     <Comment />
                                 </div>
                             )}
-                            <div className="flex flex-col w-full">
-                                {state.blocks.map((item) => {
-                                    return (
-                                        <React.Fragment key={item.uuid}>
-                                            {React.cloneElement(item.element, { 
-                                                children: (
-                                                    <Block
-                                                        id={`block-id-${item.uuid}`}
-                                                        handleEnter={handleEnter} 
-                                                        handleArrow={handleArrow}
-                                                        handleDelete={handleDelete}
-                                                        handleClickInBlock={handleClickInBlock}
-                                                        handleModalListBlocks={handleModalListBlocks}
-                                                        index={item.uuid}
-                                                        idActive={state.idBlockActive}
-                                                        isDisplayModalSelectBlocks={state.isDisplayModalSelectBlocks}
-                                                    />
-                                                )
-                                            })}
-                                        </React.Fragment>
-                                    )
-                                })}
-                            </div>
+                            <DragDropContext onDragEnd={onMoveBlock}>
+                                <Droppable droppableId='droppable'>
+                                    {(providedDrop) => (
+                                        <div
+                                            {...providedDrop.droppableProps}
+                                            ref={providedDrop.innerRef}
+                                        >
+                                            <div className="flex flex-col w-full">
+                                                {state.blocks.map((item, index) => {
+                                                    return (
+                                                        <React.Fragment key={item.uuid}>
+                                                            <Draggable key={item.uuid} draggableId={item.uuid} index={index}>
+                                                                {(provided) => (
+                                                                    <div
+                                                                        {...provided.draggableProps}
+                                                                        ref={provided.innerRef}
+                                                                        {...provided.dragHandleProps}
+                                                                    >
+                                                                        {React.cloneElement(item.element, { 
+                                                                            children: (
+                                                                                <Block
+                                                                                    id={`block-id-${item.uuid}`}
+                                                                                    handleEnter={handleEnter} 
+                                                                                    handleArrow={handleArrow}
+                                                                                    handleDelete={handleDelete}
+                                                                                    handleClickInBlock={handleClickInBlock}
+                                                                                    handleModalListBlocks={handleModalListBlocks}
+                                                                                    index={item.uuid}
+                                                                                    idActive={state.idBlockActive}
+                                                                                    isDisplayModalSelectBlocks={state.isDisplayModalSelectBlocks}
+                                                                                />
+                                                                            )
+                                                                        })}
+                                                                    </div>
+                                                                )}
+                                                            </Draggable>
+                                                        </React.Fragment>
+                                                    )
+                                                })}
+                                            </div>
+                                            {providedDrop.placeholder}
+                                        </div>
+                                    )}
+                                </Droppable>
+                            </DragDropContext>
                         </div>
                     </div>
                     {state.isDisplayModalSelectBlocks && (
