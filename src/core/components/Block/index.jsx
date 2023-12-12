@@ -1,4 +1,6 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
+
+import Todo from "core/block/Todo";
 
 import { ReactComponent as IconPlus } from 'assets/icons/iconPlus.svg'
 import { ReactComponent as IconDrag } from 'assets/icons/iconDrag.svg'
@@ -7,7 +9,8 @@ import './block.css';
 
 const Block = (props) => {
 
-    const { handleEnter, index, handleArrow, id, handleDelete, idActive, handleClickInBlock, handleModalListBlocks } = props;
+    const { handleEnter, index, handleArrow, id, handleDelete, idActive, handleClickInBlock, 
+            handleModalListBlocks, typeBlock } = props;
 
     const [state, setState] = useState({
         textContent: '',
@@ -100,7 +103,7 @@ const Block = (props) => {
             if (state.textContent.length > 0) return;
             if (state.isFirstTimeRender) e?.preventDefault();
             setState(prev => ({...prev, isFirstTimeRender: false}));
-            handleDelete(index, blocks[prevEleIndex]?.id);
+            handleDelete(index, blocks[prevEleIndex]?.id, typeBlock);
         };
     };
 
@@ -113,6 +116,35 @@ const Block = (props) => {
         setState(prev => ({...prev, isDisplayOptionBtn: false}));
     };
 
+    const renderTextBlock = useMemo(() => {
+        return (
+            <div
+                id={id}
+                ref={textBlockRef}
+                className={`w-full ${(state.textContent.length > 0 || idActive !== id) ? 'text-block-placeholder-hidden' : 'text-block-placeholder'} relative h-full min-h-[1rem] text-[rgb(55,53,47)] font-medium`} 
+                placeholder="Press 'space' for AI, '/' for commands…" 
+                contentEditable={true}
+                style={{maxWwidth: '100%', width: '100%', whiteSpace: 'pre-wrap', wordBreak: 'break-word', caretColor: 'rgb(55, 53, 47)', padding: '3px 2px', outline: 'none'}}
+                onKeyDown={handleKeyDown}
+                onInput={handleContentChange}
+            >
+            </div>
+        )
+    },[state.textContent, idActive]);
+
+    const renderTodoBlock = useMemo(() => {
+        return (
+            <Todo
+                id={id}
+                ref={textBlockRef}
+                textContent={state.textContent}
+                idActive={idActive}
+                handleKeyDown={handleKeyDown}
+                handleContentChange={handleContentChange}
+            />
+        )
+    },[state.textContent, idActive]);
+
     return (
         <>
             <div 
@@ -120,17 +152,10 @@ const Block = (props) => {
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
             >
-                <div
-                    id={id}
-                    ref={textBlockRef}
-                    className={`w-full ${(state.textContent.length > 0 || idActive !== id) ? 'text-block-placeholder-hidden' : 'text-block-placeholder'} relative h-full min-h-[1rem] text-[rgb(55,53,47)] font-medium`} 
-                    placeholder="Press 'space' for AI, '/' for commands…" 
-                    contentEditable={true}
-                    style={{maxWwidth: '100%', width: '100%', whiteSpace: 'pre-wrap', wordBreak: 'break-word', caretColor: 'rgb(55, 53, 47)', padding: '3px 2px', outline: 'none'}}
-                    onKeyDown={handleKeyDown}
-                    onInput={handleContentChange}
-                >
-                </div>
+                {typeBlock === 'text' ? renderTextBlock : null}
+
+                {typeBlock === 'todo' ? renderTodoBlock : null}
+
                 {state.isDisplayOptionBtn && (
                     <div className="absolute transition-all duration-300 flex items-center right-full -top-[48%] translate-y-1/2">
                         <div

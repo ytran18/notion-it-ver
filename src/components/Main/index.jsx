@@ -43,6 +43,7 @@ const Main = (props) => {
         deleteId: 0,
         isDisplayModalSelectBlocks: false,
         idSelect: '',
+        typeBlockSelect: '',
     });
     
     const titleRef = useRef(null);
@@ -267,7 +268,8 @@ const Main = (props) => {
                             
                         </div>
                     ),
-                    uuid: id, 
+                    uuid: id,
+                    type: 'text'
                 };
 
                 
@@ -301,8 +303,13 @@ const Main = (props) => {
     };
 
     // handle delete block
-    const handleDelete = async (index, prevId) => {
+    const handleDelete = async (index, prevId, typeBlock) => {
         let prevElement;
+
+        if (typeBlock !== 'text') {
+
+            return;
+        };
 
         if (prevId !== undefined) {
             prevElement = document.getElementById(`${prevId}`);
@@ -324,21 +331,34 @@ const Main = (props) => {
     };
 
     // handle display modal list blocks
-    const handleModalListBlocks = (idSelect) => {
-        if (idSelect) {
-            const element = document.getElementById(`${idSelect}`);
-            setState(prev => ({...prev, idBlockActive: idSelect, idSelect: idSelect}));
-
-            if (element) {
-                setTimeout(() => {
-                    element.focus();
-                    moveCursorToEndOfLine(element);
-                }, 0);
+    const handleModalListBlocks = (idSelect, type, isSelect) => {
+        // if (isSelect) {
+            if (idSelect) {
+                const blocks = state.blocks;
+                if (type) {
+                    blocks.forEach((item) => {
+                        if (`block-id-${item.uuid}` === idSelect) {
+                            item.type = type;
+                        }
+                    });
+                }
+    
+                setState(prev => ({...prev, idBlockActive: idSelect, idSelect: idSelect, typeBlockSelect: type, blocks: blocks}));
             };
-        };
+        // }
 
         setState(prev => ({...prev, isDisplayModalSelectBlocks: !prev.isDisplayModalSelectBlocks}));
     };
+
+    useEffect(() => {
+        if (state.idSelect) {
+            const element = document.getElementById(`${state.idSelect}`);
+            if (element) {
+                element.focus();
+                moveCursorToEndOfLine(element);
+            };
+        }
+    },[state.idSelect]);
 
     // handle remove block (setState)
     useEffect(() => {
@@ -357,7 +377,7 @@ const Main = (props) => {
     const handleSelectBlock = (type, id) => {
         // type: type of block
         // id: id of block select
-        handleModalListBlocks(id);
+        handleModalListBlocks(id, type, true);
     };
 
     const onMoveBlock = (result) => {
@@ -474,6 +494,8 @@ const Main = (props) => {
                                                                                     index={item.uuid}
                                                                                     idActive={state.idBlockActive}
                                                                                     isDisplayModalSelectBlocks={state.isDisplayModalSelectBlocks}
+                                                                                    typeBlockSelect={state.typeBlockSelect}
+                                                                                    typeBlock={item.type}
                                                                                 />
                                                                             )
                                                                         })}
