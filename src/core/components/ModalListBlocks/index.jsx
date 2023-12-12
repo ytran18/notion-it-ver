@@ -28,6 +28,8 @@ import GithubImage from 'assets/img/blocks/github-icon.png';
 import MapsImage from 'assets/img/blocks/maps.b1caf3fd.png';
 import FigmaImage from 'assets/img/blocks/figma-icon.png';
 import MermaidImage from 'assets/img/blocks/mermaid.png';
+import ReactFlowImage from 'assets/img/blocks/react-flow-2.png';
+import VSCodeImage from 'assets/img/blocks/vscode.png';
 
 const basicBlocks = [
     { img: TextImage, title: 'Text', description: 'Just start writting with plain text.', type: 'text' },
@@ -64,6 +66,8 @@ const toolsBlocks = [
     { img: MapsImage, title: 'Google Maps', description: 'Embed a Google Map.', type: 'maps' },
     { img: FigmaImage, title: 'Figma', description: 'View figma design directly in Notion for IT.', type: 'figma' },
     { img: MermaidImage, title: 'Mermaid', description: 'Create a diagram by writing code.', type: 'mermaid' },
+    { img: ReactFlowImage, title: 'React Flow', description: 'Wire your ideas with React Flow.', type: 'reactflow' },
+    { img: VSCodeImage, title: 'Visual Studio Code', description: 'Open your project in Visual Studio Code.', type: 'vscode' },
 ];
 
 const ModalListBlocks = (props) => {

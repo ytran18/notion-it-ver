@@ -49,17 +49,12 @@ const Main = (props) => {
     
     const titleRef = useRef(null);
 
+    // focus on title when creating page or click on page from sidebar
     useEffect(() => {
-        if (isCreatePage && titleRef.current) {
+        if ((isCreatePage && titleRef.current) || titleRef.current) {
             titleRef.current.focus();
         };
-    },[isCreatePage]);
-
-    useEffect(() => {
-        if (titleRef.current) {
-            titleRef.current.focus();
-        };
-    },[currPage]);
+    },[isCreatePage, currPage]);
 
     const optionHeader = [
         { label: 'Add icon', icon: IconSmile, type: 'icon' },
