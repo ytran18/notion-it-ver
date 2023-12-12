@@ -3,9 +3,6 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import data from '@emoji-mart/data';
 import { v4 as uuidv4 } from 'uuid';
 
-import { storage } from "core/firebase/firebase";
-import { ref, listAll, getDownloadURL } from "firebase/storage";
-
 import ModalBackgroundCover from "core/components/ModalBackgroundCover";
 import ModalEmoji from "core/components/ModalEmoji";
 import Comment from "core/components/Comment";
@@ -13,7 +10,7 @@ import Block from "core/components/Block";
 import Loading from "core/components/Loading";
 import ModalListBlocks from "core/components/ModalListBlocks";
 
-import { moveCursorToEndOfLine } from 'core/functions/index';
+import { moveCursorToEndOfLine, getIconCodePoint, getBgCover } from 'core/functions/index';
 
 import { changePageTitle, updatePageCover, updateIcon } from './function';
 
@@ -62,13 +59,10 @@ const Main = (props) => {
         // { label: 'Add comment', icon: IconChatSolid, type: 'comment' },
     ];
 
+    // display page icon when reload current page
     useEffect(() => {
         if (currPage) {
-            const emojiCodePoint = parseInt(currPage?.page_icon, 16);
-            let emoji = ''
-            if (emojiCodePoint) {
-                emoji = String.fromCodePoint(emojiCodePoint);
-            }
+            const emoji =  getIconCodePoint(currPage?.page_icon);
 
             setState(prev => ({
                 ...prev, 
@@ -82,44 +76,7 @@ const Main = (props) => {
         };
     },[currPage]);
 
-    useEffect(() => {
-        async function getRandomBgCover () {
-
-            if (!state.hasCoverBackground || state.randomImg.length > 0) return;
-    
-            const randomImage = allImages[Math.floor(Math.random() * allImages.length)];
-    
-            const regex = /\/static\/media\/(.*?)\./;
-            const selectedImage = regex.exec(randomImage)[1];
-    
-            const regexStorage = /\/(.*?)\./;
-            const storageRef = await ref(storage, "bg-cover");
-            const result = await listAll(storageRef);
-            const bgCover = result.items.map((imageRef) => (
-                {
-                    path: regexStorage.exec(imageRef?._location?.path)[1],
-                    url: getDownloadURL(imageRef)
-                }
-            ));
-            
-            bgCover.map((item) => {
-                if (item.path === selectedImage) {
-                    item.url.then(async(url) => {
-                        const data = {
-                            page_id: currPage?._id,
-                            page_cover_img: url,
-                        };
-                        await updatePageCover(data);
-                    });
-                }
-            })
-            setState(prev => ({...prev, randomImg: randomImage}));
-        }
-
-        getRandomBgCover();
-
-    },[state.hasCoverBackground]);
-
+    // random icon when click add icon
     useEffect(() => {
         async function getRandomIcon () {
             if (!state.isVisibleIconHeader || state.randomEmoji.length > 0) return;
@@ -129,10 +86,8 @@ const Main = (props) => {
             const keys = Object.keys(emojis);
             const randomKey = keys[Math.floor(Math.random() * keys.length)];
             const randomEmoji = emojis[randomKey].skins?.[0]?.unified;
+            const emoji = getIconCodePoint(randomEmoji);
             
-            const emojiCodePoint = parseInt(randomEmoji, 16);
-            const emoji = String.fromCodePoint(emojiCodePoint);
-
             const value = {
                 page_id: currPage?._id,
                 page_icon: randomEmoji
@@ -149,35 +104,28 @@ const Main = (props) => {
         getRandomIcon();
     },[state.isVisibleIconHeader]);
 
+    // random background cover when click add background
+    useEffect(() => {
+        async function getRandomBgCover () {
+            if (!state.hasCoverBackground || state.randomImg.length > 0) return;
+    
+            const randomImage = allImages[Math.floor(Math.random() * allImages.length)];
+            getBgCover(randomImage, currPage?._id);
+
+            setState(prev => ({...prev, randomImg: randomImage}));
+        }
+
+        getRandomBgCover();
+
+    },[state.hasCoverBackground]);
+
+    // handle change background
     const handleChangeBg = async (img) => {
-        const regex = /\/static\/media\/(.*?)\./;
-        const selectedImage = regex.exec(img)[1];
-
-        const regexStorage = /\/(.*?)\./;
-        const storageRef = await ref(storage, "bg-cover");
-        const result = await listAll(storageRef);
-        const bgCover = result.items.map((imageRef) => (
-            {
-                path: regexStorage.exec(imageRef?._location?.path)[1],
-                url: getDownloadURL(imageRef)
-            }
-        ));
-        
-        bgCover.map((item) => {
-            if (item.path === selectedImage) {
-                item.url.then(async(url) => {
-                    const data = {
-                        page_id: currPage?._id,
-                        page_cover_img: url,
-                    };
-                    await updatePageCover(data);
-                });
-            }
-        })
-
+        getBgCover(img, currPage?._id);
         setState(prev => ({...prev, randomImg: img}));
     };
 
+    // handle action header options
     const handleOptionHeader = (type) => {
         if (type === 'cover') {
             setState(prev => ({...prev, hasCoverBackground: true}));
@@ -190,6 +138,7 @@ const Main = (props) => {
         };
     };
 
+    // handle displat header options
     const handleMouseEnterTitle = () => {
         setState(prev => ({...prev, isDisplayOption: true}));
     };
@@ -198,6 +147,7 @@ const Main = (props) => {
         setState(prev => ({...prev, isDisplayOption: false}));
     };
 
+    // handle display background option
     const handleMouseEnterCoverOption = useCallback(() => {
         if (state.isVisibleModalCoverBackground) return;
         setState(prev => ({...prev, isDisplayCoverOption: true}));
@@ -207,6 +157,7 @@ const Main = (props) => {
         setState(prev => ({...prev, isDisplayCoverOption: false}));
     },[]);
 
+    // handle modal background cover
     const handleModalCover = async (type) => {
         if (type === 'remove') {
             const data = {
@@ -220,6 +171,7 @@ const Main = (props) => {
         setState(prev => ({...prev, isVisibleModalCoverBackground: !prev.isVisibleModalCoverBackground, isDisplayCoverOption: false}));
     };
     
+    // handle modal emoji
     const handleModalEmoji = async (type) => {
         if (type === 'remove') {
             setState(prev => ({...prev, isVisibleIconHeader: false}));
@@ -234,6 +186,7 @@ const Main = (props) => {
         setState(prev => ({...prev, isVisibleModalEmoji: !prev.isVisibleModalEmoji}));
     };
 
+    // handle select emoji from modal emoji
     const onEmojiSelect = async (e) => {
         const emojiSelect = e.unified;
         
@@ -251,6 +204,7 @@ const Main = (props) => {
         setState(prev => ({...prev, randomEmoji: emoji, isVisibleModalEmoji: false}));
     };
 
+    // handle change page title
     const handleChangePageTitle = async (data) => {
         await changePageTitle(data);
         getAllPage(currUser?._id, true, currPage?._id, false, false, null, true);
@@ -274,7 +228,6 @@ const Main = (props) => {
     },[state.pageTitle, state.status]);
 
     // handle click in page title
-
     useEffect(() => {
         const handleClickBlock = (e) => {
             if (titleRef.current && titleRef.current.contains(e.target)) {
@@ -330,6 +283,7 @@ const Main = (props) => {
         };
     };
 
+    // handle key move beetwen blocks
     const handleArrow = (index, type, prevOrNextId) => {
         let element;
         if (type === 'ArrowUp' && prevOrNextId === undefined) {
@@ -345,6 +299,7 @@ const Main = (props) => {
         };
     };
 
+    // handle delete block
     const handleDelete = async (index, prevId) => {
         let prevElement;
 
@@ -362,6 +317,7 @@ const Main = (props) => {
         }
     };
 
+    // handle click in block
     const handleClickInBlock = (id) => {
         setState(prev => ({...prev, idBlockActive: id}));
     };
