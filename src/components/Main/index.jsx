@@ -65,7 +65,7 @@ const Main = (props) => {
     // display page icon when reload current page
     useEffect(() => {
         if (currPage) {
-            const emoji =  getIconCodePoint(currPage?.page_icon);
+            const emoji = getIconCodePoint(currPage?.page_icon);
 
             setState(prev => ({
                 ...prev, 
@@ -308,6 +308,20 @@ const Main = (props) => {
         let prevElement;
 
         if (typeBlock !== 'text') {
+            const blocks = state.blocks.map((item) => {
+                if (item.uuid === index) {
+                    return { ...item, type: 'text' };
+                }
+                return item;
+            });
+
+            setState(prev => ({
+                ...prev,
+                blocks: blocks,
+                currentType: 'text',
+                idBlockActive: `block-id-${index}`,
+                idSelect: `block-id-${index}`,
+            }));
 
             return;
         };
@@ -320,9 +334,22 @@ const Main = (props) => {
         }
 
         if (prevElement) {
-            setState(prev => ({...prev, deleteId: index}));
+            deleteBlock(index);
             prevElement.focus();
             moveCursorToEndOfLine(prevElement);
+        }
+    };
+
+    // handle remove block (setState)
+    const deleteBlock = (blockId) => {
+        const blocks = state.blocks;
+        if (blockId) {
+            const blocksCopy = [...blocks];
+            const blockToRemove = blocksCopy.find((item) => blockId === item.uuid);
+            if (blockToRemove) {
+                const updateBlocks = blocksCopy.filter((item) => blockId !== item.uuid);
+                setState(prev => ({...prev, blocks: updateBlocks}))
+            }
         }
     };
 
@@ -358,20 +385,7 @@ const Main = (props) => {
                 moveCursorToEndOfLine(element);
             };
         }
-    },[state.currentType]);
-
-    // handle remove block (setState)
-    useEffect(() => {
-        const blocks = state.blocks;
-        if (state.deleteId) {
-            const blocksCopy = [...blocks];
-            const blockToRemove = blocksCopy.find((item) => `block-${state.deleteId}` === item.element.key);
-            if (blockToRemove) {
-                const updateBlocks = blocksCopy.filter((item) => `block-${state.deleteId}` !== item.element.key);
-                setState(prev => ({...prev, blocks: updateBlocks}))
-            }
-        }
-    }, [state.deleteId]);
+    },[state.currentType, state.blocks]);
 
     // handle select block
     const handleSelectBlock = (type, id) => {
@@ -382,7 +396,7 @@ const Main = (props) => {
 
     const onMoveBlock = (result) => {
         console.log(result);
-    }
+    };
 
     const classNameCoverOption = 'text-xs cursor-pointer font-medium p-2 hover:bg-[rgb(239,239,238)]';
 
@@ -391,8 +405,8 @@ const Main = (props) => {
             {Object.keys(currPage).length > 0 ? (
                 <>
                     <div 
-                        onMouseEnter={handleMouseEnterCoverOption} 
-                        onMouseLeave={handleMouseLeaveCoverOption}
+                        // onMouseEnter={handleMouseEnterCoverOption} 
+                        // onMouseLeave={handleMouseLeaveCoverOption}
                         style={{
                             backgroundImage: `url(${state.randomImg})`,
                             backgroundSize: 'cover',
@@ -428,8 +442,8 @@ const Main = (props) => {
                         )}
                         <div 
                             className="w-full relative" 
-                            onMouseEnter={handleMouseEnterTitle} 
-                            onMouseLeave={handleMouseLeaveTitle}
+                            // onMouseEnter={handleMouseEnterTitle} 
+                            // onMouseLeave={handleMouseLeaveTitle}
                         >
                             <input
                                 ref={titleRef}
@@ -496,6 +510,7 @@ const Main = (props) => {
                                                                                     isDisplayModalSelectBlocks={state.isDisplayModalSelectBlocks}
                                                                                     typeBlockSelect={state.typeBlockSelect}
                                                                                     typeBlock={item.type}
+                                                                                    currentType={state.currentType}
                                                                                 />
                                                                             )
                                                                         })}
