@@ -44,6 +44,7 @@ const Main = (props) => {
         isDisplayModalSelectBlocks: false,
         idSelect: '',
         typeBlockSelect: '',
+        currentType: 'text',
     });
     
     const titleRef = useRef(null);
@@ -269,7 +270,7 @@ const Main = (props) => {
                         </div>
                     ),
                     uuid: id,
-                    type: 'text'
+                    type: state.currentType,
                 };
 
                 
@@ -342,8 +343,7 @@ const Main = (props) => {
                         }
                     });
                 }
-    
-                setState(prev => ({...prev, idBlockActive: idSelect, idSelect: idSelect, typeBlockSelect: type, blocks: blocks}));
+                setState(prev => ({...prev, idBlockActive: idSelect, idSelect: idSelect, typeBlockSelect: type, blocks: blocks, currentType: type}));
             };
         // }
 
@@ -358,7 +358,7 @@ const Main = (props) => {
                 moveCursorToEndOfLine(element);
             };
         }
-    },[state.idSelect]);
+    },[state.currentType]);
 
     // handle remove block (setState)
     useEffect(() => {
