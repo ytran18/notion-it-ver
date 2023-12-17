@@ -65,7 +65,7 @@ const Main = (props) => {
     // display page icon when reload current page
     useEffect(() => {
         if (currPage) {
-            const emoji =  getIconCodePoint(currPage?.page_icon);
+            const emoji = getIconCodePoint(currPage?.page_icon);
 
             setState(prev => ({
                 ...prev, 
@@ -288,7 +288,7 @@ const Main = (props) => {
     };
 
     // handle key move beetwen blocks
-    const handleArrow = (index, type, prevOrNextId) => {
+    const handleArrow = (index, type, prevOrNextId, typeBlock) => {
         let element;
         if (type === 'ArrowUp' && prevOrNextId === undefined) {
             element = document.getElementById('page-title');
@@ -298,7 +298,7 @@ const Main = (props) => {
 
         if (element) {
             element.focus();
-            setState(prev => ({...prev, idBlockActive: prevOrNextId}));
+            setState(prev => ({...prev, idBlockActive: prevOrNextId, currentType: typeBlock}));
             moveCursorToEndOfLine(element);
         };
     };
@@ -308,6 +308,20 @@ const Main = (props) => {
         let prevElement;
 
         if (typeBlock !== 'text') {
+            const blocks = state.blocks.map((item) => {
+                if (item.uuid === index) {
+                    return { ...item, type: 'text' };
+                }
+                return item;
+            });
+
+            setState(prev => ({
+                ...prev,
+                blocks: blocks,
+                currentType: 'text',
+                idBlockActive: `block-id-${index}`,
+                idSelect: `block-id-${index}`,
+            }));
 
             return;
         };
@@ -320,35 +334,51 @@ const Main = (props) => {
         }
 
         if (prevElement) {
-            setState(prev => ({...prev, deleteId: index}));
+            deleteBlock(index);
             prevElement.focus();
             moveCursorToEndOfLine(prevElement);
         }
     };
 
+    // handle remove block (setState)
+    const deleteBlock = (blockId) => {
+        const blocks = state.blocks;
+        if (blockId) {
+            const blocksCopy = [...blocks];
+            const blockToRemove = blocksCopy.find((item) => blockId === item.uuid);
+            if (blockToRemove) {
+                const updateBlocks = blocksCopy.filter((item) => blockId !== item.uuid);
+                setState(prev => ({...prev, blocks: updateBlocks}))
+            }
+        }
+    };
+
     // handle click in block
-    const handleClickInBlock = (id) => {
-        setState(prev => ({...prev, idBlockActive: id}));
+    const handleClickInBlock = (id, typeBlock) => {
+        setState(prev => ({...prev, idBlockActive: id, currentType: typeBlock}));
     };
 
     // handle display modal list blocks
-    const handleModalListBlocks = (idSelect, type, isSelect) => {
-        // if (isSelect) {
-            if (idSelect) {
-                const blocks = state.blocks;
-                if (type) {
-                    blocks.forEach((item) => {
-                        if (`block-id-${item.uuid}` === idSelect) {
-                            item.type = type;
-                        }
-                    });
+    const handleModalListBlocks = (idSelect, type) => {
+        setState(prev => {
+            const updatedBlocks = prev.blocks.map(item => {
+                if (`block-id-${item.uuid}` === idSelect) {
+                    return {...item, type: type};
                 }
-                setState(prev => ({...prev, idBlockActive: idSelect, idSelect: idSelect, typeBlockSelect: type, blocks: blocks, currentType: type}));
+                return item;
+            });
+    
+            return {
+                ...prev,
+                idBlockActive: idSelect,
+                idSelect: idSelect,
+                typeBlockSelect: type,
+                blocks: updatedBlocks,
+                currentType: type,
+                isDisplayModalSelectBlocks: !prev.isDisplayModalSelectBlocks
             };
-        // }
-
-        setState(prev => ({...prev, isDisplayModalSelectBlocks: !prev.isDisplayModalSelectBlocks}));
-    };
+        });
+    };    
 
     useEffect(() => {
         if (state.idSelect) {
@@ -358,20 +388,7 @@ const Main = (props) => {
                 moveCursorToEndOfLine(element);
             };
         }
-    },[state.currentType]);
-
-    // handle remove block (setState)
-    useEffect(() => {
-        const blocks = state.blocks;
-        if (state.deleteId) {
-            const blocksCopy = [...blocks];
-            const blockToRemove = blocksCopy.find((item) => `block-${state.deleteId}` === item.element.key);
-            if (blockToRemove) {
-                const updateBlocks = blocksCopy.filter((item) => `block-${state.deleteId}` !== item.element.key);
-                setState(prev => ({...prev, blocks: updateBlocks}))
-            }
-        }
-    }, [state.deleteId]);
+    },[state.currentType, state.blocks]);
 
     // handle select block
     const handleSelectBlock = (type, id) => {
@@ -382,7 +399,7 @@ const Main = (props) => {
 
     const onMoveBlock = (result) => {
         console.log(result);
-    }
+    };
 
     const classNameCoverOption = 'text-xs cursor-pointer font-medium p-2 hover:bg-[rgb(239,239,238)]';
 
@@ -391,8 +408,8 @@ const Main = (props) => {
             {Object.keys(currPage).length > 0 ? (
                 <>
                     <div 
-                        onMouseEnter={handleMouseEnterCoverOption} 
-                        onMouseLeave={handleMouseLeaveCoverOption}
+                        // onMouseEnter={handleMouseEnterCoverOption} 
+                        // onMouseLeave={handleMouseLeaveCoverOption}
                         style={{
                             backgroundImage: `url(${state.randomImg})`,
                             backgroundSize: 'cover',
@@ -428,8 +445,8 @@ const Main = (props) => {
                         )}
                         <div 
                             className="w-full relative" 
-                            onMouseEnter={handleMouseEnterTitle} 
-                            onMouseLeave={handleMouseLeaveTitle}
+                            // onMouseEnter={handleMouseEnterTitle} 
+                            // onMouseLeave={handleMouseLeaveTitle}
                         >
                             <input
                                 ref={titleRef}
@@ -496,6 +513,7 @@ const Main = (props) => {
                                                                                     isDisplayModalSelectBlocks={state.isDisplayModalSelectBlocks}
                                                                                     typeBlockSelect={state.typeBlockSelect}
                                                                                     typeBlock={item.type}
+                                                                                    currentType={state.currentType}
                                                                                 />
                                                                             )
                                                                         })}

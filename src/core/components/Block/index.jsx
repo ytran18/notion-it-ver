@@ -10,7 +10,7 @@ import './block.css';
 const Block = (props) => {
 
     const { handleEnter, index, handleArrow, id, handleDelete, idActive, handleClickInBlock, 
-            handleModalListBlocks, typeBlock } = props;
+            handleModalListBlocks, typeBlock, currentType } = props;
 
     const [state, setState] = useState({
         textContent: '',
@@ -46,7 +46,7 @@ const Block = (props) => {
     useEffect(() => {
         const handleClickBlock = (e) => {
             if (textBlockRef.current && textBlockRef.current.contains(e.target)) {
-                handleClickInBlock(id);
+                handleClickInBlock(id, typeBlock);
             };
         };
 
@@ -63,7 +63,7 @@ const Block = (props) => {
     };
 
     // handle ctrl + A in this current div
-    const handleKeyDown = (e) => {
+    const handleKeyDown = (e, type) => {
         const blocks = document.querySelectorAll('[id^="block-id-"]');
         let prevEleIndex = null;
         let nextEleIndex = null;
@@ -96,14 +96,14 @@ const Block = (props) => {
 
         if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
             e.preventDefault();
-            handleArrow(index, e.key, e.key === 'ArrowUp' ? blocks[prevEleIndex]?.id : blocks[nextEleIndex]?.id);
+            handleArrow(index, e.key, e.key === 'ArrowUp' ? blocks[prevEleIndex]?.id : blocks[nextEleIndex]?.id, typeBlock);
         };
 
         if (e.keyCode === 8 || e.keyCode === 46) {
             if (state.textContent.length > 0) return;
             if (state.isFirstTimeRender) e?.preventDefault();
             setState(prev => ({...prev, isFirstTimeRender: false}));
-            handleDelete(index, blocks[prevEleIndex]?.id, typeBlock);
+            handleDelete(index, blocks[prevEleIndex]?.id, type);
         };
     };
 
@@ -121,16 +121,17 @@ const Block = (props) => {
             <div
                 id={id}
                 ref={textBlockRef}
+                type-block='text'
                 className={`w-full ${(state.textContent.length > 0 || idActive !== id) ? 'text-block-placeholder-hidden' : 'text-block-placeholder'} relative h-full min-h-[1rem] text-[rgb(55,53,47)] font-medium`} 
                 placeholder="Press 'space' for AI, '/' for commands…" 
                 contentEditable={true}
                 style={{maxWwidth: '100%', width: '100%', whiteSpace: 'pre-wrap', wordBreak: 'break-word', caretColor: 'rgb(55, 53, 47)', padding: '3px 2px', outline: 'none'}}
-                onKeyDown={handleKeyDown}
+                onKeyDown={(e) => handleKeyDown(e, 'text')}
                 onInput={handleContentChange}
             >
             </div>
         )
-    },[state.textContent, idActive]);
+    },[state.textContent, idActive, typeBlock]);
 
     const renderTodoBlock = useMemo(() => {
         return (
@@ -143,7 +144,7 @@ const Block = (props) => {
                 handleContentChange={handleContentChange}
             />
         )
-    },[state.textContent, idActive]);
+    },[state.textContent, idActive, typeBlock]);
 
     return (
         <>
