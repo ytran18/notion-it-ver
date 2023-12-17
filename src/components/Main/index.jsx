@@ -288,7 +288,7 @@ const Main = (props) => {
     };
 
     // handle key move beetwen blocks
-    const handleArrow = (index, type, prevOrNextId) => {
+    const handleArrow = (index, type, prevOrNextId, typeBlock) => {
         let element;
         if (type === 'ArrowUp' && prevOrNextId === undefined) {
             element = document.getElementById('page-title');
@@ -298,7 +298,7 @@ const Main = (props) => {
 
         if (element) {
             element.focus();
-            setState(prev => ({...prev, idBlockActive: prevOrNextId}));
+            setState(prev => ({...prev, idBlockActive: prevOrNextId, currentType: typeBlock}));
             moveCursorToEndOfLine(element);
         };
     };
@@ -354,28 +354,31 @@ const Main = (props) => {
     };
 
     // handle click in block
-    const handleClickInBlock = (id) => {
-        setState(prev => ({...prev, idBlockActive: id}));
+    const handleClickInBlock = (id, typeBlock) => {
+        setState(prev => ({...prev, idBlockActive: id, currentType: typeBlock}));
     };
 
     // handle display modal list blocks
-    const handleModalListBlocks = (idSelect, type, isSelect) => {
-        // if (isSelect) {
-            if (idSelect) {
-                const blocks = state.blocks;
-                if (type) {
-                    blocks.forEach((item) => {
-                        if (`block-id-${item.uuid}` === idSelect) {
-                            item.type = type;
-                        }
-                    });
+    const handleModalListBlocks = (idSelect, type) => {
+        setState(prev => {
+            const updatedBlocks = prev.blocks.map(item => {
+                if (`block-id-${item.uuid}` === idSelect) {
+                    return {...item, type: type};
                 }
-                setState(prev => ({...prev, idBlockActive: idSelect, idSelect: idSelect, typeBlockSelect: type, blocks: blocks, currentType: type}));
+                return item;
+            });
+    
+            return {
+                ...prev,
+                idBlockActive: idSelect,
+                idSelect: idSelect,
+                typeBlockSelect: type,
+                blocks: updatedBlocks,
+                currentType: type,
+                isDisplayModalSelectBlocks: !prev.isDisplayModalSelectBlocks
             };
-        // }
-
-        setState(prev => ({...prev, isDisplayModalSelectBlocks: !prev.isDisplayModalSelectBlocks}));
-    };
+        });
+    };    
 
     useEffect(() => {
         if (state.idSelect) {

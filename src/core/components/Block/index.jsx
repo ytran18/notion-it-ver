@@ -46,7 +46,7 @@ const Block = (props) => {
     useEffect(() => {
         const handleClickBlock = (e) => {
             if (textBlockRef.current && textBlockRef.current.contains(e.target)) {
-                handleClickInBlock(id);
+                handleClickInBlock(id, typeBlock);
             };
         };
 
@@ -96,7 +96,7 @@ const Block = (props) => {
 
         if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
             e.preventDefault();
-            handleArrow(index, e.key, e.key === 'ArrowUp' ? blocks[prevEleIndex]?.id : blocks[nextEleIndex]?.id);
+            handleArrow(index, e.key, e.key === 'ArrowUp' ? blocks[prevEleIndex]?.id : blocks[nextEleIndex]?.id, typeBlock);
         };
 
         if (e.keyCode === 8 || e.keyCode === 46) {
