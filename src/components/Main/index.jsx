@@ -298,7 +298,7 @@ const Main = (props) => {
 
         if (element) {
             element.focus();
-            setState(prev => ({...prev, idBlockActive: prevOrNextId, currentType: typeBlock}));
+            setState(prev => ({...prev, idBlockActive: prevOrNextId, currentType: typeBlock, idSelect: prevOrNextId}));
             moveCursorToEndOfLine(element);
         };
     };
@@ -408,8 +408,8 @@ const Main = (props) => {
             {Object.keys(currPage).length > 0 ? (
                 <>
                     <div 
-                        // onMouseEnter={handleMouseEnterCoverOption} 
-                        // onMouseLeave={handleMouseLeaveCoverOption}
+                        onMouseEnter={handleMouseEnterCoverOption} 
+                        onMouseLeave={handleMouseLeaveCoverOption}
                         style={{
                             backgroundImage: `url(${state.randomImg})`,
                             backgroundSize: 'cover',
