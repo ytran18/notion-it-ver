@@ -309,12 +309,12 @@ const Main = (props) => {
     };
 
     // handle delete block
-    const handleDelete = async (index, prevId, typeBlock) => {
+    const handleDelete = (blockId, prevId, typeBlock) => {
         let prevElement;
 
         if (typeBlock !== 'text') {
             const blocks = state.blocks.map((item) => {
-                if (item.uuid === index) {
+                if (item.uuid === blockId) {
                     return { ...item, type: 'text' };
                 }
                 return item;
@@ -324,8 +324,8 @@ const Main = (props) => {
                 ...prev,
                 blocks: blocks,
                 currentType: 'text',
-                idBlockActive: `block-id-${index}`,
-                idSelect: `block-id-${index}`,
+                idBlockActive: `block-id-${blockId}`,
+                idSelect: `block-id-${blockId}`,
             }));
 
             return;
@@ -340,7 +340,7 @@ const Main = (props) => {
         };
 
         if (prevElement) {
-            deleteBlock(index);
+            deleteBlock(blockId);
             prevElement.focus();
             moveCursorToEndOfLine(prevElement);
         };
@@ -354,6 +354,7 @@ const Main = (props) => {
             const blockToRemove = blocksCopy.find((item) => blockId === item.uuid);
             if (blockToRemove) {
                 const updateBlocks = blocksCopy.filter((item) => blockId !== item.uuid);
+                state.blocks = updateBlocks;
                 setState(prev => ({...prev, blocks: updateBlocks}))
             }
         }
