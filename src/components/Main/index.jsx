@@ -234,7 +234,7 @@ const Main = (props) => {
     useEffect(() => {
         const handleClickBlock = (e) => {
             if (titleRef.current && titleRef.current.contains(e.target)) {
-                setState(prev => ({...prev, idBlockActive: 'undefined'}));
+                setState(prev => ({...prev, currentType: 'text', idBlockActive: 'undefined'}));
             };
         };
 
@@ -298,7 +298,12 @@ const Main = (props) => {
 
         if (element) {
             element.focus();
-            setState(prev => ({...prev, idBlockActive: prevOrNextId, currentType: typeBlock, idSelect: prevOrNextId}));
+            setState(prev => ({
+                ...prev,
+                idBlockActive: prevOrNextId,
+                currentType: prevOrNextId === undefined ? 'text' : typeBlock,
+                idSelect: prevOrNextId
+            }));
             moveCursorToEndOfLine(element);
         };
     };
@@ -330,14 +335,15 @@ const Main = (props) => {
             prevElement = document.getElementById(`${prevId}`);
             setState(prev => ({...prev, idBlockActive: prevId}));
         } else {
-            prevElement = document.getElementById('page-title')
-        }
+            prevElement = document.getElementById('page-title');
+            setState(prev => ({...prev, idSelect: undefined}));
+        };
 
         if (prevElement) {
             deleteBlock(index);
             prevElement.focus();
             moveCursorToEndOfLine(prevElement);
-        }
+        };
     };
 
     // handle remove block (setState)
