@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, useMemo } from "react";
 
 import Todo from "core/block/Todo";
+import Heading from "core/block/Heading";
 
 import { ReactComponent as IconPlus } from 'assets/icons/iconPlus.svg'
 import { ReactComponent as IconDrag } from 'assets/icons/iconDrag.svg'
@@ -122,7 +123,7 @@ const Block = (props) => {
                 id={id}
                 ref={textBlockRef}
                 type-block='text'
-                className={`w-full ${(state.textContent.length > 0 || idActive !== id) ? 'text-block-placeholder-hidden' : 'text-block-placeholder'} relative h-full min-h-[1rem] text-[rgb(55,53,47)] font-medium`} 
+                className={`w-full ${(state.textContent.length > 0 || idActive !== id) ? 'text-block-placeholder-hidden' : 'text-block-placeholder'} relative h-6 min-h-[1rem] text-[rgb(55,53,47)] font-medium`} 
                 placeholder="Press 'space' for AI, '/' for commands…" 
                 contentEditable={true}
                 style={{maxWwidth: '100%', width: '100%', whiteSpace: 'pre-wrap', wordBreak: 'break-word', caretColor: 'rgb(55, 53, 47)', padding: '3px 2px', outline: 'none'}}
@@ -146,10 +147,30 @@ const Block = (props) => {
         )
     },[state.textContent, idActive, typeBlock]);
 
+    const renderHeadingBlock = useMemo(() => {
+        return (
+            <Heading
+                id={id}
+                ref={textBlockRef}
+                textContent={state.textContent}
+                idActive={idActive}
+                handleKeyDown={handleKeyDown}
+                handleContentChange={handleContentChange}
+                typeBlock={typeBlock}
+            />
+        )
+    },[state.textContent, idActive, typeBlock]);
+
+    const marginHeading = {
+        'heading1': 'mt-[1.1em]',
+        'heading2': 'mt-[0.6em]',
+        'heading3': 'mt-[0.3em]',
+    }[typeBlock];
+
     return (
         <>
             <div 
-                className="w-full h-6 relative bg-white rounded-md" id="notion-it-block"
+                className="w-full relative bg-white rounded-md" id="notion-it-block"
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
             >
@@ -157,8 +178,10 @@ const Block = (props) => {
 
                 {typeBlock === 'todo' ? renderTodoBlock : null}
 
+                {typeBlock === 'heading1' || typeBlock === 'heading2' || typeBlock === 'heading3' ? renderHeadingBlock : null}
+
                 {state.isDisplayOptionBtn && (
-                    <div className="absolute transition-all duration-300 flex items-center right-full -top-[48%] translate-y-1/2">
+                    <div className={`absolute transition-all duration-300 flex items-center right-full -top-[48%] translate-y-1/2 ${marginHeading}`}>
                         <div
                             onClick={() => handleModalListBlocks(id)}
                             className="cursor-pointer p-[1px] hover:bg-[rgb(239,239,239)] rounded mx-1"

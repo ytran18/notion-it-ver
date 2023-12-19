@@ -11,7 +11,7 @@ const Todo = React.forwardRef((props, ref) => {
     const { textContent, idActive, id, handleKeyDown, handleContentChange } = props;
 
     return (
-        <div className="flex items-center w-full h-full">
+        <div className="flex items-center w-full h-6 todo">
             <input
                 type="checkbox"
                 value={state.isChecked}
