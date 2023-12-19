@@ -246,11 +246,7 @@ const Main = (props) => {
     },[]);
 
     // render block
-    const handleEnter = (e, currIndex, isTitle) => {
-        if (e.keyCode === 8 || e.keyCode === 46) {
-            console.log('delete');
-        };
-
+    const handleEnter = (e, currIndex, isTitle, typeBlock, blockLength, blockId, prevId) => {
         if (e.key === 'ArrowDown') {
             if (state.blocks.length > 0) {
                 const element = document.getElementById(`block-id-${state.blocks?.[0]?.uuid}`);
@@ -259,6 +255,11 @@ const Main = (props) => {
         };
 
         if (e.key === 'Enter') {
+            if (typeBlock === 'todo' && blockLength) {
+                handleDelete(blockId, prevId, typeBlock)
+                return;
+            };
+
             setState(prev => {
                 const newBlocks = [...prev.blocks];
                 const id = uuidv4();
@@ -292,7 +293,7 @@ const Main = (props) => {
     };
 
     // handle key move beetwen blocks
-    const handleArrow = (index, type, prevOrNextId, typeBlock) => {
+    const handleArrow = (index, type, prevOrNextId) => {
         let element;
         if (type === 'ArrowUp' && prevOrNextId === undefined) {
             element = document.getElementById('page-title');
@@ -302,6 +303,7 @@ const Main = (props) => {
 
         if (element) {
             element.focus();
+            const typeBlock = element.getAttribute('type-block');
             setState(prev => ({
                 ...prev,
                 idBlockActive: prevOrNextId,
@@ -367,7 +369,12 @@ const Main = (props) => {
     };
 
     // handle click in block
-    const handleClickInBlock = (id, typeBlock) => {
+    const handleClickInBlock = (id) => {
+        const element = document.getElementById(id);
+        let typeBlock;
+        if (element) {
+            typeBlock = element.getAttribute('type-block');
+        }
         setState(prev => ({...prev, idBlockActive: id, currentType: typeBlock}));
     };
 
