@@ -247,10 +247,6 @@ const Main = (props) => {
 
     // render block
     const handleEnter = (e, currIndex, isTitle, typeBlock, blockLength, blockId, prevId) => {
-        if (e.keyCode === 8 || e.keyCode === 46) {
-            console.log('delete');
-        };
-
         if (e.key === 'ArrowDown') {
             if (state.blocks.length > 0) {
                 const element = document.getElementById(`block-id-${state.blocks?.[0]?.uuid}`);
@@ -325,7 +321,6 @@ const Main = (props) => {
         if (typeBlock !== 'text') {
             const blocks = state.blocks.map((item) => {
                 if (item.uuid === blockId) {
-                    console.log(item.uuid);
                     return { ...item, type: 'text' };
                 }
                 return item;
