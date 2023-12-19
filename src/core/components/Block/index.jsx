@@ -80,7 +80,7 @@ const Block = (props) => {
 
         if (e.key === 'Enter') {
             e.preventDefault();
-            handleEnter(e, currEleIndex);
+            handleEnter(e, currEleIndex, false, typeBlock, state.textContent.length === 0, index, blocks[prevEleIndex]?.id);
         };
 
         if (e.ctrlKey && e.key === 'a') {

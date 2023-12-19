@@ -246,7 +246,7 @@ const Main = (props) => {
     },[]);
 
     // render block
-    const handleEnter = (e, currIndex, isTitle) => {
+    const handleEnter = (e, currIndex, isTitle, typeBlock, blockLength, blockId, prevId) => {
         if (e.keyCode === 8 || e.keyCode === 46) {
             console.log('delete');
         };
@@ -259,6 +259,11 @@ const Main = (props) => {
         };
 
         if (e.key === 'Enter') {
+            if (typeBlock === 'todo' && blockLength) {
+                handleDelete(blockId, prevId, typeBlock)
+                return;
+            };
+
             setState(prev => {
                 const newBlocks = [...prev.blocks];
                 const id = uuidv4();
@@ -320,6 +325,7 @@ const Main = (props) => {
         if (typeBlock !== 'text') {
             const blocks = state.blocks.map((item) => {
                 if (item.uuid === blockId) {
+                    console.log(item.uuid);
                     return { ...item, type: 'text' };
                 }
                 return item;
