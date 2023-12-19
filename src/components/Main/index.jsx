@@ -216,7 +216,7 @@ const Main = (props) => {
     useEffect(() => {
         if (state.status === 1) {
             return;
-        }
+        };
         const data = {
             page_name: state.pageTitle,
             page_id: currPage?._id,
@@ -234,7 +234,7 @@ const Main = (props) => {
     useEffect(() => {
         const handleClickBlock = (e) => {
             if (titleRef.current && titleRef.current.contains(e.target)) {
-                setState(prev => ({...prev, idBlockActive: 'undefined'}));
+                setState(prev => ({...prev, currentType: 'text', idBlockActive: 'undefined'}));
             };
         };
 
@@ -247,6 +247,10 @@ const Main = (props) => {
 
     // render block
     const handleEnter = (e, currIndex, isTitle) => {
+        if (e.keyCode === 8 || e.keyCode === 46) {
+            console.log('delete');
+        };
+
         if (e.key === 'ArrowDown') {
             if (state.blocks.length > 0) {
                 const element = document.getElementById(`block-id-${state.blocks?.[0]?.uuid}`);
@@ -298,18 +302,23 @@ const Main = (props) => {
 
         if (element) {
             element.focus();
-            setState(prev => ({...prev, idBlockActive: prevOrNextId, currentType: typeBlock, idSelect: prevOrNextId}));
+            setState(prev => ({
+                ...prev,
+                idBlockActive: prevOrNextId,
+                currentType: prevOrNextId === undefined ? 'text' : typeBlock,
+                idSelect: prevOrNextId
+            }));
             moveCursorToEndOfLine(element);
         };
     };
 
     // handle delete block
-    const handleDelete = async (index, prevId, typeBlock) => {
+    const handleDelete = (blockId, prevId, typeBlock) => {
         let prevElement;
 
         if (typeBlock !== 'text') {
             const blocks = state.blocks.map((item) => {
-                if (item.uuid === index) {
+                if (item.uuid === blockId) {
                     return { ...item, type: 'text' };
                 }
                 return item;
@@ -319,8 +328,8 @@ const Main = (props) => {
                 ...prev,
                 blocks: blocks,
                 currentType: 'text',
-                idBlockActive: `block-id-${index}`,
-                idSelect: `block-id-${index}`,
+                idBlockActive: `block-id-${blockId}`,
+                idSelect: `block-id-${blockId}`,
             }));
 
             return;
@@ -330,14 +339,17 @@ const Main = (props) => {
             prevElement = document.getElementById(`${prevId}`);
             setState(prev => ({...prev, idBlockActive: prevId}));
         } else {
-            prevElement = document.getElementById('page-title')
-        }
+            prevElement = document.getElementById('page-title');
+            setState(prev => ({...prev, idSelect: undefined}));
+        };
 
         if (prevElement) {
-            deleteBlock(index);
-            prevElement.focus();
-            moveCursorToEndOfLine(prevElement);
-        }
+            deleteBlock(blockId);
+            setTimeout(() => {
+                prevElement.focus();
+                moveCursorToEndOfLine(prevElement);
+            },0);
+        };
     };
 
     // handle remove block (setState)
@@ -348,6 +360,7 @@ const Main = (props) => {
             const blockToRemove = blocksCopy.find((item) => blockId === item.uuid);
             if (blockToRemove) {
                 const updateBlocks = blocksCopy.filter((item) => blockId !== item.uuid);
+                state.blocks = updateBlocks;
                 setState(prev => ({...prev, blocks: updateBlocks}))
             }
         }

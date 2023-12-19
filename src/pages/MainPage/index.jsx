@@ -245,7 +245,7 @@ const MainPage = () => {
                             />
                         </div>
                     )}
-                    <div id="resizeHandler" className='resize-handler' />
+                    <div id="resizeHandler" className='resize-handler z-20' />
                     <div className="flex flex-col w-full h-full z-10" id="right-panel">
                         <div className="">
                             <Header 
