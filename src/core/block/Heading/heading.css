@@ -1,16 +1,11 @@
-.todo {
+.heading {
     .text-block-placeholder::before {
         content: attr(placeholder);
         position: absolute;
-        opacity: 0.6;
+        opacity: 0.2;
     }
     
     .text-block-placeholder-hidden::before {
         display: none;
-    }
-    
-    .decoration {
-        text-decoration: line-through rgba(55, 53, 47, 0.25);
-        color: rgba(55, 53, 47, 0.65);
     }
 }

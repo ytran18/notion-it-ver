@@ -255,7 +255,8 @@ const Main = (props) => {
         };
 
         if (e.key === 'Enter') {
-            if (typeBlock === 'todo' && blockLength) {
+            const condition = typeBlock === 'todo' || typeBlock === 'heading1' || typeBlock === 'heading2' || typeBlock === 'heading3';
+            if (condition && blockLength) {
                 handleDelete(blockId, prevId, typeBlock)
                 return;
             };
@@ -263,6 +264,7 @@ const Main = (props) => {
             setState(prev => {
                 const newBlocks = [...prev.blocks];
                 const id = uuidv4();
+                const headingType = typeBlock === 'heading1' || typeBlock === 'heading2' || typeBlock === 'heading3';
 
                 const blockElement = {
                     element: (
@@ -275,8 +277,10 @@ const Main = (props) => {
                         </div>
                     ),
                     uuid: id,
-                    type: state.currentType,
+                    type: headingType ? 'text' : state.currentType,
                 };
+
+                const currentType = headingType ? 'text' : state.currentType;
 
                 
                 if (currIndex !== undefined && currIndex >= -1 && currIndex < newBlocks.length - 1 && !isTitle) {
@@ -285,9 +289,9 @@ const Main = (props) => {
                     newBlocks.unshift(blockElement);
                 } else {
                     newBlocks.push(blockElement);
-                }
+                };
             
-                return { ...prev, blocks: newBlocks, idBlockActive: `block-id-${id}` };
+                return { ...prev, blocks: newBlocks, idBlockActive: `block-id-${id}`, currentType: currentType };
             });            
         };
     };
