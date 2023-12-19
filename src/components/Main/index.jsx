@@ -216,7 +216,7 @@ const Main = (props) => {
     useEffect(() => {
         if (state.status === 1) {
             return;
-        }
+        };
         const data = {
             page_name: state.pageTitle,
             page_id: currPage?._id,
@@ -247,6 +247,10 @@ const Main = (props) => {
 
     // render block
     const handleEnter = (e, currIndex, isTitle) => {
+        if (e.keyCode === 8 || e.keyCode === 46) {
+            console.log('delete');
+        };
+
         if (e.key === 'ArrowDown') {
             if (state.blocks.length > 0) {
                 const element = document.getElementById(`block-id-${state.blocks?.[0]?.uuid}`);
@@ -341,8 +345,10 @@ const Main = (props) => {
 
         if (prevElement) {
             deleteBlock(blockId);
-            prevElement.focus();
-            moveCursorToEndOfLine(prevElement);
+            setTimeout(() => {
+                prevElement.focus();
+                moveCursorToEndOfLine(prevElement);
+            },0);
         };
     };
 
