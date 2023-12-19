@@ -292,7 +292,7 @@ const Main = (props) => {
     };
 
     // handle key move beetwen blocks
-    const handleArrow = (index, type, prevOrNextId, typeBlock) => {
+    const handleArrow = (index, type, prevOrNextId) => {
         let element;
         if (type === 'ArrowUp' && prevOrNextId === undefined) {
             element = document.getElementById('page-title');
@@ -302,6 +302,7 @@ const Main = (props) => {
 
         if (element) {
             element.focus();
+            const typeBlock = element.getAttribute('type-block');
             setState(prev => ({
                 ...prev,
                 idBlockActive: prevOrNextId,
@@ -367,7 +368,12 @@ const Main = (props) => {
     };
 
     // handle click in block
-    const handleClickInBlock = (id, typeBlock) => {
+    const handleClickInBlock = (id) => {
+        const element = document.getElementById(id);
+        let typeBlock;
+        if (element) {
+            typeBlock = element.getAttribute('type-block');
+        }
         setState(prev => ({...prev, idBlockActive: id, currentType: typeBlock}));
     };
 

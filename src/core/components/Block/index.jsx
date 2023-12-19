@@ -10,7 +10,7 @@ import './block.css';
 const Block = (props) => {
 
     const { handleEnter, index, handleArrow, id, handleDelete, idActive, handleClickInBlock, 
-            handleModalListBlocks, typeBlock, currentType } = props;
+            handleModalListBlocks, typeBlock } = props;
 
     const [state, setState] = useState({
         textContent: '',
@@ -46,7 +46,7 @@ const Block = (props) => {
     useEffect(() => {
         const handleClickBlock = (e) => {
             if (textBlockRef.current && textBlockRef.current.contains(e.target)) {
-                handleClickInBlock(id, typeBlock);
+                handleClickInBlock(id);
             };
         };
 
@@ -96,7 +96,7 @@ const Block = (props) => {
 
         if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
             e.preventDefault();
-            handleArrow(index, e.key, e.key === 'ArrowUp' ? blocks[prevEleIndex]?.id : blocks[nextEleIndex]?.id, typeBlock);
+            handleArrow(index, e.key, e.key === 'ArrowUp' ? blocks[prevEleIndex]?.id : blocks[nextEleIndex]?.id);
         };
 
         if (e.keyCode === 8 || e.keyCode === 46) {
